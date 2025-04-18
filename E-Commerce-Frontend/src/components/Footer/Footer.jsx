@@ -1,8 +1,12 @@
 import "./Footer.css";
 
+// Definitions (Functions, Variables, Constants, etc.)
+
 const Footer = () => {
+    // Logic Code
     return (
-        <h1>Footer</h1>
+        <>
+        </>
     )
 }
 

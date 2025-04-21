@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -11,14 +11,17 @@ import {
   IconButton,
   Button,
   Divider,
-  TextField
+  TextField,
+  Fade,
+  Slide,
+  Badge
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Cart = () => {
-  // Example cart items - replace with actual state management later
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -36,6 +39,8 @@ const Cart = () => {
     }
   ]);
 
+  const [removedItemId, setRemovedItemId] = useState(null);
+
   const updateQuantity = (id, change) => {
     setCartItems(items =>
       items.map(item =>
@@ -47,7 +52,11 @@ const Cart = () => {
   };
 
   const removeItem = (id) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+    setRemovedItemId(id);
+    setTimeout(() => {
+      setCartItems(items => items.filter(item => item.id !== id));
+      setRemovedItemId(null);
+    }, 300);
   };
 
   const calculateTotal = () => {
@@ -55,137 +64,301 @@ const Cart = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
-      <Typography
-        variant="h4"
-        component="h1"
-        sx={{
-          mb: 4,
-          fontWeight: 700,
-          textAlign: 'center',
-          background: 'linear-gradient(45deg, #1976d2, #2196f3)',
-          backgroundClip: 'text',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent'
-        }}
-      >
-        Shopping Cart
-      </Typography>
-
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={8}>
-          <Paper
-            elevation={3}
+    <Fade in timeout={800}>
+      <Container maxWidth="xl" sx={{ py: 12, minHeight: '100vh' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 2,
+            mb: 6
+          }}
+        >
+          <Badge badgeContent={cartItems.length} color="primary" sx={{ transform: 'scale(1.2)' }}>
+            <ShoppingCartIcon sx={{ fontSize: 40, color: '#1976d2' }} />
+          </Badge>
+          <Typography
+            variant="h3"
+            component="h1"
             sx={{
-              p: 3,
-              borderRadius: 2,
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(10px)'
+              fontWeight: 700,
+              background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textAlign: 'center',
+              letterSpacing: '0.5px'
             }}
           >
-            {cartItems.length === 0 ? (
-              <Typography variant="h6" textAlign="center" color="text.secondary">
-                Your cart is empty
-              </Typography>
-            ) : (
-              cartItems.map((item) => (
-                <Card
-                  key={item.id}
-                  sx={{
-                    mb: 2,
-                    display: 'flex',
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    sx={{ width: 150, height: 150, objectFit: 'cover' }}
-                    image={item.image}
-                    alt={item.name}
-                  />
-                  <CardContent sx={{ flex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 3 }}>
-                    <Box>
-                      <Typography variant="h6" component="div">
-                        {item.name}
-                      </Typography>
-                      <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
-                        ${item.price.toFixed(2)}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <IconButton onClick={() => updateQuantity(item.id, -1)} size="small">
-                        <RemoveIcon />
-                      </IconButton>
-                      <TextField
-                        value={item.quantity}
-                        size="small"
-                        InputProps={{ readOnly: true }}
-                        sx={{ width: '60px' }}
-                      />
-                      <IconButton onClick={() => updateQuantity(item.id, 1)} size="small">
-                        <AddIcon />
-                      </IconButton>
-                      <IconButton onClick={() => removeItem(item.id)} color="error" sx={{ ml: 2 }}>
-                        <DeleteOutlineIcon />
-                      </IconButton>
-                    </Box>
-                  </CardContent>
-                </Card>
-              ))
-            )}
-          </Paper>
-        </Grid>
+            Your Cart
+          </Typography>
+        </Box>
 
-        <Grid item xs={12} md={4}>
-          <Paper
-            elevation={3}
-            sx={{
-              p: 3,
-              borderRadius: 2,
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(10px)'
-            }}
-          >
-            <Typography variant="h6" sx={{ mb: 2 }}>Order Summary</Typography>
-            <Box sx={{ mb: 2 }}>
-              <Grid container justifyContent="space-between" sx={{ mb: 1 }}>
-                <Typography>Subtotal</Typography>
-                <Typography>${calculateTotal().toFixed(2)}</Typography>
-              </Grid>
-              <Grid container justifyContent="space-between" sx={{ mb: 1 }}>
-                <Typography>Shipping</Typography>
-                <Typography>Free</Typography>
-              </Grid>
-              <Divider sx={{ my: 2 }} />
-              <Grid container justifyContent="space-between">
-                <Typography variant="h6">Total</Typography>
-                <Typography variant="h6" color="primary">
-                  ${calculateTotal().toFixed(2)}
-                </Typography>
-              </Grid>
-            </Box>
-            <Button
-              variant="contained"
-              fullWidth
-              size="large"
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={8}>
+            <Paper
+              elevation={0}
               sx={{
-                mt: 2,
-                py: 1.5,
-                borderRadius: 2,
-                background: 'linear-gradient(45deg, #1976d2, #2196f3)',
-                '&:hover': {
-                  background: 'linear-gradient(45deg, #1565c0, #1976d2)',
-                }
+                p: 3,
+                borderRadius: 4,
+                background: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
               }}
             >
-              Proceed to Checkout
-            </Button>
-          </Paper>
+              {cartItems.length === 0 ? (
+                <Box
+                  sx={{
+                    textAlign: 'center',
+                    py: 8,
+                    px: 2
+                  }}
+                >
+                  <ShoppingCartIcon sx={{ fontSize: 60, color: '#bdbdbd', mb: 2 }} />
+                  <Typography variant="h5" color="text.secondary" gutterBottom>
+                    Your cart is empty
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary" mb={4}>
+                    Looks like you haven't added any items to your cart yet.
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      px: 4,
+                      py: 1.5,
+                      borderRadius: 2,
+                      background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                      boxShadow: '0 4px 15px rgba(33, 150, 243, 0.3)',
+                      '&:hover': {
+                        background: 'linear-gradient(45deg, #1565c0, #1976d2)',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 6px 20px rgba(33, 150, 243, 0.4)',
+                      },
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    Start Shopping
+                  </Button>
+                </Box>
+              ) : (
+                cartItems.map((item) => (
+                  <Slide
+                    direction="right"
+                    in={removedItemId !== item.id}
+                    timeout={300}
+                    key={item.id}
+                  >
+                    <Card
+                      sx={{
+                        mb: 2,
+                        display: 'flex',
+                        borderRadius: 3,
+                        overflow: 'hidden',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 8px 25px rgba(0,0,0,0.1)',
+                        },
+                      }}
+                    >
+                      <CardMedia
+                        component="img"
+                        sx={{
+                          width: 180,
+                          height: 180,
+                          objectFit: 'cover',
+                          transition: 'transform 0.3s ease',
+                          '&:hover': {
+                            transform: 'scale(1.05)',
+                          },
+                        }}
+                        image={item.image}
+                        alt={item.name}
+                      />
+                      <CardContent sx={{
+                        flex: 1,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        p: 3
+                      }}>
+                        <Box>
+                          <Typography variant="h5" component="div" fontWeight="600" gutterBottom>
+                            {item.name}
+                          </Typography>
+                          <Typography
+                            variant="h5"
+                            sx={{
+                              color: '#1976d2',
+                              fontWeight: '700',
+                              mt: 1,
+                              background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                              backgroundClip: 'text',
+                              WebkitBackgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent',
+                            }}
+                          >
+                            ${item.price.toFixed(2)}
+                          </Typography>
+                        </Box>
+                        <Box sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1
+                        }}>
+                          <IconButton
+                            onClick={() => updateQuantity(item.id, -1)}
+                            sx={{
+                              bgcolor: 'rgba(25, 118, 210, 0.1)',
+                              '&:hover': {
+                                bgcolor: 'rgba(25, 118, 210, 0.2)',
+                              },
+                            }}
+                          >
+                            <RemoveIcon />
+                          </IconButton>
+                          <TextField
+                            value={item.quantity}
+                            size="small"
+                            InputProps={{
+                              readOnly: true,
+                              sx: {
+                                width: '60px',
+                                textAlign: 'center',
+                                '& input': {
+                                  textAlign: 'center',
+                                },
+                              },
+                            }}
+                          />
+                          <IconButton
+                            onClick={() => updateQuantity(item.id, 1)}
+                            sx={{
+                              bgcolor: 'rgba(25, 118, 210, 0.1)',
+                              '&:hover': {
+                                bgcolor: 'rgba(25, 118, 210, 0.2)',
+                              },
+                            }}
+                          >
+                            <AddIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => removeItem(item.id)}
+                            sx={{
+                              ml: 2,
+                              color: '#d32f2f',
+                              '&:hover': {
+                                bgcolor: 'rgba(211, 47, 47, 0.1)',
+                              },
+                            }}
+                          >
+                            <DeleteOutlineIcon />
+                          </IconButton>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Slide>
+                ))
+              )}
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Slide direction="left" in timeout={500}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 4,
+                  borderRadius: 4,
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+                  position: 'sticky',
+                  top: 100
+                }}
+              >
+                <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>Order Summary</Typography>
+                <Box sx={{ mb: 3 }}>
+                  <Grid container justifyContent="space-between" sx={{ mb: 2 }}>
+                    <Typography color="text.secondary">Subtotal</Typography>
+                    <Typography fontWeight="500">${calculateTotal().toFixed(2)}</Typography>
+                  </Grid>
+                  <Grid container justifyContent="space-between" sx={{ mb: 2 }}>
+                    <Typography color="text.secondary">Shipping</Typography>
+                    <Typography 
+                      sx={{
+                        color: '#2e7d32',
+                        fontWeight: 500
+                      }}
+                    >
+                      Free
+                    </Typography>
+                  </Grid>
+                  <Divider sx={{ my: 3 }} />
+                  <Grid container justifyContent="space-between" alignItems="center">
+                    <Typography variant="h6">Total</Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        fontWeight: 700,
+                        background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                        backgroundClip: 'text',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                      }}
+                    >
+                      ${calculateTotal().toFixed(2)}
+                    </Typography>
+                  </Grid>
+                </Box>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  disabled={cartItems.length === 0}
+                  sx={{
+                    mt: 2,
+                    py: 2,
+                    borderRadius: 3,
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    textTransform: 'none',
+                    background: cartItems.length === 0 
+                      ? 'rgba(0, 0, 0, 0.12)'
+                      : 'linear-gradient(45deg, #1976d2, #2196f3)',
+                    boxShadow: '0 4px 15px rgba(33, 150, 243, 0.3)',
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #1565c0, #1976d2)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 6px 20px rgba(33, 150, 243, 0.4)',
+                    },
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  Proceed to Checkout
+                </Button>
+                {cartItems.length === 0 && (
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      mt: 2,
+                      textAlign: 'center',
+                      color: 'text.secondary'
+                    }}
+                  >
+                    Add items to your cart to checkout
+                  </Typography>
+                )}
+              </Paper>
+            </Slide>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </Fade>
   );
 };
 

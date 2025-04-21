@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Container,
   Typography,
@@ -14,53 +14,37 @@ import {
   TextField,
   Fade,
   Slide,
-  Badge
+  Badge,
+  useTheme,
+  Zoom,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'Product 1',
-      price: 99.99,
-      quantity: 1,
-      image: 'https://via.placeholder.com/150'
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      price: 149.99,
-      quantity: 2,
-      image: 'https://via.placeholder.com/150'
-    }
-  ]);
-
   const [removedItemId, setRemovedItemId] = useState(null);
+  const [showAddedAnimation, setShowAddedAnimation] = useState(false);
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const { cartItems, removeFromCart, updateQuantity, total, cartCount } = useCart();
 
-  const updateQuantity = (id, change) => {
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
-      )
-    );
+  const handleUpdateQuantity = (id, change) => {
+    updateQuantity(id, change);
+    setShowAddedAnimation(true);
+    setTimeout(() => setShowAddedAnimation(false), 1500);
   };
 
-  const removeItem = (id) => {
+  const handleRemoveItem = (id) => {
     setRemovedItemId(id);
     setTimeout(() => {
-      setCartItems(items => items.filter(item => item.id !== id));
+      removeFromCart(id);
       setRemovedItemId(null);
     }, 300);
-  };
-
-  const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
   return (
@@ -72,10 +56,43 @@ const Cart = () => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: 2,
-            mb: 6
+            mb: 6,
+            position: 'relative'
           }}
         >
-          <Badge badgeContent={cartItems.length} color="primary" sx={{ transform: 'scale(1.2)' }}>
+          <Zoom in={showAddedAnimation} 
+            style={{
+              position: 'absolute',
+              right: -20,
+              top: -20,
+            }}
+          >
+            <Paper
+              sx={{
+                p: 1,
+                bgcolor: theme.palette.success.main,
+                color: 'white',
+                borderRadius: 2,
+                boxShadow: theme.shadows[4],
+              }}
+            >
+              <Typography variant="body2">Updated!</Typography>
+            </Paper>
+          </Zoom>
+          <Badge 
+            badgeContent={cartCount} 
+            color="primary" 
+            sx={{ 
+              transform: 'scale(1.2)',
+              '& .MuiBadge-badge': {
+                animation: cartCount ? 'bounce 0.5s ease-in-out' : 'none',
+                '@keyframes bounce': {
+                  '0%, 100%': { transform: 'scale(1)' },
+                  '50%': { transform: 'scale(1.3)' },
+                },
+              }
+            }}
+          >
             <ShoppingCartIcon sx={{ fontSize: 40, color: '#1976d2' }} />
           </Badge>
           <Typography
@@ -113,18 +130,47 @@ const Cart = () => {
                   sx={{
                     textAlign: 'center',
                     py: 8,
-                    px: 2
+                    px: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 3
                   }}
                 >
-                  <ShoppingCartIcon sx={{ fontSize: 60, color: '#bdbdbd', mb: 2 }} />
-                  <Typography variant="h5" color="text.secondary" gutterBottom>
-                    Your cart is empty
+                  <LocalMallIcon 
+                    sx={{ 
+                      fontSize: 120, 
+                      color: '#bdbdbd',
+                      animation: 'float 3s ease-in-out infinite',
+                      '@keyframes float': {
+                        '0%, 100%': { transform: 'translateY(0)' },
+                        '50%': { transform: 'translateY(-10px)' },
+                      }
+                    }} 
+                  />
+                  <Typography 
+                    variant="h5" 
+                    color="text.secondary" 
+                    sx={{
+                      fontWeight: 600,
+                      background: 'linear-gradient(45deg, #9e9e9e, #757575)',
+                      backgroundClip: 'text',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }}
+                  >
+                    Your cart is feeling a bit lonely
                   </Typography>
-                  <Typography variant="body1" color="text.secondary" mb={4}>
-                    Looks like you haven't added any items to your cart yet.
+                  <Typography 
+                    variant="body1" 
+                    color="text.secondary" 
+                    sx={{ maxWidth: 400, mb: 2 }}
+                  >
+                    Why not explore our collection and find something special?
                   </Typography>
                   <Button
                     variant="contained"
+                    onClick={() => navigate('/')}
                     sx={{
                       px: 4,
                       py: 1.5,
@@ -139,7 +185,7 @@ const Cart = () => {
                       transition: 'all 0.3s ease'
                     }}
                   >
-                    Start Shopping
+                    Discover Products
                   </Button>
                 </Box>
               ) : (
@@ -210,7 +256,7 @@ const Cart = () => {
                           gap: 1
                         }}>
                           <IconButton
-                            onClick={() => updateQuantity(item.id, -1)}
+                            onClick={() => handleUpdateQuantity(item.id, -1)}
                             sx={{
                               bgcolor: 'rgba(25, 118, 210, 0.1)',
                               '&:hover': {
@@ -235,7 +281,7 @@ const Cart = () => {
                             }}
                           />
                           <IconButton
-                            onClick={() => updateQuantity(item.id, 1)}
+                            onClick={() => handleUpdateQuantity(item.id, 1)}
                             sx={{
                               bgcolor: 'rgba(25, 118, 210, 0.1)',
                               '&:hover': {
@@ -246,7 +292,7 @@ const Cart = () => {
                             <AddIcon />
                           </IconButton>
                           <IconButton
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => handleRemoveItem(item.id)}
                             sx={{
                               ml: 2,
                               color: '#d32f2f',
@@ -285,7 +331,7 @@ const Cart = () => {
                 <Box sx={{ mb: 3 }}>
                   <Grid container justifyContent="space-between" sx={{ mb: 2 }}>
                     <Typography color="text.secondary">Subtotal</Typography>
-                    <Typography fontWeight="500">${calculateTotal().toFixed(2)}</Typography>
+                    <Typography fontWeight="500">${total.toFixed(2)}</Typography>
                   </Grid>
                   <Grid container justifyContent="space-between" sx={{ mb: 2 }}>
                     <Typography color="text.secondary">Shipping</Typography>
@@ -311,7 +357,7 @@ const Cart = () => {
                         WebkitTextFillColor: 'transparent',
                       }}
                     >
-                      ${calculateTotal().toFixed(2)}
+                      ${total.toFixed(2)}
                     </Typography>
                   </Grid>
                 </Box>

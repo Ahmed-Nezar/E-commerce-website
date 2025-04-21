@@ -2,12 +2,12 @@ import { AppBar, Toolbar, Typography, Button, Box, Container, Badge, IconButton 
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import { useCart } from '../../context/CartContext';
 import "./Navbar.css";
 
 const Navbar = () => {
     const navigate = useNavigate();
-    // This will be replaced with actual cart state management later
-    const cartItemCount = 2;
+    const { cartCount } = useCart();
 
     return (
         <AppBar
@@ -55,7 +55,19 @@ const Navbar = () => {
                                 }
                             }}
                         >
-                            <Badge badgeContent={cartItemCount} color="error">
+                            <Badge 
+                                badgeContent={cartCount} 
+                                color="error"
+                                sx={{
+                                    '& .MuiBadge-badge': {
+                                        animation: cartCount ? 'bounce 0.5s ease-in-out' : 'none',
+                                        '@keyframes bounce': {
+                                            '0%, 100%': { transform: 'scale(1)' },
+                                            '50%': { transform: 'scale(1.3)' },
+                                        },
+                                    }
+                                }}
+                            >
                                 <ShoppingCartIcon />
                             </Badge>
                         </IconButton>

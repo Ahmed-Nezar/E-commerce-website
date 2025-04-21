@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -21,6 +22,8 @@ const Register = () => {
     password: '',
     confirmPassword: ''
   });
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -256,13 +259,19 @@ const Register = () => {
             <Grid container justifyContent="center">
               <Grid item>
                 <Link
-                  href="/signin"
+                  component="button"
                   variant="body2"
+                  onClick={() => navigate('/signin')}
                   sx={{
                     color: 'primary.main',
                     textDecoration: 'none',
+                    border: 'none',
+                    background: 'none',
+                    transition: 'all 0.3s ease',
                     '&:hover': {
-                      textDecoration: 'underline'
+                      color: '#1565c0',
+                      transform: 'translateX(4px)',
+                      display: 'inline-block'
                     }
                   }}
                 >

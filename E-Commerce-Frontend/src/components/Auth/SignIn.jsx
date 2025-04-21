@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Avatar,
   Button,
@@ -16,6 +17,7 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -210,12 +212,15 @@ const SignIn = () => {
             <Grid container spacing={2} sx={{ mt: 1 }}>
               <Grid item xs={12} sm={6} sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
                 <Link
-                  href="#"
+                  component="button"
                   variant="body2"
+                  onClick={() => navigate('/forgot-password')}
                   sx={{
                     color: 'secondary.main',
                     textDecoration: 'none',
                     transition: 'all 0.3s ease',
+                    border: 'none',
+                    background: 'none',
                     '&:hover': {
                       color: '#6a1b9a',
                       transform: 'translateX(4px)',
@@ -228,12 +233,15 @@ const SignIn = () => {
               </Grid>
               <Grid item xs={12} sm={6} sx={{ textAlign: { xs: 'center', sm: 'right' } }}>
                 <Link
-                  href="/register"
+                  component="button"
                   variant="body2"
+                  onClick={() => navigate('/register')}
                   sx={{
                     color: 'secondary.main',
                     textDecoration: 'none',
                     transition: 'all 0.3s ease',
+                    border: 'none',
+                    background: 'none',
                     '&:hover': {
                       color: '#6a1b9a',
                       transform: 'translateX(4px)',

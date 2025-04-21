@@ -209,50 +209,51 @@ const SignIn = () => {
             >
               Sign In
             </Button>
-            <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid item xs={12} sm={6} sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
-                <Link
-                  component="button"
-                  variant="body2"
-                  onClick={() => navigate('/forgot-password')}
-                  sx={{
-                    color: 'secondary.main',
-                    textDecoration: 'none',
-                    transition: 'all 0.3s ease',
-                    border: 'none',
-                    background: 'none',
-                    '&:hover': {
-                      color: '#6a1b9a',
-                      transform: 'translateX(4px)',
-                      display: 'inline-block'
-                    }
-                  }}
-                >
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item xs={12} sm={6} sx={{ textAlign: { xs: 'center', sm: 'right' } }}>
-                <Link
-                  component="button"
-                  variant="body2"
-                  onClick={() => navigate('/register')}
-                  sx={{
-                    color: 'secondary.main',
-                    textDecoration: 'none',
-                    transition: 'all 0.3s ease',
-                    border: 'none',
-                    background: 'none',
-                    '&:hover': {
-                      color: '#6a1b9a',
-                      transform: 'translateX(4px)',
-                      display: 'inline-block'
-                    }
-                  }}
-                >
-                  Don't have an account? Sign Up
-                </Link>
-              </Grid>
-            </Grid>
+            <Box sx={{ mt: 2, textAlign: 'center' }}>
+              <Link
+                component="button"
+                variant="body2"
+                onClick={() => navigate('/forgot-password')}
+                sx={{
+                  color: 'secondary.main',
+                  textDecoration: 'none',
+                  mx: 1.5,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    color: '#6a1b9a',
+                    transform: 'translateY(-2px)',
+                    display: 'inline-block'
+                  }
+                }}
+              >
+                Forgot password?
+              </Link>
+              <Typography
+                variant="body2"
+                component="span"
+                sx={{ mx: 1 }}
+              >
+                |
+              </Typography>
+              <Link
+                component="button"
+                variant="body2"
+                onClick={() => navigate('/register')}
+                sx={{
+                  color: 'secondary.main',
+                  textDecoration: 'none',
+                  mx: 1.5,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    color: '#6a1b9a',
+                    transform: 'translateY(-2px)',
+                    display: 'inline-block'
+                  }
+                }}
+              >
+                Don't have an account? Sign Up
+              </Link>
+            </Box>
           </Box>
         </Paper>
       </Container>

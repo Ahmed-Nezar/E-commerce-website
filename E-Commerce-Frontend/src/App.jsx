@@ -7,6 +7,7 @@ import SignIn from './components/Auth/SignIn.jsx'
 import Register from './components/Auth/Register.jsx'
 import ForgotPassword from './components/Auth/ForgotPassword.jsx'
 import Cart from './components/Cart/Cart.jsx'
+import Home from './components/Home/Home.jsx'
 import { CartProvider } from './context/CartContext.jsx'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Router>
                 <Navbar />
                 <Routes>
+                    <Route path="/" element={<Home />} />
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />

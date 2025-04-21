@@ -40,45 +40,73 @@ const Register = () => {
     <Fade in timeout={1000}>
       <Container component="main" maxWidth="md" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
         <Paper
-          elevation={12}
+          elevation={24}
           sx={{
             width: '100%',
             p: { xs: 3, md: 6 },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            borderRadius: 4,
-            background: 'linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%)',
-            boxShadow: '0 12px 24px rgba(0,0,0,0.12)',
+            borderRadius: '24px',
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
             position: 'relative',
             overflow: 'hidden',
             '&::before': {
               content: '""',
               position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '6px',
-              background: 'linear-gradient(90deg, #2196f3, #1976d2, #0d47a1)',
+              inset: 0,
+              padding: '2px',
+              borderRadius: '24px',
+              background: 'linear-gradient(45deg, #2196f3, #1976d2, #0d47a1, #2196f3)',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
+              animation: 'gradient 4s ease infinite',
+            },
+            '@keyframes gradient': {
+              '0%': {
+                backgroundPosition: '0% 50%'
+              },
+              '50%': {
+                backgroundPosition: '100% 50%'
+              },
+              '100%': {
+                backgroundPosition: '0% 50%'
+              }
             }
           }}
         >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '200px',
+              background: 'linear-gradient(135deg, #1976d2 0%, #2196f3 100%)',
+              opacity: 0.1,
+              borderRadius: '24px 24px 100% 100%',
+            }}
+          />
           <Avatar
             sx={{
               m: 2,
-              width: 72,
-              height: 72,
-              bgcolor: 'primary.main',
-              boxShadow: '0 8px 16px rgba(33,150,243,0.3)',
+              width: 88,
+              height: 88,
+              bgcolor: 'transparent',
+              background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+              boxShadow: '0 8px 32px rgba(33,150,243,0.4)',
               transform: 'translateY(-8px)',
-              transition: 'all 0.3s ease',
+              transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
               '&:hover': {
-                transform: 'translateY(-12px) scale(1.05)',
-                boxShadow: '0 12px 20px rgba(33,150,243,0.4)',
+                transform: 'translateY(-12px) scale(1.1)',
+                boxShadow: '0 16px 40px rgba(33,150,243,0.6)',
               }
             }}
           >
-            <PersonAddIcon sx={{ fontSize: 40 }} />
+            <PersonAddIcon sx={{ fontSize: 45, color: '#fff' }} />
           </Avatar>
           <Typography
             component="h1"

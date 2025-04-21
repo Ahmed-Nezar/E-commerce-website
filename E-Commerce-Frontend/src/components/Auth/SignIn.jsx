@@ -40,45 +40,73 @@ const SignIn = () => {
     <Fade in timeout={1000}>
       <Container component="main" maxWidth="md" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
         <Paper 
-          elevation={12}
+          elevation={24}
           sx={{
             width: '100%',
             p: { xs: 3, md: 6 },
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            borderRadius: 4,
-            background: 'linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%)',
-            boxShadow: '0 12px 24px rgba(0,0,0,0.12)',
+            borderRadius: '24px',
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
             position: 'relative',
             overflow: 'hidden',
             '&::before': {
               content: '""',
               position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '6px',
-              background: 'linear-gradient(90deg, #2196f3, #1976d2, #0d47a1)',
+              inset: 0,
+              padding: '2px',
+              borderRadius: '24px',
+              background: 'linear-gradient(45deg, #9c27b0, #7b1fa2, #4a148c, #9c27b0)',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
+              animation: 'gradient 4s ease infinite',
+            },
+            '@keyframes gradient': {
+              '0%': {
+                backgroundPosition: '0% 50%'
+              },
+              '50%': {
+                backgroundPosition: '100% 50%'
+              },
+              '100%': {
+                backgroundPosition: '0% 50%'
+              }
             }
           }}
         >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '200px',
+              background: 'linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%)',
+              opacity: 0.1,
+              borderRadius: '24px 24px 100% 100%',
+            }}
+          />
           <Avatar
             sx={{
               m: 2,
-              width: 72,
-              height: 72,
-              bgcolor: 'secondary.main',
-              boxShadow: '0 8px 16px rgba(156,39,176,0.3)',
+              width: 88,
+              height: 88,
+              bgcolor: 'transparent',
+              background: 'linear-gradient(45deg, #7b1fa2, #9c27b0)',
+              boxShadow: '0 8px 32px rgba(156,39,176,0.4)',
               transform: 'translateY(-8px)',
-              transition: 'all 0.3s ease',
+              transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
               '&:hover': {
-                transform: 'translateY(-12px) scale(1.05)',
-                boxShadow: '0 12px 20px rgba(156,39,176,0.4)',
+                transform: 'translateY(-12px) scale(1.1)',
+                boxShadow: '0 16px 40px rgba(156,39,176,0.6)',
               }
             }}
           >
-            <LockOutlinedIcon sx={{ fontSize: 40 }} />
+            <LockOutlinedIcon sx={{ fontSize: 45, color: '#fff' }} />
           </Avatar>
           <Typography
             component="h1"
@@ -144,7 +172,11 @@ const SignIn = () => {
                   color="secondary"
                   checked={formData.rememberMe}
                   onChange={handleChange}
-                  sx={{ '&.Mui-checked': { color: 'secondary.main' } }}
+                  sx={{ 
+                    '&.Mui-checked': { 
+                      color: '#9c27b0'
+                    }
+                  }}
                 />
               }
               label="Remember me"
@@ -170,7 +202,7 @@ const SignIn = () => {
                   boxShadow: '0 6px 16px rgba(156,39,176,0.4)',
                   transform: 'translateY(-2px)'
                 },
-                transition: 'all 0.3s ease'
+                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
               }}
             >
               Sign In
@@ -183,8 +215,11 @@ const SignIn = () => {
                   sx={{
                     color: 'secondary.main',
                     textDecoration: 'none',
+                    transition: 'all 0.3s ease',
                     '&:hover': {
-                      textDecoration: 'underline'
+                      color: '#6a1b9a',
+                      transform: 'translateX(4px)',
+                      display: 'inline-block'
                     }
                   }}
                 >
@@ -198,8 +233,11 @@ const SignIn = () => {
                   sx={{
                     color: 'secondary.main',
                     textDecoration: 'none',
+                    transition: 'all 0.3s ease',
                     '&:hover': {
-                      textDecoration: 'underline'
+                      color: '#6a1b9a',
+                      transform: 'translateX(4px)',
+                      display: 'inline-block'
                     }
                   }}
                 >

@@ -26,6 +26,7 @@ import RouterIcon from '@mui/icons-material/Router';
 import ComputerIcon from '@mui/icons-material/Computer';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
 import MouseIcon from '@mui/icons-material/Mouse';
+import HeadphonesIcon from '@mui/icons-material/Headphones';
 import { useCart } from '../../context/CartContext';
 import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
@@ -63,6 +64,7 @@ const Home = () => {
     { icon: <ComputerIcon sx={{ fontSize: 40 }} />, name: 'Cases' },
     { icon: <KeyboardIcon sx={{ fontSize: 40 }} />, name: 'Keyboards' },
     { icon: <MouseIcon sx={{ fontSize: 40 }} />, name: 'Mice' },
+    { icon: <HeadphonesIcon sx={{ fontSize: 40 }} />, name: 'Headsets' },
   ];
 
   const [newReleases] = useState([
@@ -313,48 +315,89 @@ const Home = () => {
           >
             Browse Categories
           </Typography>
-          <Grid container spacing={2} justifyContent="center">
-            {partCategories.map((category, index) => (
-              <Grid item key={index} xs={6} sm={3} md={3}>
-                <Paper
-                  elevation={0}
-                  sx={{
-                    p: 3,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 2,
-                    borderRadius: 4,
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    background: 'rgba(255, 255, 255, 0.8)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: '0 12px 24px rgba(0,0,0,0.1)',
-                      '& .category-icon': {
-                        transform: 'scale(1.2)',
-                        color: '#1976d2',
-                      },
-                    },
+          <Grid container spacing={2} justifyContent="center" sx={{ 
+            flexWrap: 'nowrap', 
+            overflowX: 'hidden', // Changed from 'auto' to 'hidden'
+            pb: 2,
+            position: 'relative',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(90deg, rgba(255,255,255,0.15) 0%, transparent 5%, transparent 95%, rgba(255,255,255,0.15) 100%)',
+              pointerEvents: 'none',
+              zIndex: 1,
+            },
+            '@keyframes scrollCategories': {
+              '0%': {
+                transform: 'translateX(0)',
+              },
+              '100%': {
+                transform: 'translateX(-50%)',
+              },
+            },
+          }}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 2,
+                animation: 'scrollCategories 30s linear infinite',
+                '&:hover': {
+                  animationPlayState: 'paused',
+                },
+              }}
+            >
+              {[...partCategories, ...partCategories].map((category, index) => (
+                <Box
+                  key={`${category.name}-${index}`}
+                  sx={{ 
+                    minWidth: 180,
+                    flex: '0 0 auto',
                   }}
                 >
-                  <Box
-                    className="category-icon"
+                  <Paper
+                    elevation={0}
                     sx={{
+                      p: 3,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 2,
+                      borderRadius: 4,
+                      cursor: 'pointer',
                       transition: 'all 0.3s ease',
-                      color: '#666',
+                      background: 'rgba(255, 255, 255, 0.8)',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: '0 12px 24px rgba(0,0,0,0.1)',
+                        '& .category-icon': {
+                          transform: 'scale(1.2)',
+                          color: '#1976d2',
+                        },
+                      },
                     }}
                   >
-                    {category.icon}
-                  </Box>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    {category.name}
-                  </Typography>
-                </Paper>
-              </Grid>
-            ))}
+                    <Box
+                      className="category-icon"
+                      sx={{
+                        transition: 'all 0.3s ease',
+                        color: '#666',
+                      }}
+                    >
+                      {category.icon}
+                    </Box>
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      {category.name}
+                    </Typography>
+                  </Paper>
+                </Box>
+              ))}
+            </Box>
           </Grid>
         </Container>
 

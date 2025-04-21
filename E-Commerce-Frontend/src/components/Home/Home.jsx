@@ -68,15 +68,33 @@ const Home = () => {
   const [newReleases] = useState([
     {
       id: 1,
-      name: 'NVIDIA Quantum X800',
-      price: 1499.99,
-      image: '/images/products/NVIDIA_Quantum-X800.jpg',
-      description: 'Next-gen GPU Technology',
-      stock: 5,
-      rating: 4.8
+      name: 'Razer Basilisk V3',
+      price: 69.99,
+      image: '/images/products/Razer_Basilisk_V3.jpg',
+      description: 'Pro Gaming Mouse',
+      stock: 25,
+      rating: 4.7
     },
     {
       id: 2,
+      name: 'RTX 5060 Ti',
+      price: 499.99,
+      image: '/images/products/RTX_5060_Ti.png',
+      description: 'Mid-Range Gaming GPU',
+      stock: 3,
+      rating: 4.9
+    },
+    {
+      id: 3,
+      name: 'Razer Kraken V4',
+      price: 199.99,
+      image: '/images/products/Razer_Kraken_V4.jpg',
+      description: 'Wireless Gaming Headset',
+      stock: 10,
+      rating: 4.8
+    },    
+    {
+      id: 4,
       name: 'Samsung Odyssey OLED G8',
       price: 1299.99,
       image: '/images/products/Samsung-Odyssey-OLED-G8.jpg',
@@ -85,32 +103,14 @@ const Home = () => {
       rating: 4.9
     },
     {
-      id: 3,
-      name: 'Dark Power Pro 13 1600W',
-      price: 399.99,
-      image: '/images/products/Dark_Power_Pro_13_1600W.jpg',
-      description: 'Platinum Rated PSU',
-      stock: 8,
-      rating: 4.7
-    },
-    {
-      id: 4,
+      id: 5,
       name: 'Keychron Q5 HE',
       price: 199.99,
       image: '/images/products/Keychron_Q5_HE.png',
       description: 'Hot-swappable Mechanical Keyboard',
       stock: 15,
       rating: 4.6
-    },
-    {
-      id: 5,
-      name: 'ADATA SD 8.0 Express',
-      price: 129.99,
-      image: '/images/products/adata-SD-8.0-Express-UE720.jpg',
-      description: 'High-Speed Storage Solution',
-      stock: 20,
-      rating: 4.5
-    },
+    },    
     {
       id: 6,
       name: 'Lian Li O11 Vision',
@@ -122,21 +122,30 @@ const Home = () => {
     },
     {
       id: 7,
-      name: 'Razer Basilisk V3',
-      price: 69.99,
-      image: '/images/products/Razer_Basilisk_V3.jpg',
-      description: 'Pro Gaming Mouse',
-      stock: 25,
-      rating: 4.7
+      name: 'NVIDIA Quantum X800',
+      price: 1499.99,
+      image: '/images/products/NVIDIA_Quantum-X800.jpg',
+      description: 'Next-gen GPU Technology',
+      stock: 5,
+      rating: 4.8
     },
     {
       id: 8,
-      name: 'RTX 5060 Ti',
-      price: 499.99,
-      image: '/images/products/RTX_5060_Ti.png',
-      description: 'Mid-Range Gaming GPU',
-      stock: 3,
-      rating: 4.9
+      name: 'Dark Power Pro 13 1600W',
+      price: 399.99,
+      image: '/images/products/Dark_Power_Pro_13_1600W.jpg',
+      description: 'Platinum Rated PSU',
+      stock: 8,
+      rating: 4.7
+    },
+    {
+      id: 9,
+      name: 'ADATA SD 8.0 Express',
+      price: 129.99,
+      image: '/images/products/adata-SD-8.0-Express-UE720.jpg',
+      description: 'High-Speed Storage Solution',
+      stock: 20,
+      rating: 4.5
     }
   ]);
 

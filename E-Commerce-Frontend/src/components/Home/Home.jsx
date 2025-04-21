@@ -356,9 +356,11 @@ const Home = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           sx={{ 
-            py: 12,
-            background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+            py: { xs: 8, md: 12 },
+            px: { xs: 2, md: 4 },
+            background: 'linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%)',
             position: 'relative',
+            overflow: 'hidden',
             '&::before': {
               content: '""',
               position: 'absolute',
@@ -366,13 +368,19 @@ const Home = () => {
               left: 0,
               right: 0,
               height: '100%',
-              background: 'url("/path/to/pattern.svg")',
-              opacity: 0.1,
-              animation: 'float 20s linear infinite',
+              backgroundImage: 'radial-gradient(circle, #1976d2 1px, transparent 1px)',
+              backgroundSize: '30px 30px',
+              opacity: 0.05,
+              animation: 'floatBackground 20s linear infinite',
+              zIndex: 0,
+            },
+            '@keyframes floatBackground': {
+              '0%': { transform: 'translateY(0)' },
+              '100%': { transform: 'translateY(-50%)' },
             }
           }}
         >
-          <Container maxWidth="lg">
+          <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -391,6 +399,7 @@ const Home = () => {
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   animation: 'gradient 8s ease infinite',
+                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
                   '@keyframes gradient': {
                     '0%': { backgroundPosition: '0% 50%' },
                     '50%': { backgroundPosition: '100% 50%' },
@@ -398,7 +407,7 @@ const Home = () => {
                   },
                 }}
               >
-                New Releases
+                Latest Arrivals
               </Typography>
               <Typography
                 variant="h6"
@@ -408,10 +417,14 @@ const Home = () => {
                   color: 'text.secondary',
                   maxWidth: '600px',
                   mx: 'auto',
-                  opacity: 0.8
+                  opacity: 0.8,
+                  lineHeight: 1.6,
+                  fontSize: '1.1rem',
+                  fontWeight: 500,
+                  textShadow: '0 1px 2px rgba(0,0,0,0.05)'
                 }}
               >
-                Discover our latest cutting-edge tech arrivals
+                Discover our curated selection of cutting-edge tech innovations
               </Typography>
             </motion.div>
 
@@ -421,15 +434,22 @@ const Home = () => {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <Grid container spacing={4}>
-                {newReleases.map((product) => (
-                  <Grid item key={product.id} xs={12} sm={6} md={3}>
-                    <motion.div variants={itemVariants}>
+              <Grid container spacing={6}>
+                {newReleases.map((product, index) => (
+                  <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+                    <motion.div 
+                      variants={itemVariants}
+                      custom={index}
+                      initial="hidden"
+                      animate="visible"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
                       <Tilt
-                        tiltMaxAngleX={5}
-                        tiltMaxAngleY={5}
-                        scale={1.02}
-                        transitionSpeed={2000}
+                        tiltMaxAngleX={8}
+                        tiltMaxAngleY={8}
+                        scale={1}
+                        transitionSpeed={1500}
                         gyroscope={true}
                       >
                         <Card
@@ -439,16 +459,18 @@ const Home = () => {
                             height: '100%',
                             display: 'flex',
                             flexDirection: 'column',
-                            borderRadius: '20px',
+                            borderRadius: '24px',
                             overflow: 'hidden',
                             transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                             position: 'relative',
-                            background: 'rgba(255, 255, 255, 0.9)',
+                            background: 'rgba(255, 255, 255, 0.95)',
                             backdropFilter: 'blur(10px)',
                             border: '1px solid rgba(255, 255, 255, 0.3)',
+                            boxShadow: hoveredProduct === product.id 
+                              ? '0 22px 40px rgba(0,0,0,0.15), 0 8px 16px rgba(25, 118, 210, 0.1)'
+                              : '0 8px 16px rgba(0,0,0,0.1)',
                             '&:hover': {
                               transform: 'translateY(-12px)',
-                              boxShadow: '0 22px 40px rgba(0,0,0,0.15)',
                               '& .product-image': {
                                 transform: 'scale(1.1) rotate(2deg)',
                               },
@@ -486,7 +508,7 @@ const Home = () => {
                                 left: 0,
                                 right: 0,
                                 bottom: 0,
-                                background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
+                                background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
                                 opacity: 0,
                                 transition: 'opacity 0.4s ease',
                                 display: 'flex',
@@ -501,7 +523,7 @@ const Home = () => {
                                 disabled={product.stock === 0}
                                 sx={{
                                   py: 1.5,
-                                  borderRadius: '12px',
+                                  borderRadius: '16px',
                                   textTransform: 'none',
                                   fontSize: '1rem',
                                   fontWeight: 600,
@@ -514,11 +536,16 @@ const Home = () => {
                                   },
                                   transition: 'all 0.3s ease',
                                 }}
+                                startIcon={<ShoppingCartIcon />}
                               >
-                                Quick Add to Cart
+                                Quick Add
                               </Button>
                             </Box>
-                            <Box
+
+                            {/* Badges */}
+                            <Stack
+                              direction="row"
+                              spacing={1}
                               sx={{
                                 position: 'absolute',
                                 top: 16,
@@ -526,7 +553,6 @@ const Home = () => {
                                 right: 16,
                                 display: 'flex',
                                 justifyContent: 'space-between',
-                                gap: 2,
                               }}
                             >
                               <Box
@@ -534,12 +560,15 @@ const Home = () => {
                                   background: 'linear-gradient(45deg, #1976d2, #2196f3)',
                                   color: 'white',
                                   px: 2,
-                                  py: 0.5,
+                                  py: 0.75,
                                   borderRadius: '12px',
                                   fontWeight: 600,
                                   fontSize: '0.75rem',
                                   boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
-                                  animation: 'pulse 2s infinite',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: 0.5,
+                                  animation: product.stock <= 5 ? 'pulse 2s infinite' : 'none',
                                   '@keyframes pulse': {
                                     '0%': { transform: 'scale(1)' },
                                     '50%': { transform: 'scale(1.05)' },
@@ -557,7 +586,7 @@ const Home = () => {
                                       : 'linear-gradient(45deg, #ed6c02, #ff9800)',
                                     color: 'white',
                                     px: 2,
-                                    py: 0.5,
+                                    py: 0.75,
                                     borderRadius: '12px',
                                     fontWeight: 600,
                                     fontSize: '0.75rem',
@@ -569,27 +598,37 @@ const Home = () => {
                                   {product.stock === 0 ? 'Out of Stock' : `Only ${product.stock} left`}
                                 </Box>
                               )}
-                            </Box>
+                            </Stack>
                           </Box>
-                          <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                            <Typography 
-                              variant="h6" 
-                              sx={{ 
-                                fontWeight: 700,
-                                mb: 0.5,
-                                fontSize: '1.1rem',
-                                background: hoveredProduct === product.id 
-                                  ? 'linear-gradient(45deg, #1976d2, #2196f3)' 
-                                  : 'none',
-                                backgroundClip: 'text',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: hoveredProduct === product.id ? 'transparent' : 'inherit',
-                                transition: 'all 0.3s ease',
-                              }}
-                            >
-                              {product.name}
-                            </Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+
+                          {/* Content */}
+                          <CardContent sx={{ 
+                              flexGrow: 1, 
+                              p: { xs: 2, sm: 3 },
+                              '&:last-child': {
+                                pb: { xs: 2, sm: 3 }
+                              }
+                            }}>
+                              <Typography 
+                                variant="h6" 
+                                sx={{ 
+                                  fontWeight: 700,
+                                  mb: 1,
+                                  fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem' },
+                                  background: hoveredProduct === product.id 
+                                    ? 'linear-gradient(45deg, #1976d2, #2196f3)' 
+                                    : 'none',
+                                  backgroundClip: 'text',
+                                  WebkitBackgroundClip: 'text',
+                                  WebkitTextFillColor: hoveredProduct === product.id ? 'transparent' : 'inherit',
+                                  transition: 'all 0.3s ease',
+                                }}
+                              >
+                                {product.name}
+                              </Typography>
+
+                            {/* Rating */}
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
                               <Rating 
                                 value={product.rating} 
                                 precision={0.1} 
@@ -597,7 +636,8 @@ const Home = () => {
                                 readOnly
                                 sx={{
                                   '& .MuiRating-iconFilled': {
-                                    color: '#1976d2',
+                                    color: theme.palette.primary.main,
+                                    filter: 'drop-shadow(0 2px 4px rgba(25, 118, 210, 0.2))',
                                   },
                                 }}
                               />
@@ -612,17 +652,21 @@ const Home = () => {
                                 ({product.rating})
                               </Typography>
                             </Box>
+
+                            {/* Description */}
                             <Typography 
                               variant="body2" 
                               sx={{ 
-                                mb: 2,
+                                mb: 2.5,
                                 color: 'text.secondary',
-                                opacity: 0.8,
+                                lineHeight: 1.6,
                                 minHeight: '40px'
                               }}
                             >
                               {product.description}
                             </Typography>
+
+                            {/* Price and Add to Cart */}
                             <Stack 
                               direction="row" 
                               justifyContent="space-between" 

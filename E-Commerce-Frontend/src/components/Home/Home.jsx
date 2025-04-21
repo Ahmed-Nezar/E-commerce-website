@@ -13,6 +13,7 @@ import {
   Fade,
   useTheme,
   Stack,
+  Rating,
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -26,11 +27,14 @@ import ComputerIcon from '@mui/icons-material/Computer';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
 import MouseIcon from '@mui/icons-material/Mouse';
 import { useCart } from '../../context/CartContext';
+import Tilt from 'react-parallax-tilt';
+import { motion } from 'framer-motion';
 
 const Home = () => {
   const theme = useTheme();
   const { addToCart } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [hoveredProduct, setHoveredProduct] = useState(null);
 
   const carouselItems = [
     {
@@ -67,58 +71,84 @@ const Home = () => {
       name: 'NVIDIA Quantum X800',
       price: 1499.99,
       image: '/images/products/NVIDIA_Quantum-X800.jpg',
-      description: 'Next-gen GPU Technology'
+      description: 'Next-gen GPU Technology',
+      stock: 5,
+      rating: 4.8
     },
     {
       id: 2,
       name: 'Samsung Odyssey OLED G8',
       price: 1299.99,
       image: '/images/products/Samsung-Odyssey-OLED-G8.jpg',
-      description: '34" Ultra-Wide Gaming Monitor'
+      description: '34" Ultra-Wide Gaming Monitor',
+      stock: 12,
+      rating: 4.9
     },
     {
       id: 3,
       name: 'Dark Power Pro 13 1600W',
       price: 399.99,
       image: '/images/products/Dark_Power_Pro_13_1600W.jpg',
-      description: 'Platinum Rated PSU'
+      description: 'Platinum Rated PSU',
+      stock: 8,
+      rating: 4.7
     },
     {
       id: 4,
       name: 'Keychron Q5 HE',
       price: 199.99,
       image: '/images/products/Keychron_Q5_HE.png',
-      description: 'Hot-swappable Mechanical Keyboard'
+      description: 'Hot-swappable Mechanical Keyboard',
+      stock: 15,
+      rating: 4.6
     },
     {
       id: 5,
       name: 'ADATA SD 8.0 Express',
       price: 129.99,
       image: '/images/products/adata-SD-8.0-Express-UE720.jpg',
-      description: 'High-Speed Storage Solution'
+      description: 'High-Speed Storage Solution',
+      stock: 20,
+      rating: 4.5
     },
     {
       id: 6,
       name: 'Lian Li O11 Vision',
       price: 219.99,
       image: '/images/products/O11VP_000a.png',
-      description: 'Premium ATX PC Case'
+      description: 'Premium ATX PC Case',
+      stock: 7,
+      rating: 4.8
     },
     {
       id: 7,
       name: 'Razer Basilisk V3',
       price: 69.99,
       image: '/images/products/Razer_Basilisk_V3.jpg',
-      description: 'Pro Gaming Mouse'
+      description: 'Pro Gaming Mouse',
+      stock: 25,
+      rating: 4.7
     },
     {
       id: 8,
       name: 'RTX 5060 Ti',
       price: 499.99,
       image: '/images/products/RTX_5060_Ti.png',
-      description: 'Mid-Range Gaming GPU'
+      description: 'Mid-Range Gaming GPU',
+      stock: 3,
+      rating: 4.9
     }
   ]);
+
+  const [addedItems, setAddedItems] = useState({});
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setAddedItems(prev => ({ ...prev, [product.id]: true }));
+    setTimeout(() => {
+      setAddedItems(prev => ({ ...prev, [product.id]: false }));
+    }, 2000);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -133,6 +163,28 @@ const Home = () => {
 
   const handleNextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
   };
 
   return (
@@ -298,112 +350,344 @@ const Home = () => {
         </Container>
 
         {/* New Releases Section */}
-        <Box sx={{ bgcolor: 'grey.50', py: 8 }}>
+        <Box 
+          component={motion.div}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          sx={{ 
+            py: 12,
+            background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+            position: 'relative',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '100%',
+              background: 'url("/path/to/pattern.svg")',
+              opacity: 0.1,
+              animation: 'float 20s linear infinite',
+            }
+          }}
+        >
           <Container maxWidth="lg">
-            <Typography
-              variant="h3"
-              align="center"
-              sx={{
-                mb: 6,
-                fontWeight: 700,
-                background: 'linear-gradient(45deg, #1976d2, #2196f3)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
-              New Releases
-            </Typography>
-            <Grid container spacing={4}>
-              {newReleases.map((product) => (
-                <Grid item key={product.id} xs={12} sm={6} md={4}>
-                  <Card
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      borderRadius: 4,
-                      overflow: 'hidden',
-                      transition: 'all 0.3s ease',
-                      position: 'relative',
-                      '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: '0 12px 24px rgba(0,0,0,0.1)',
-                        '& .product-image': {
-                          transform: 'scale(1.1)',
-                        },
-                      },
-                    }}
-                  >
-                    <Box sx={{ position: 'relative', paddingTop: '56.25%', overflow: 'hidden' }}>
-                      <CardMedia
-                        component="img"
-                        image={product.image}
-                        alt={product.name}
-                        className="product-image"
-                        sx={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%',
-                          transition: 'transform 0.3s ease',
-                        }}
-                      />
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          top: 16,
-                          right: 16,
-                          bgcolor: '#1976d2',
-                          color: 'white',
-                          px: 2,
-                          py: 0.5,
-                          borderRadius: 2,
-                          fontWeight: 600,
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                        }}
+              <Typography
+                variant="h2"
+                align="center"
+                sx={{
+                  mb: 2,
+                  fontWeight: 800,
+                  background: 'linear-gradient(-45deg, #1976d2, #2196f3, #0d47a1, #42a5f5)',
+                  backgroundSize: '300% 300%',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  animation: 'gradient 8s ease infinite',
+                  '@keyframes gradient': {
+                    '0%': { backgroundPosition: '0% 50%' },
+                    '50%': { backgroundPosition: '100% 50%' },
+                    '100%': { backgroundPosition: '0% 50%' },
+                  },
+                }}
+              >
+                New Releases
+              </Typography>
+              <Typography
+                variant="h6"
+                align="center"
+                sx={{
+                  mb: 8,
+                  color: 'text.secondary',
+                  maxWidth: '600px',
+                  mx: 'auto',
+                  opacity: 0.8
+                }}
+              >
+                Discover our latest cutting-edge tech arrivals
+              </Typography>
+            </motion.div>
+
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <Grid container spacing={4}>
+                {newReleases.map((product) => (
+                  <Grid item key={product.id} xs={12} sm={6} md={3}>
+                    <motion.div variants={itemVariants}>
+                      <Tilt
+                        tiltMaxAngleX={5}
+                        tiltMaxAngleY={5}
+                        scale={1.02}
+                        transitionSpeed={2000}
+                        gyroscope={true}
                       >
-                        NEW
-                      </Box>
-                    </Box>
-                    <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                      <Typography gutterBottom variant="h5" sx={{ fontWeight: 600 }}>
-                        {product.name}
-                      </Typography>
-                      <Typography color="text.secondary" sx={{ mb: 2 }}>
-                        {product.description}
-                      </Typography>
-                      <Stack direction="row" justifyContent="space-between" alignItems="center">
-                        <Typography
-                          variant="h6"
+                        <Card
+                          onMouseEnter={() => setHoveredProduct(product.id)}
+                          onMouseLeave={() => setHoveredProduct(null)}
                           sx={{
-                            fontWeight: 700,
-                            color: '#1976d2',
-                          }}
-                        >
-                          ${product.price.toFixed(2)}
-                        </Typography>
-                        <Button
-                          variant="contained"
-                          startIcon={<ShoppingCartIcon />}
-                          onClick={() => addToCart(product)}
-                          sx={{
-                            borderRadius: 2,
-                            background: 'linear-gradient(90deg, #1976d2, #2196f3)',
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            borderRadius: '20px',
+                            overflow: 'hidden',
+                            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                            position: 'relative',
+                            background: 'rgba(255, 255, 255, 0.9)',
+                            backdropFilter: 'blur(10px)',
+                            border: '1px solid rgba(255, 255, 255, 0.3)',
                             '&:hover': {
-                              background: 'linear-gradient(90deg, #1565c0, #1976d2)',
+                              transform: 'translateY(-12px)',
+                              boxShadow: '0 22px 40px rgba(0,0,0,0.15)',
+                              '& .product-image': {
+                                transform: 'scale(1.1) rotate(2deg)',
+                              },
+                              '& .product-overlay': {
+                                opacity: 1,
+                              },
+                              '& .price-tag': {
+                                transform: 'translateX(0)',
+                                opacity: 1,
+                              }
                             },
                           }}
                         >
-                          Add to Cart
-                        </Button>
-                      </Stack>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+                          <Box sx={{ position: 'relative', pt: '100%', overflow: 'hidden' }}>
+                            <CardMedia
+                              component="img"
+                              image={product.image}
+                              alt={product.name}
+                              className="product-image"
+                              sx={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+                              }}
+                            />
+                            <Box
+                              className="product-overlay"
+                              sx={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
+                                opacity: 0,
+                                transition: 'opacity 0.4s ease',
+                                display: 'flex',
+                                alignItems: 'flex-end',
+                                p: 2,
+                              }}
+                            >
+                              <Button
+                                variant="contained"
+                                fullWidth
+                                onClick={() => handleAddToCart(product)}
+                                disabled={product.stock === 0}
+                                sx={{
+                                  py: 1.5,
+                                  borderRadius: '12px',
+                                  textTransform: 'none',
+                                  fontSize: '1rem',
+                                  fontWeight: 600,
+                                  background: 'rgba(255,255,255,0.95)',
+                                  color: 'primary.main',
+                                  backdropFilter: 'blur(10px)',
+                                  '&:hover': {
+                                    background: 'rgba(255,255,255,1)',
+                                    transform: 'scale(1.02)',
+                                  },
+                                  transition: 'all 0.3s ease',
+                                }}
+                              >
+                                Quick Add to Cart
+                              </Button>
+                            </Box>
+                            <Box
+                              sx={{
+                                position: 'absolute',
+                                top: 16,
+                                left: 16,
+                                right: 16,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                gap: 2,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                                  color: 'white',
+                                  px: 2,
+                                  py: 0.5,
+                                  borderRadius: '12px',
+                                  fontWeight: 600,
+                                  fontSize: '0.75rem',
+                                  boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
+                                  animation: 'pulse 2s infinite',
+                                  '@keyframes pulse': {
+                                    '0%': { transform: 'scale(1)' },
+                                    '50%': { transform: 'scale(1.05)' },
+                                    '100%': { transform: 'scale(1)' },
+                                  },
+                                }}
+                              >
+                                NEW
+                              </Box>
+                              {product.stock <= 5 && (
+                                <Box
+                                  sx={{
+                                    background: product.stock === 0 
+                                      ? 'linear-gradient(45deg, #d32f2f, #f44336)'
+                                      : 'linear-gradient(45deg, #ed6c02, #ff9800)',
+                                    color: 'white',
+                                    px: 2,
+                                    py: 0.5,
+                                    borderRadius: '12px',
+                                    fontWeight: 600,
+                                    fontSize: '0.75rem',
+                                    boxShadow: product.stock === 0 
+                                      ? '0 4px 12px rgba(211, 47, 47, 0.3)'
+                                      : '0 4px 12px rgba(237, 108, 2, 0.3)',
+                                  }}
+                                >
+                                  {product.stock === 0 ? 'Out of Stock' : `Only ${product.stock} left`}
+                                </Box>
+                              )}
+                            </Box>
+                          </Box>
+                          <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                            <Typography 
+                              variant="h6" 
+                              sx={{ 
+                                fontWeight: 700,
+                                mb: 0.5,
+                                fontSize: '1.1rem',
+                                background: hoveredProduct === product.id 
+                                  ? 'linear-gradient(45deg, #1976d2, #2196f3)' 
+                                  : 'none',
+                                backgroundClip: 'text',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: hoveredProduct === product.id ? 'transparent' : 'inherit',
+                                transition: 'all 0.3s ease',
+                              }}
+                            >
+                              {product.name}
+                            </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                              <Rating 
+                                value={product.rating} 
+                                precision={0.1} 
+                                size="small" 
+                                readOnly
+                                sx={{
+                                  '& .MuiRating-iconFilled': {
+                                    color: '#1976d2',
+                                  },
+                                }}
+                              />
+                              <Typography 
+                                variant="body2" 
+                                sx={{ 
+                                  ml: 1,
+                                  color: 'text.secondary',
+                                  fontWeight: 500
+                                }}
+                              >
+                                ({product.rating})
+                              </Typography>
+                            </Box>
+                            <Typography 
+                              variant="body2" 
+                              sx={{ 
+                                mb: 2,
+                                color: 'text.secondary',
+                                opacity: 0.8,
+                                minHeight: '40px'
+                              }}
+                            >
+                              {product.description}
+                            </Typography>
+                            <Stack 
+                              direction="row" 
+                              justifyContent="space-between" 
+                              alignItems="center"
+                              spacing={2}
+                            >
+                              <Box
+                                className="price-tag"
+                                sx={{
+                                  background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                                  color: 'white',
+                                  py: 1,
+                                  px: 2,
+                                  borderRadius: '12px',
+                                  transform: 'translateX(-10px)',
+                                  opacity: 0,
+                                  transition: 'all 0.3s ease',
+                                }}
+                              >
+                                <Typography
+                                  variant="h6"
+                                  sx={{
+                                    fontWeight: 700,
+                                    fontSize: '1.2rem',
+                                  }}
+                                >
+                                  ${product.price.toFixed(2)}
+                                </Typography>
+                              </Box>
+                              <Button
+                                variant="contained"
+                                startIcon={<ShoppingCartIcon />}
+                                onClick={() => handleAddToCart(product)}
+                                disabled={product.stock === 0}
+                                sx={{
+                                  borderRadius: '12px',
+                                  px: 2,
+                                  py: 1,
+                                  background: addedItems[product.id]
+                                    ? 'linear-gradient(45deg, #2e7d32, #4caf50)'
+                                    : 'linear-gradient(45deg, #1976d2, #2196f3)',
+                                  boxShadow: '0 4px 15px rgba(25, 118, 210, 0.3)',
+                                  textTransform: 'none',
+                                  fontWeight: 600,
+                                  '&:hover': {
+                                    background: addedItems[product.id]
+                                      ? 'linear-gradient(45deg, #1b5e20, #2e7d32)'
+                                      : 'linear-gradient(45deg, #1565c0, #1976d2)',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 6px 20px rgba(25, 118, 210, 0.4)',
+                                  },
+                                  transition: 'all 0.3s ease',
+                                }}
+                              >
+                                {addedItems[product.id] ? 'Added!' : 'Add to Cart'}
+                              </Button>
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                      </Tilt>
+                    </motion.div>
+                  </Grid>
+                ))}
+              </Grid>
+            </motion.div>
           </Container>
         </Box>
       </Box>

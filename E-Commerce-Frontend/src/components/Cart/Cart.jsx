@@ -210,20 +210,18 @@ const Cart = () => {
                         },
                       }}
                     >
-                      <CardMedia
-                        component="img"
-                        sx={{
-                          width: 180,
-                          height: 180,
-                          objectFit: 'cover',
-                          transition: 'transform 0.3s ease',
-                          '&:hover': {
-                            transform: 'scale(1.05)',
-                          },
-                        }}
-                        image={item.image}
-                        alt={item.name}
-                      />
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{
+                            width: '100px',
+                            height: '100px',
+                            objectFit: 'cover',
+                            borderRadius: '8px',
+                          }}
+                        />
+                      </Box>
                       <CardContent sx={{
                         flex: 1,
                         display: 'flex',

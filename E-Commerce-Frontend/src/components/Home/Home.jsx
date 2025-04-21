@@ -34,17 +34,17 @@ const Home = () => {
 
   const carouselItems = [
     {
-      image: 'https://source.unsplash.com/featured/?nvidia,gpu',
+      image: '/images/products/RTX_4090.jpg',
       title: 'NVIDIA RTX 4090',
       description: 'Experience next-gen gaming performance'
     },
     {
-      image: 'https://source.unsplash.com/featured/?amd,processor',
+      image: '/images/products/ryzen9.png',
       title: 'AMD Ryzen 9',
       description: 'Ultimate processing power'
     },
     {
-      image: 'https://source.unsplash.com/featured/?intel,cpu',
+      image: '/images/products/Intel-Core-i9.jpg',
       title: 'Intel Core i9',
       description: 'Unleash your productivity'
     },
@@ -52,7 +52,7 @@ const Home = () => {
 
   const partCategories = [
     { icon: <MonitorIcon sx={{ fontSize: 40 }} />, name: 'Monitors' },
-    { icon: <MemoryIcon sx={{ fontSize: 40 }} />, name: 'CPUs' },
+    { icon: <MemoryIcon sx={{ fontSize: 40 }} />, name: 'GPUs' },
     { icon: <StorageIcon sx={{ fontSize: 40 }} />, name: 'Storage' },
     { icon: <BatteryChargingFullIcon sx={{ fontSize: 40 }} />, name: 'PSUs' },
     { icon: <RouterIcon sx={{ fontSize: 40 }} />, name: 'Networking' },
@@ -64,25 +64,60 @@ const Home = () => {
   const [newReleases] = useState([
     {
       id: 1,
-      name: 'ROG STRIX RTX 4080',
-      price: 1299.99,
-      image: 'https://source.unsplash.com/featured/?gpu',
-      description: 'Next-gen gaming performance'
+      name: 'NVIDIA Quantum X800',
+      price: 1499.99,
+      image: '/images/products/NVIDIA_Quantum-X800.jpg',
+      description: 'Next-gen GPU Technology'
     },
     {
       id: 2,
-      name: 'ROG Swift PG32UQX',
-      price: 2999.99,
-      image: 'https://source.unsplash.com/featured/?gaming,monitor',
-      description: '4K 144Hz Gaming Monitor'
+      name: 'Samsung Odyssey OLED G8',
+      price: 1299.99,
+      image: '/images/products/Samsung-Odyssey-OLED-G8.jpg',
+      description: '34" Ultra-Wide Gaming Monitor'
     },
     {
       id: 3,
-      name: 'Corsair RM1000x',
-      price: 219.99,
-      image: 'https://source.unsplash.com/featured/?power,supply',
-      description: '1000W Platinum PSU'
+      name: 'Dark Power Pro 13 1600W',
+      price: 399.99,
+      image: '/images/products/Dark_Power_Pro_13_1600W.jpg',
+      description: 'Platinum Rated PSU'
     },
+    {
+      id: 4,
+      name: 'Keychron Q5 HE',
+      price: 199.99,
+      image: '/images/products/Keychron_Q5_HE.png',
+      description: 'Hot-swappable Mechanical Keyboard'
+    },
+    {
+      id: 5,
+      name: 'ADATA SD 8.0 Express',
+      price: 129.99,
+      image: '/images/products/adata-SD-8.0-Express-UE720.jpg',
+      description: 'High-Speed Storage Solution'
+    },
+    {
+      id: 6,
+      name: 'Lian Li O11 Vision',
+      price: 219.99,
+      image: '/images/products/O11VP_000a.png',
+      description: 'Premium ATX PC Case'
+    },
+    {
+      id: 7,
+      name: 'Razer Basilisk V3',
+      price: 69.99,
+      image: '/images/products/Razer_Basilisk_V3.jpg',
+      description: 'Pro Gaming Mouse'
+    },
+    {
+      id: 8,
+      name: 'RTX 5060 Ti',
+      price: 499.99,
+      image: '/images/products/RTX_5060_Ti.png',
+      description: 'Mid-Range Gaming GPU'
+    }
   ]);
 
   useEffect(() => {

@@ -53,7 +53,7 @@ const Register = () => {
             borderRadius: '24px',
             background: 'rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(10px)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 8px 32px rgba(9, 21, 64, 0.1)',
             position: 'relative',
             overflow: 'hidden',
             '&::before': {
@@ -62,7 +62,7 @@ const Register = () => {
               inset: 0,
               padding: '2px',
               borderRadius: '24px',
-              background: 'linear-gradient(45deg, #2196f3, #1976d2, #0d47a1, #2196f3)',
+              background: 'linear-gradient(45deg, #091540, #3D518C, #1B2CC1, #7692FF)',
               WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
               WebkitMaskComposite: 'xor',
               maskComposite: 'exclude',
@@ -88,7 +88,7 @@ const Register = () => {
               left: 0,
               right: 0,
               height: '200px',
-              background: 'linear-gradient(135deg, #1976d2 0%, #2196f3 100%)',
+              background: 'linear-gradient(135deg, #091540 0%, #3D518C 100%)',
               opacity: 0.1,
               borderRadius: '24px 24px 100% 100%',
             }}
@@ -99,13 +99,13 @@ const Register = () => {
               width: 88,
               height: 88,
               bgcolor: 'transparent',
-              background: 'linear-gradient(45deg, #1976d2, #2196f3)',
-              boxShadow: '0 8px 32px rgba(33,150,243,0.4)',
+              background: 'linear-gradient(45deg, #091540, #3D518C)',
+              boxShadow: '0 8px 32px rgba(9, 21, 64, 0.4)',
               transform: 'translateY(-8px)',
               transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
               '&:hover': {
                 transform: 'translateY(-12px) scale(1.1)',
-                boxShadow: '0 16px 40px rgba(33,150,243,0.6)',
+                boxShadow: '0 16px 40px rgba(9, 21, 64, 0.6)',
               }
             }}
           >
@@ -117,7 +117,7 @@ const Register = () => {
             sx={{
               mb: 4,
               fontWeight: 700,
-              background: 'linear-gradient(90deg, #1976d2, #2196f3)',
+              background: 'linear-gradient(90deg, #091540, #3D518C)',
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -244,11 +244,11 @@ const Register = () => {
                 fontSize: '1.1rem',
                 fontWeight: 600,
                 textTransform: 'none',
-                background: 'linear-gradient(90deg, #1976d2, #2196f3)',
-                boxShadow: '0 4px 12px rgba(33,150,243,0.3)',
+                background: 'linear-gradient(90deg, #091540, #3D518C)',
+                boxShadow: '0 4px 12px rgba(9, 21, 64, 0.3)',
                 '&:hover': {
-                  background: 'linear-gradient(90deg, #1565c0, #1976d2)',
-                  boxShadow: '0 6px 16px rgba(33,150,243,0.4)',
+                  background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                  boxShadow: '0 6px 16px rgba(9, 21, 64, 0.4)',
                   transform: 'translateY(-2px)'
                 },
                 transition: 'all 0.3s ease'
@@ -263,13 +263,13 @@ const Register = () => {
                   variant="body2"
                   onClick={() => navigate('/signin')}
                   sx={{
-                    color: 'primary.main',
+                    color: '#3D518C',
                     textDecoration: 'none',
                     border: 'none',
                     background: 'none',
                     transition: 'all 0.3s ease',
                     '&:hover': {
-                      color: '#1565c0',
+                      color: '#1B2CC1',
                       transform: 'translateX(4px)',
                       display: 'inline-block'
                     }

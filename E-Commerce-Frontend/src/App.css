@@ -3,7 +3,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #ABD2FA 0%, #7692FF 100%);
   background-attachment: fixed;
 }
 
@@ -18,6 +18,9 @@ body {
 
 .app-container {
   min-height: calc(100vh - 64px);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
 }
 
 .logo {
@@ -27,10 +30,10 @@ body {
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #3D518C);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #1B2CC1);
 }
 
 @keyframes logo-spin {
@@ -50,8 +53,42 @@ body {
 
 .card {
   padding: 2em;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 32px rgba(9, 21, 64, 0.1);
 }
 
 .read-the-docs {
-  color: #888;
+  color: #3D518C;
+}
+
+a {
+  font-weight: 500;
+  color: #3D518C;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #1B2CC1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #091540;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #7692FF;
 }

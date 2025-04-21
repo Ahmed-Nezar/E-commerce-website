@@ -13,10 +13,10 @@ const Navbar = () => {
         <AppBar
             position="fixed"
             sx={{
-                background: 'rgba(255, 255, 255, 0.8)',
+                background: 'rgba(171, 210, 250, 0.8)', // ABD2FA with opacity
                 backdropFilter: 'blur(10px)',
-                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 4px 30px rgba(9, 21, 64, 0.1)', // 091540 with opacity
+                borderBottom: '1px solid rgba(171, 210, 250, 0.3)',
             }}
         >
             <Container maxWidth="xl">
@@ -28,7 +28,7 @@ const Navbar = () => {
                         sx={{
                             cursor: 'pointer',
                             fontWeight: 700,
-                            background: 'linear-gradient(90deg, #1976d2, #2196f3)',
+                            background: 'linear-gradient(90deg, #091540, #3D518C)',
                             backgroundClip: 'text',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
@@ -41,7 +41,7 @@ const Navbar = () => {
                             transition: 'transform 0.3s ease'
                         }}
                     >
-                        <ShoppingBagIcon sx={{ color: '#1976d2' }} />
+                        <ShoppingBagIcon sx={{ color: '#3D518C' }} />
                         E-Commerce
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
@@ -68,14 +68,14 @@ const Navbar = () => {
                                     }
                                 }}
                             >
-                                <ShoppingCartIcon />
+                                <ShoppingCartIcon sx={{ color: '#3D518C' }} />
                             </Badge>
                         </IconButton>
                         <Button
                             variant="text"
                             onClick={() => navigate('/signin')}
                             sx={{
-                                color: '#1976d2',
+                                color: '#3D518C',
                                 fontWeight: 600,
                                 position: 'relative',
                                 overflow: 'hidden',
@@ -86,7 +86,7 @@ const Navbar = () => {
                                     left: 0,
                                     width: '100%',
                                     height: '2px',
-                                    backgroundColor: '#1976d2',
+                                    backgroundColor: '#3D518C',
                                     transform: 'scaleX(0)',
                                     transformOrigin: 'right',
                                     transition: 'transform 0.3s ease',
@@ -103,16 +103,16 @@ const Navbar = () => {
                             variant="contained"
                             onClick={() => navigate('/register')}
                             sx={{
-                                background: 'linear-gradient(90deg, #1976d2, #2196f3)',
+                                background: 'linear-gradient(90deg, #091540, #3D518C)',
                                 borderRadius: '50px',
                                 px: 3,
                                 fontWeight: 600,
                                 textTransform: 'none',
-                                boxShadow: '0 4px 15px rgba(33, 150, 243, 0.3)',
+                                boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
                                 '&:hover': {
-                                    background: 'linear-gradient(90deg, #1565c0, #1976d2)',
+                                    background: 'linear-gradient(90deg, #091540, #1B2CC1)',
                                     transform: 'translateY(-2px)',
-                                    boxShadow: '0 6px 20px rgba(33, 150, 243, 0.4)',
+                                    boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
                                 },
                                 transition: 'all 0.3s ease',
                             }}

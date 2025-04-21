@@ -307,7 +307,7 @@ const Home = () => {
             sx={{
               mb: 6,
               fontWeight: 700,
-              background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+              background: 'linear-gradient(45deg, #091540, #3D518C)',
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -317,7 +317,7 @@ const Home = () => {
           </Typography>
           <Grid container spacing={2} justifyContent="center" sx={{ 
             flexWrap: 'nowrap', 
-            overflowX: 'hidden', // Changed from 'auto' to 'hidden'
+            overflowX: 'hidden',
             pb: 2,
             position: 'relative',
             '&::after': {
@@ -327,7 +327,7 @@ const Home = () => {
               left: 0,
               width: '100%',
               height: '100%',
-              background: 'linear-gradient(90deg, rgba(255,255,255,0.15) 0%, transparent 5%, transparent 95%, rgba(255,255,255,0.15) 100%)',
+              background: 'linear-gradient(90deg, rgba(171, 210, 250, 0.15) 0%, transparent 5%, transparent 95%, rgba(171, 210, 250, 0.15) 100%)',
               pointerEvents: 'none',
               zIndex: 1,
             },
@@ -386,7 +386,7 @@ const Home = () => {
                       className="category-icon"
                       sx={{
                         transition: 'all 0.3s ease',
-                        color: '#666',
+                        color: '#3D518C',
                       }}
                     >
                       {category.icon}
@@ -445,13 +445,13 @@ const Home = () => {
                 sx={{
                   mb: 2,
                   fontWeight: 800,
-                  background: 'linear-gradient(-45deg, #1976d2, #2196f3, #0d47a1, #42a5f5)',
+                  background: 'linear-gradient(-45deg, #091540, #3D518C, #1B2CC1, #7692FF)',
                   backgroundSize: '300% 300%',
                   backgroundClip: 'text',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   animation: 'gradient 8s ease infinite',
-                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
+                  filter: 'drop-shadow(0 2px 4px rgba(9, 21, 64, 0.1))',
                   '@keyframes gradient': {
                     '0%': { backgroundPosition: '0% 50%' },
                     '50%': { backgroundPosition: '100% 50%' },
@@ -564,7 +564,7 @@ const Home = () => {
                                 left: 0,
                                 right: 0,
                                 bottom: 0,
-                                background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
+                                background: 'linear-gradient(to top, rgba(9, 21, 64, 0.8) 0%, rgba(9, 21, 64, 0.2) 50%, transparent 100%)',
                                 opacity: 0,
                                 transition: 'opacity 0.4s ease',
                                 display: 'flex',
@@ -613,14 +613,14 @@ const Home = () => {
                             >
                               <Box
                                 sx={{
-                                  background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                                  background: 'linear-gradient(45deg, #091540, #3D518C)',
                                   color: 'white',
                                   px: 2,
                                   py: 0.75,
                                   borderRadius: '12px',
                                   fontWeight: 600,
                                   fontSize: '0.75rem',
-                                  boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
+                                  boxShadow: '0 4px 12px rgba(9, 21, 64, 0.3)',
                                   display: 'flex',
                                   alignItems: 'center',
                                   gap: 0.5,
@@ -672,7 +672,7 @@ const Home = () => {
                                   mb: 1,
                                   fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem' },
                                   background: hoveredProduct === product.id 
-                                    ? 'linear-gradient(45deg, #1976d2, #2196f3)' 
+                                    ? 'linear-gradient(45deg, #091540, #3D518C)' 
                                     : 'none',
                                   backgroundClip: 'text',
                                   WebkitBackgroundClip: 'text',
@@ -732,7 +732,7 @@ const Home = () => {
                               <Box
                                 className="price-tag"
                                 sx={{
-                                  background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                                  background: 'linear-gradient(45deg, #091540, #3D518C)',
                                   color: 'white',
                                   py: 1,
                                   px: 2,
@@ -763,16 +763,16 @@ const Home = () => {
                                   py: 1,
                                   background: addedItems[product.id]
                                     ? 'linear-gradient(45deg, #2e7d32, #4caf50)'
-                                    : 'linear-gradient(45deg, #1976d2, #2196f3)',
-                                  boxShadow: '0 4px 15px rgba(25, 118, 210, 0.3)',
+                                    : 'linear-gradient(45deg, #091540, #3D518C)',
+                                  boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
                                   textTransform: 'none',
                                   fontWeight: 600,
                                   '&:hover': {
                                     background: addedItems[product.id]
                                       ? 'linear-gradient(45deg, #1b5e20, #2e7d32)'
-                                      : 'linear-gradient(45deg, #1565c0, #1976d2)',
+                                      : 'linear-gradient(45deg, #091540, #1B2CC1)',
                                     transform: 'translateY(-2px)',
-                                    boxShadow: '0 6px 20px rgba(25, 118, 210, 0.4)',
+                                    boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
                                   },
                                   transition: 'all 0.3s ease',
                                 }}

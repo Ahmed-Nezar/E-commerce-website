@@ -93,14 +93,14 @@ const Cart = () => {
               }
             }}
           >
-            <ShoppingCartIcon sx={{ fontSize: 40, color: '#1976d2' }} />
+            <ShoppingCartIcon sx={{ fontSize: 40, color: '#3D518C' }} />
           </Badge>
           <Typography
             variant="h3"
             component="h1"
             sx={{
               fontWeight: 700,
-              background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+              background: 'linear-gradient(45deg, #091540, #3D518C)',
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -153,7 +153,7 @@ const Cart = () => {
                     color="text.secondary" 
                     sx={{
                       fontWeight: 600,
-                      background: 'linear-gradient(45deg, #9e9e9e, #757575)',
+                      background: 'linear-gradient(45deg, #091540, #3D518C)',
                       backgroundClip: 'text',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
@@ -175,12 +175,12 @@ const Cart = () => {
                       px: 4,
                       py: 1.5,
                       borderRadius: 2,
-                      background: 'linear-gradient(45deg, #1976d2, #2196f3)',
-                      boxShadow: '0 4px 15px rgba(33, 150, 243, 0.3)',
+                      background: 'linear-gradient(45deg, #091540, #3D518C)',
+                      boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
                       '&:hover': {
-                        background: 'linear-gradient(45deg, #1565c0, #1976d2)',
+                        background: 'linear-gradient(45deg, #091540, #1B2CC1)',
                         transform: 'translateY(-2px)',
-                        boxShadow: '0 6px 20px rgba(33, 150, 243, 0.4)',
+                        boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
                       },
                       transition: 'all 0.3s ease'
                     }}
@@ -236,10 +236,9 @@ const Cart = () => {
                           <Typography
                             variant="h5"
                             sx={{
-                              color: '#1976d2',
                               fontWeight: '700',
                               mt: 1,
-                              background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                              background: 'linear-gradient(45deg, #091540, #3D518C)',
                               backgroundClip: 'text',
                               WebkitBackgroundClip: 'text',
                               WebkitTextFillColor: 'transparent',
@@ -256,9 +255,9 @@ const Cart = () => {
                           <IconButton
                             onClick={() => handleUpdateQuantity(item.id, -1)}
                             sx={{
-                              bgcolor: 'rgba(25, 118, 210, 0.1)',
+                              bgcolor: 'rgba(9, 21, 64, 0.1)',
                               '&:hover': {
-                                bgcolor: 'rgba(25, 118, 210, 0.2)',
+                                bgcolor: 'rgba(9, 21, 64, 0.2)',
                               },
                             }}
                           >
@@ -281,9 +280,9 @@ const Cart = () => {
                           <IconButton
                             onClick={() => handleUpdateQuantity(item.id, 1)}
                             sx={{
-                              bgcolor: 'rgba(25, 118, 210, 0.1)',
+                              bgcolor: 'rgba(9, 21, 64, 0.1)',
                               '&:hover': {
-                                bgcolor: 'rgba(25, 118, 210, 0.2)',
+                                bgcolor: 'rgba(9, 21, 64, 0.2)',
                               },
                             }}
                           >
@@ -349,7 +348,7 @@ const Cart = () => {
                       variant="h5"
                       sx={{
                         fontWeight: 700,
-                        background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                        background: 'linear-gradient(45deg, #091540, #3D518C)',
                         backgroundClip: 'text',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
@@ -373,12 +372,12 @@ const Cart = () => {
                     textTransform: 'none',
                     background: cartItems.length === 0 
                       ? 'rgba(0, 0, 0, 0.12)'
-                      : 'linear-gradient(45deg, #1976d2, #2196f3)',
-                    boxShadow: '0 4px 15px rgba(33, 150, 243, 0.3)',
+                      : 'linear-gradient(45deg, #091540, #3D518C)',
+                    boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
                     '&:hover': {
-                      background: 'linear-gradient(45deg, #1565c0, #1976d2)',
+                      background: 'linear-gradient(45deg, #091540, #1B2CC1)',
                       transform: 'translateY(-2px)',
-                      boxShadow: '0 6px 20px rgba(33, 150, 243, 0.4)',
+                      boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
                     },
                     transition: 'all 0.3s ease'
                   }}

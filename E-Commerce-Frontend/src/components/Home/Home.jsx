@@ -486,7 +486,11 @@ const Home = () => {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <Grid container spacing={6}>
+              <Grid container spacing={6} justifyContent="center" alignItems="center" sx={{ 
+                display: 'flex',
+                flexWrap: 'wrap',
+                margin: '0 auto'
+              }}>
                 {newReleases.map((product, index) => (
                   <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
                     <motion.div 

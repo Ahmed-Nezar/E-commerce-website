@@ -1,10 +1,13 @@
-import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, Container, Badge, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import "./Navbar.css";
 
 const Navbar = () => {
     const navigate = useNavigate();
+    // This will be replaced with actual cart state management later
+    const cartItemCount = 2;
 
     return (
         <AppBar
@@ -38,10 +41,24 @@ const Navbar = () => {
                             transition: 'transform 0.3s ease'
                         }}
                     >
-                        <ShoppingCartIcon sx={{ color: '#1976d2' }} />
+                        <ShoppingBagIcon sx={{ color: '#1976d2' }} />
                         E-Commerce
                     </Typography>
-                    <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                        <IconButton
+                            color="primary"
+                            onClick={() => navigate('/cart')}
+                            sx={{
+                                transition: 'transform 0.2s ease',
+                                '&:hover': {
+                                    transform: 'scale(1.1)',
+                                }
+                            }}
+                        >
+                            <Badge badgeContent={cartItemCount} color="error">
+                                <ShoppingCartIcon />
+                            </Badge>
+                        </IconButton>
                         <Button
                             variant="text"
                             onClick={() => navigate('/signin')}

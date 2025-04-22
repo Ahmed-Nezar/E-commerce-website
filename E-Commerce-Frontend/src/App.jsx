@@ -9,6 +9,7 @@ import ForgotPassword from './components/Auth/ForgotPassword.jsx'
 import Cart from './components/Cart/Cart.jsx'
 import Home from './components/Home/Home.jsx'
 import { CartProvider } from './context/CartContext.jsx'
+import Products from "./components/Products/Products.jsx";
 
 function App() {
     const navbarRef = useRef(null);
@@ -31,6 +32,7 @@ function App() {
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/forgot-password" element={<ForgotPassword/>}/>
                         <Route path="/cart" element={<Cart/>}/>
+                        <Route path="/products" element={<Products/>}/>
                     </Routes>
                 </div>
                 <Footer/>

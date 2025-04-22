@@ -9,6 +9,7 @@ import ForgotPassword from './components/Auth/ForgotPassword.jsx'
 import Cart from './components/Cart/Cart.jsx'
 import Home from './components/Home/Home.jsx'
 import { CartProvider } from './context/CartContext.jsx'
+const ENV = import.meta.env;
 import Products from "./components/Products/Products.jsx";
 
 function App() {

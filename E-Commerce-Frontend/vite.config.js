@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path          from 'path';
 
-// https://vite.dev/config/
 export default defineConfig({
+  // Point Vite at the monorepo root
+  envDir: path.resolve(__dirname, '../'),
   plugins: [react()],
-})
+  // …other config
+});

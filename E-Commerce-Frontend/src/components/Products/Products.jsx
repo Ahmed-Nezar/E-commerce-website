@@ -5,6 +5,7 @@ import {useState} from "react";
 import {Grid} from "@mui/material";
 import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
+import "../Products/Products.css";
 
 
 const Products = () => {
@@ -106,10 +107,10 @@ const Products = () => {
         <>
             <div className="w-full">
                 {/* Top Banner Image */}
-                <div className="w-full h-64 bg-cover bg-center" style={{ backgroundImage: `url('/images/products/RTX_4090.jpg')` }}></div>
+                <div className="d-grid align-content-center headerBG"><h1 className="text-white ">GPU</h1></div>
 
                 {/* Breadcrumbs */}
-                <div className="px-6 py-4">
+                <div className="px-6 py-4 mx-lg-4">
                     <CustomBreadcrumbs locations={[
                         {
                             route: 'products',
@@ -119,34 +120,28 @@ const Products = () => {
                 </div>
 
                 {/* Filters and Products Grid */}
-                <div className="grid grid-cols-12 gap-6 px-6">
+                <div className="d-grid mx-5 gap-6 body">
+
                     {/* Filters Sidebar */}
-                    <div className="col-span-3">
+                    <div className="col-lg-12 col-md-6 col-lg-4 mt-3">
                         <div className="font-semibold text-lg mb-4">Filter</div>
                         {/* Add your filters here */}
                     </div>
 
                     {/* Products Section */}
-                    <div className="col-span-9">
+                    <div className="col-lg-12 col-lg-8 mt-3">
                         {/* Sort Control */}
-                        <div className="flex justify-between items-center mb-4">
-                            {/*<select*/}
-                            {/*    className="border border-gray-300 rounded px-4 py-2"*/}
-                            {/*>*/}
-                            {/*    <option value="default">Sort By: Default</option>*/}
-                            {/*    <option value="price-low-high">Price: Low to High</option>*/}
-                            {/*    <option value="price-high-low">Price: High to Low</option>*/}
-                            {/*</select>*/}
+                        <div className="d-flex mb-5 me-4 justify-content-end">
                             <SelectComp/>
                         </div>
 
                         {/* Products Grid */}
-                        <div className="grid grid-cols-3 gap-4">
-                            <Grid container spacing={6} justifyContent="center" alignItems="center" sx={{
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                margin: '0 auto'
-                            }}>
+                        <div className="d-grid gap-4 px-3 products-view justify-content-center">
+                            {/*<Grid container spacing={6} justifyContent="center" alignItems="center" sx={{*/}
+                            {/*    display: 'flex',*/}
+                            {/*    flexWrap: 'wrap',*/}
+                            {/*    margin: '0 auto'*/}
+                            {/*}}>*/}
                                 {products.map((product, index) => (
                                     <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
                                         <motion.div
@@ -173,7 +168,7 @@ const Products = () => {
                                         </motion.div>
                                     </Grid>
                                 ))}
-                            </Grid>
+                            {/*</Grid>*/}
                         </div>
                     </div>
                 </div>

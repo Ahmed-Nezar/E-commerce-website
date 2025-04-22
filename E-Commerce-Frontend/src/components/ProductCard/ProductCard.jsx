@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Box,
     Button,
@@ -14,13 +14,11 @@ import { useTheme } from '@mui/material/styles';
 
 const ProductCard = ({
                          product,
-                         hoveredProduct,
-                         setHoveredProduct,
                          handleAddToCart,
                          addedItems
                      }) => {
     const theme = useTheme();
-
+    const [hoveredProduct, setHoveredProduct] = useState(null);
     return (
         <Card
             onMouseEnter={() => setHoveredProduct(product.id)}

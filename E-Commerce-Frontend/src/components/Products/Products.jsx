@@ -166,8 +166,6 @@ const Products = () => {
                                             >
                                                 <ProductCard
                                                     product={product}
-                                                    hoveredProduct={product.id}
-                                                    setHoveredProduct={product.id}
                                                     handleAddToCart={product.id}
                                                     addedItems={product.id}
                                                 />

@@ -26,7 +26,6 @@ const Home = () => {
   const theme = useTheme();
   const { addToCart } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [hoveredProduct, setHoveredProduct] = useState(null);
 
   const carouselItems = [
     {
@@ -501,8 +500,6 @@ const Home = () => {
                       >
                         <ProductCard
                             product={product}
-                            hoveredProduct={product.id}
-                            setHoveredProduct={product.id}
                             handleAddToCart={product.id}
                             addedItems={product.id}
                         />

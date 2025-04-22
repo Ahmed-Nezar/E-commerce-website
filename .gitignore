@@ -2,3 +2,5 @@
 /.vite/
 /E-Commerce-Backend/.idea/
 /E-Commerce-Frontend/.idea/
+/E-Commerce-Backend/node_modules/
+/E-Commerce-Frontend/node_modules/

@@ -193,20 +193,21 @@ const Home = () => {
       <Box sx={{ minHeight: '100vh' }}>
         {/* PC Parts Carousel */}
         <Box sx={{ position: 'relative', mb: 8, height: '70vh', overflow: 'hidden' }}>
-          {carouselItems.map((item, index) => (
-            <Box
-              key={index}
-              sx={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                opacity: currentSlide === index ? 1 : 0,
-                transition: 'opacity 0.5s ease-in-out',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
+          {
+            carouselItems.map((item, index) => (
+              <Box
+                  key={index}
+                  sx={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    opacity: currentSlide === index ? 1 : 0,
+                    transition: 'opacity 0.5s ease-in-out',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+              >
               <Box
                 sx={{
                   position: 'absolute',

@@ -1,14 +1,16 @@
 const express = require('express');
+const { connectDB } = require('./config/db');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
+const path = require('path');
 
-dotenv.config();
-connectDB();
+// Load .env from one directory up
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+connectDB().catch(e => console.error(e));
 
 const app = express();
 app.use(express.json()); // for JSON payloads

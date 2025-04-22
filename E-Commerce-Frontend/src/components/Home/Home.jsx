@@ -1,19 +1,9 @@
 import { useState, useEffect } from 'react';
 import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  IconButton,
-  Paper,
-  Fade,
-  useTheme,
-  Stack,
-  Rating,
+  Box, Container, Typography,
+  Button, Grid, Card, CardContent,
+  CardMedia, IconButton, Paper,
+  Fade, useTheme, Stack, Rating,
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';

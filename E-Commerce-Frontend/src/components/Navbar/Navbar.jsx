@@ -5,7 +5,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { useCart } from '../../context/CartContext';
 import "./Navbar.css";
 
-const Navbar = () => {
+const Navbar = ({reference}) => {
     const navigate = useNavigate();
     const { cartCount } = useCart();
 
@@ -18,6 +18,7 @@ const Navbar = () => {
                 boxShadow: '0 4px 30px rgba(9, 21, 64, 0.1)', // 091540 with opacity
                 borderBottom: '1px solid rgba(171, 210, 250, 0.3)',
             }}
+            ref={reference}
         >
             <Container maxWidth="xl">
                 <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>

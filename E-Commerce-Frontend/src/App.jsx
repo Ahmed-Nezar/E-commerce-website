@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Footer from './components/Footer/Footer.jsx'
@@ -11,18 +11,29 @@ import Home from './components/Home/Home.jsx'
 import { CartProvider } from './context/CartContext.jsx'
 
 function App() {
+    const navbarRef = useRef(null);
+    const [offsetTop, setOffsetTop] = useState(0);
+
+    useEffect(() => {
+        if (navbarRef.current) {
+            setOffsetTop(navbarRef.current.offsetHeight);
+        }
+    }, []);
+
     return (
         <CartProvider>
             <Router>
-                <Navbar />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/signin" element={<SignIn />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/cart" element={<Cart />} />
-                </Routes>
-                <Footer />
+                <Navbar reference={navbarRef}/>
+                <div style={{ paddingTop: offsetTop }}>
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/signin" element={<SignIn/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                        <Route path="/cart" element={<Cart/>}/>
+                    </Routes>
+                </div>
+                <Footer/>
             </Router>
         </CartProvider>
     )

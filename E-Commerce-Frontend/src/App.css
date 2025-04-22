@@ -10,9 +10,8 @@ body {
 #root {
   width: 100%;
   margin: 0 auto;
-  padding-top: 64px; /* Space for fixed navbar */
   max-width: 1280px;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 

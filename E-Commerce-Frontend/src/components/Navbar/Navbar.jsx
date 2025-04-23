@@ -20,8 +20,8 @@ const Navbar = ({reference}) => {
             }}
             ref={reference}
         >
-            <Container maxWidth="xl">
-                <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
+            <Container maxWidth="xl" className="h-100">
+                <Toolbar sx={{ justifyContent: 'space-between', py: 1, height: "100%" }}>
                     <Typography
                         variant="h5"
                         component="div"

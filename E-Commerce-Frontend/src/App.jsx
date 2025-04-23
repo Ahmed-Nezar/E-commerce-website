@@ -25,7 +25,7 @@ function App() {
         <CartProvider>
             <Router>
                 <Navbar reference={navbarRef}/>
-                <div style={{ paddingTop: offsetTop }}>
+                <div className="position-relative" style={{ top: offsetTop }}>
                     <Routes>
                         <Route path="/" element={<Home/>}/>
                         <Route path="/signin" element={<SignIn/>}/>

@@ -16,19 +16,46 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    profilePic: ''
   });
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
-    // TODO: Implement registration logic
+    
+    if (formData.password !== formData.confirmPassword) {
+      // TODO: Show error message
+      return;
+    }
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          profilePic: formData.profilePic
+        }),
+      });
+
+      if (response.ok) {
+        navigate('/signin');
+      } else {
+        // TODO: Show error message
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      // TODO: Show error message
+    }
   };
 
   const handleChange = (event) => {
@@ -129,36 +156,16 @@ const Register = () => {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%', maxWidth: '800px' }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Full Name"
+                  name="name"
+                  autoComplete="name"
                   autoFocus
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: 2,
-                      '&:hover fieldset': {
-                        borderColor: 'primary.main',
-                      },
-                    },
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={formData.lastName}
+                  value={formData.name}
                   onChange={handleChange}
                   sx={{
                     '& .MuiOutlinedInput-root': {

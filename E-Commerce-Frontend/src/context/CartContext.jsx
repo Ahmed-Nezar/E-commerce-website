@@ -12,27 +12,40 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [shippingAddress, setShippingAddress] = useState({
+    address: '',
+    city: '',
+    postalCode: '',
+    country: ''
+  });
+  const [paymentMethod, setPaymentMethod] = useState('');
 
-  const addToCart = (item) => {
+  const addToCart = (product) => {
     setCartItems(prev => {
-      const existingItem = prev.find(i => i.id === item.id);
+      const existingItem = prev.find(i => i.product === product._id);
       if (existingItem) {
         return prev.map(i =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.product === product._id ? { ...i, quantity: i.quantity + 1 } : i
         );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { 
+        product: product._id,
+        quantity: 1,
+        price: product.price,
+        name: product.name,
+        image: product.image
+      }];
     });
   };
 
-  const removeFromCart = (itemId) => {
-    setCartItems(prev => prev.filter(item => item.id !== itemId));
+  const removeFromCart = (productId) => {
+    setCartItems(prev => prev.filter(item => item.product !== productId));
   };
 
-  const updateQuantity = (itemId, change) => {
+  const updateQuantity = (productId, change) => {
     setCartItems(prev =>
       prev.map(item =>
-        item.id === itemId
+        item.product === productId
           ? { ...item, quantity: Math.max(1, item.quantity + change) }
           : item
       )
@@ -41,10 +54,21 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCartItems([]);
+    setShippingAddress({
+      address: '',
+      city: '',
+      postalCode: '',
+      country: ''
+    });
+    setPaymentMethod('');
   };
 
   const value = {
     cartItems,
+    shippingAddress,
+    setShippingAddress,
+    paymentMethod,
+    setPaymentMethod,
     addToCart,
     removeFromCart,
     updateQuantity,

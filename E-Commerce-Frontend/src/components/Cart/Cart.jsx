@@ -1,22 +1,8 @@
 import { useState } from 'react';
 import {
-  Container,
-  Typography,
-  Box,
-  Paper,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  IconButton,
-  Button,
-  Divider,
-  TextField,
-  Fade,
-  Slide,
-  Badge,
-  useTheme,
-  Zoom,
+  Container, Typography, Box, Paper, Grid, Card, 
+  CardContent, IconButton, Button, Divider, TextField,
+  Fade, Slide, Badge, useTheme, Zoom, Stack
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -31,20 +17,47 @@ const Cart = () => {
   const [showAddedAnimation, setShowAddedAnimation] = useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
-  const { cartItems, removeFromCart, updateQuantity, total, cartCount } = useCart();
+  const { 
+    cartItems, 
+    removeFromCart, 
+    updateQuantity, 
+    total, 
+    cartCount,
+    shippingAddress,
+    setShippingAddress,
+    paymentMethod,
+    setPaymentMethod
+  } = useCart();
 
-  const handleUpdateQuantity = (id, change) => {
-    updateQuantity(id, change);
+  const handleUpdateQuantity = (productId, change) => {
+    updateQuantity(productId, change);
     setShowAddedAnimation(true);
     setTimeout(() => setShowAddedAnimation(false), 1500);
   };
 
-  const handleRemoveItem = (id) => {
-    setRemovedItemId(id);
+  const handleRemoveItem = (productId) => {
+    setRemovedItemId(productId);
     setTimeout(() => {
-      removeFromCart(id);
+      removeFromCart(productId);
       setRemovedItemId(null);
     }, 300);
+  };
+
+  const handleCheckout = () => {
+    // Prepare order data based on schema
+    const orderData = {
+      orderItems: cartItems.map(item => ({
+        product: item.product,
+        quantity: item.quantity,
+        price: item.price
+      })),
+      shippingAddress,
+      paymentMethod,
+      totalPrice: total
+    };
+    
+    console.log('Processing order:', orderData);
+    // TODO: Implement checkout logic with backend
   };
 
   return (
@@ -192,9 +205,9 @@ const Cart = () => {
                 cartItems.map((item) => (
                   <Slide
                     direction="right"
-                    in={removedItemId !== item.id}
+                    in={removedItemId !== item.product}
                     timeout={300}
-                    key={item.id}
+                    key={item.product}
                   >
                     <Card
                       sx={{
@@ -229,15 +242,14 @@ const Cart = () => {
                         alignItems: 'center',
                         p: 3
                       }}>
-                        <Box>
-                          <Typography variant="h5" component="div" fontWeight="600" gutterBottom>
+                        <Stack spacing={1}>
+                          <Typography variant="h5" component="div" fontWeight="600">
                             {item.name}
                           </Typography>
                           <Typography
                             variant="h5"
                             sx={{
                               fontWeight: '700',
-                              mt: 1,
                               background: 'linear-gradient(45deg, #091540, #3D518C)',
                               backgroundClip: 'text',
                               WebkitBackgroundClip: 'text',
@@ -246,14 +258,17 @@ const Cart = () => {
                           >
                             ${item.price.toFixed(2)}
                           </Typography>
-                        </Box>
+                          <Typography variant="body2" color="text.secondary">
+                            Subtotal: ${(item.price * item.quantity).toFixed(2)}
+                          </Typography>
+                        </Stack>
                         <Box sx={{
                           display: 'flex',
                           alignItems: 'center',
                           gap: 1
                         }}>
                           <IconButton
-                            onClick={() => handleUpdateQuantity(item.id, -1)}
+                            onClick={() => handleUpdateQuantity(item.product, -1)}
                             sx={{
                               bgcolor: 'rgba(9, 21, 64, 0.1)',
                               '&:hover': {
@@ -278,7 +293,7 @@ const Cart = () => {
                             }}
                           />
                           <IconButton
-                            onClick={() => handleUpdateQuantity(item.id, 1)}
+                            onClick={() => handleUpdateQuantity(item.product, 1)}
                             sx={{
                               bgcolor: 'rgba(9, 21, 64, 0.1)',
                               '&:hover': {
@@ -289,7 +304,7 @@ const Cart = () => {
                             <AddIcon />
                           </IconButton>
                           <IconButton
-                            onClick={() => handleRemoveItem(item.id)}
+                            onClick={() => handleRemoveItem(item.product)}
                             sx={{
                               ml: 2,
                               color: '#d32f2f',
@@ -363,6 +378,7 @@ const Cart = () => {
                   fullWidth
                   size="large"
                   disabled={cartItems.length === 0}
+                  onClick={handleCheckout}
                   sx={{
                     mt: 2,
                     py: 2,

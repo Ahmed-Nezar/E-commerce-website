@@ -12,7 +12,8 @@ import {
   Typography,
   Container,
   Paper,
-  Fade
+  Fade,
+  Alert
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
@@ -23,11 +24,41 @@ const SignIn = () => {
     password: '',
     rememberMe: false
   });
+  const [error, setError] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
-    // TODO: Implement sign in logic
+    setError('');
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store token and user data
+        if (formData.rememberMe) {
+          localStorage.setItem('token', data.token);
+        } else {
+          sessionStorage.setItem('token', data.token);
+        }
+        navigate('/');
+      } else {
+        setError(data.message || 'Login failed. Please check your credentials.');
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again later.');
+      console.error('Login error:', error);
+    }
   };
 
   const handleChange = (event) => {
@@ -126,6 +157,20 @@ const SignIn = () => {
           >
             Welcome Back
           </Typography>
+
+          {error && (
+            <Alert 
+              severity="error" 
+              sx={{ 
+                width: '100%', 
+                mb: 3,
+                borderRadius: 2
+              }}
+            >
+              {error}
+            </Alert>
+          )}
+
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%', maxWidth: '800px' }}>
             <TextField
               margin="normal"

@@ -17,17 +17,35 @@ async function connectDB() {
 // Define Schema and Model for the database
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
+    gender:     {
+        type: String,
+        required: true,
+        enum: ['Male', 'Female'],
+    },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     profilePic: { type: String, default: '' },
     isAdmin: { type: Boolean, default: false }
 }, { timestamps: true });
-// Encrypt password before saving
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 10);
+
+// Hash password and set a random avatar before saving
+userSchema.pre('save', async function(next) {
+    // 1) Hash password if modified
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+
+    // 2) Only set profilePic if new user or gender changed or not provided
+    if (this.isNew || this.isModified('gender') || !this.profilePic) {
+        const [min, max] = this.gender === 'Male' ? [1, 50] : [51, 100];
+        const rand = Math.floor(Math.random() * (max - min + 1)) + min;
+        // depending on your static route, you might need “/avatar/” or omit it
+        this.profilePic = `${process.env.VITE_BACKEND_URL}/avatar}/${rand}`;
+    }
+
     next();
 });
+
 const User = mongoose.model('User', userSchema);
 
 const productSchema = new mongoose.Schema({
@@ -51,6 +69,7 @@ const reviewSchema = new mongoose.Schema({
 }, { timestamps: true });
 const Review = mongoose.model('Review', reviewSchema);
 
+// Item added to cart will have isPaid=false ELSE it will be true
 const orderSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     orderItems: [{

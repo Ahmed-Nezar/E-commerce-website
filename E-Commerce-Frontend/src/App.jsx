@@ -7,6 +7,7 @@ import SignIn from './components/Auth/SignIn.jsx'
 import Register from './components/Auth/Register.jsx'
 import ForgotPassword from './components/Auth/ForgotPassword.jsx'
 import Cart from './components/Cart/Cart.jsx'
+import Checkout from './components/checkout/Checkout.jsx'
 import Home from './components/Home/Home.jsx'
 import { CartProvider } from './context/CartContext.jsx'
 const ENV = import.meta.env;
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/forgot-password" element={<ForgotPassword/>}/>
                         <Route path="/cart" element={<Cart/>}/>
+                        <Route path="/checkout" element={<Checkout/>}/>
                     </Routes>
                 </div>
                 <Footer/>

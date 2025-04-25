@@ -6,7 +6,6 @@ import {
   Paper,
   Grid,
   Card,
-  CardMedia,
   CardContent,
   IconButton,
   Button,
@@ -33,18 +32,22 @@ const Cart = () => {
   const theme = useTheme();
   const { cartItems, removeFromCart, updateQuantity, total, cartCount } = useCart();
 
-  const handleUpdateQuantity = (id, change) => {
-    updateQuantity(id, change);
+  const handleUpdateQuantity = (productId, change) => {
+    updateQuantity(productId, change);
     setShowAddedAnimation(true);
     setTimeout(() => setShowAddedAnimation(false), 1500);
   };
 
-  const handleRemoveItem = (id) => {
-    setRemovedItemId(id);
+  const handleRemoveItem = (productId) => {
+    setRemovedItemId(productId);
     setTimeout(() => {
-      removeFromCart(id);
+      removeFromCart(productId);
       setRemovedItemId(null);
     }, 300);
+  };
+
+  const handleCheckout = () => {
+    navigate('/checkout');
   };
 
   return (
@@ -363,6 +366,7 @@ const Cart = () => {
                   fullWidth
                   size="large"
                   disabled={cartItems.length === 0}
+                  onClick={handleCheckout}
                   sx={{
                     mt: 2,
                     py: 2,

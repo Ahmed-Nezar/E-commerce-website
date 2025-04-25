@@ -12,6 +12,13 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [shippingAddress, setShippingAddress] = useState({
+    address: '',
+    city: '',
+    postalCode: '',
+    country: ''
+  });
+  const [paymentMethod, setPaymentMethod] = useState('Credit Card');
 
   const addToCart = (item) => {
     setCartItems(prev => {
@@ -50,7 +57,11 @@ export const CartProvider = ({ children }) => {
     updateQuantity,
     clearCart,
     cartCount: cartItems.length,
-    total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    shippingAddress,
+    setShippingAddress,
+    paymentMethod,
+    setPaymentMethod
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

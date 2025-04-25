@@ -52,7 +52,7 @@ app.use(
 //* Does not require login
     app.use('/api/auth', authRoutes);
 //* require login for all other routes
-    app.use('/api/users', verifyToken("admin"), userRoutes);
+    app.use('/api/users', verifyToken("user"), userRoutes);
     app.use('/api/products', verifyToken("user"), productRoutes);
     app.use('/api/orders', verifyToken("user"), orderRoutes);
     app.use('/api/reviews', verifyToken("user"), reviewRoutes);

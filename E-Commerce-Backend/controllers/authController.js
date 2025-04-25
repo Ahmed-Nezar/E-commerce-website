@@ -5,23 +5,67 @@ const { User } = require('../config/db');
 // Register a new user
 exports.register = async (req, res) => {
     try {
-        const { name, email, password, profilePic, isAdmin } = req.body;
+        const { name, email, gender, password, isAdmin } = req.body;
 
-        // Create a new user
-        const newUser = await User.create({
+        // 1) If they requested isAdmin=true, manually verify their token:
+        let adminFlag = false;
+        if (isAdmin) {
+            const authHeader = req.headers['authorization'];
+            if (!authHeader) {
+                return res
+                    .status(401)
+                    .json({ message: 'Admin token required to create admin users' });
+            }
+
+            let decoded;
+            try {
+                decoded = jwt.verify(authHeader, process.env.SECRET_KEY);
+            } catch (err) {
+                return res
+                    .status(401)
+                    .json({ message: 'Invalid or expired token' });
+            }
+
+            // 2) Ensure the token belongs to an existing admin:
+            if (!decoded.isAdmin) {
+                return res
+                    .status(403)
+                    .json({ message: 'Only admins can create other admins' });
+            }
+
+            adminFlag = true;
+        }
+
+        // Check if the user already exists
+        const userExist = await User.find({ email });
+        if (userExist.length > 0) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
+        // 3) Build the user object, only setting isAdmin if adminFlag==true
+        const newUser = new User({
             name,
             email,
-            password, 
-            profilePic,
-            isAdmin
+            password,
+            gender,
+            isAdmin: adminFlag
         });
+        await newUser.save();
 
         res.status(201).json({
             message: 'User registered successfully',
-            user: newUser,
+            user: {
+                id:         newUser._id,
+                name:       newUser.name,
+                email:      newUser.email,
+                gender:     newUser.gender,
+                isAdmin:    newUser.isAdmin,
+                profilePic: newUser.profilePic
+            }
         });
     } catch (error) {
-        res.status(500).json({ message: 'Error registering user', error });
+        console.error(error);
+        res.status(500).json({ message: 'Error registering user', error: error.message });
     }
 };
 

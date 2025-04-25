@@ -19,15 +19,15 @@ export default function BasicSelect() {
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
+                    label="Sort By"
                     value={sortVal}
                     onChange={handleChange}
                 >
-                    <MenuItem>Price: Low to High</MenuItem>
-                    <MenuItem>Price: High to Low</MenuItem>
-                    <MenuItem>Name: A - Z</MenuItem>
-                    <MenuItem>Name: Z - A</MenuItem>
-                    <MenuItem>Ratings: Highest</MenuItem>
-                    <MenuItem>Ratings: Lowest</MenuItem>
+                    <MenuItem value="highToLow">Price: High to Low</MenuItem>
+                    <MenuItem value="nameAsc">Name: A - Z</MenuItem>
+                    <MenuItem value="nameDesc">Name: Z - A</MenuItem>
+                    <MenuItem value="ratingHigh">Ratings: Highest</MenuItem>
+                    <MenuItem value="ratingLow">Ratings: Lowest</MenuItem>
                 </Select>
             </FormControl>
         </Box>

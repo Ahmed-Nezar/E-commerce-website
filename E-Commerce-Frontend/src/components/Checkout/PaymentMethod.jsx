@@ -101,9 +101,8 @@ const PaymentMethod = ({
                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                   <Typography sx={{ fontWeight: 500 }}>Credit Card</Typography>
                   <Box component="span" sx={{ ml: 'auto', display: 'flex', gap: 1 }}>
-                    <img src="https://cdn.visa.com/v2/assets/images/logos/visa/logo.png" alt="Visa" width="40" height="25" style={{ objectFit: 'contain' }} />
-                    <img src="https://www.mastercard.com/content/dam/public/brandcenter/assets/images/mastercard-logo-symbol.svg" alt="Mastercard" width="40" height="25" style={{ objectFit: 'contain' }} />
-                    <img src="https://www.americanexpress.com/content/dam/amex/us/merchant/supplies-uplift/Card-Art/images/AmericanExpress-Blue.png" alt="American Express" width="40" height="25" style={{ objectFit: 'contain' }} />
+                    <img src="/images/logos/visa.png" alt="Visa" width="40" height="25" style={{ objectFit: 'contain' }} />
+                    <img src="/images/logos/mastercard.png" alt="Mastercard" width="40" height="25" style={{ objectFit: 'contain' }} />
                   </Box>
                 </Box>
               }

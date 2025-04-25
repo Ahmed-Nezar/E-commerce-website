@@ -24,13 +24,26 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { Stack } from '@mui/system';
 
 const Cart = () => {
   const [removedItemId, setRemovedItemId] = useState(null);
   const [showAddedAnimation, setShowAddedAnimation] = useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
-  const { cartItems, removeFromCart, updateQuantity, total, cartCount } = useCart();
+  const { 
+    cartItems, 
+    addToCart,
+    removeFromCart, 
+    updateQuantity,
+    clearCart, 
+    total, 
+    cartCount,
+    shippingAddress,
+    setShippingAddress,
+    paymentMethod,
+    setPaymentMethod
+  } = useCart();
 
   const handleUpdateQuantity = (productId, change) => {
     updateQuantity(productId, change);
@@ -47,7 +60,21 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
+    // Prepare order data based on schema
+    const orderData = {
+      orderItems: cartItems.map(item => ({
+        product: item.product,
+        quantity: item.quantity,
+        price: item.price
+      })),
+      shippingAddress,
+      paymentMethod,
+      totalPrice: total
+    };
+    
+    console.log('Processing order:', orderData);
     navigate('/checkout');
+    // TODO: Implement checkout logic with backend
   };
 
   return (
@@ -195,9 +222,9 @@ const Cart = () => {
                 cartItems.map((item) => (
                   <Slide
                     direction="right"
-                    in={removedItemId !== item.id}
+                    in={removedItemId !== item.product}
                     timeout={300}
-                    key={item.id}
+                    key={item.product}
                   >
                     <Card
                       sx={{
@@ -232,15 +259,14 @@ const Cart = () => {
                         alignItems: 'center',
                         p: 3
                       }}>
-                        <Box>
-                          <Typography variant="h5" component="div" fontWeight="600" gutterBottom>
+                        <Stack spacing={1}>
+                          <Typography variant="h5" component="div" fontWeight="600">
                             {item.name}
                           </Typography>
                           <Typography
                             variant="h5"
                             sx={{
                               fontWeight: '700',
-                              mt: 1,
                               background: 'linear-gradient(45deg, #091540, #3D518C)',
                               backgroundClip: 'text',
                               WebkitBackgroundClip: 'text',
@@ -249,14 +275,17 @@ const Cart = () => {
                           >
                             ${item.price.toFixed(2)}
                           </Typography>
-                        </Box>
+                          <Typography variant="body2" color="text.secondary">
+                            Subtotal: ${(item.price * item.quantity).toFixed(2)}
+                          </Typography>
+                        </Stack>
                         <Box sx={{
                           display: 'flex',
                           alignItems: 'center',
                           gap: 1
                         }}>
                           <IconButton
-                            onClick={() => handleUpdateQuantity(item.id, -1)}
+                            onClick={() => handleUpdateQuantity(item.product, -1)}
                             sx={{
                               bgcolor: 'rgba(9, 21, 64, 0.1)',
                               '&:hover': {
@@ -281,7 +310,7 @@ const Cart = () => {
                             }}
                           />
                           <IconButton
-                            onClick={() => handleUpdateQuantity(item.id, 1)}
+                            onClick={() => handleUpdateQuantity(item.product, 1)}
                             sx={{
                               bgcolor: 'rgba(9, 21, 64, 0.1)',
                               '&:hover': {
@@ -292,7 +321,7 @@ const Cart = () => {
                             <AddIcon />
                           </IconButton>
                           <IconButton
-                            onClick={() => handleRemoveItem(item.id)}
+                            onClick={() => handleRemoveItem(item.product)}
                             sx={{
                               ml: 2,
                               color: '#d32f2f',

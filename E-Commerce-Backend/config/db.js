@@ -17,7 +17,7 @@ async function connectDB() {
 // Define Schema and Model for the database
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    gender:     {
+    gender: {
         type: String,
         required: true,
         enum: ['Male', 'Female'],
@@ -25,7 +25,11 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     profilePic: { type: String, default: '' },
-    isAdmin: { type: Boolean, default: false }
+    isAdmin: { type: Boolean, default: false },
+    wishList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+    }]
 }, { timestamps: true });
 
 // Hash password and set a random avatar before saving

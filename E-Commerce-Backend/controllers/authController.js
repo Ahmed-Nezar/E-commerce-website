@@ -75,7 +75,7 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
 
         // Find the user by email
-        const user = await User.findOne({ email });
+        let user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -85,11 +85,13 @@ exports.login = async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
+        // delete user.password;
+        user = user.toObject();
+        delete user.password; // Remove password from the user object
 
         // Generate a token
         const token = jwt.sign({
-            id: user._id,
-            isAdmin: user.isAdmin
+            ...user
         }, process.env.SECRET_KEY, {
             expiresIn: '1h',
         });

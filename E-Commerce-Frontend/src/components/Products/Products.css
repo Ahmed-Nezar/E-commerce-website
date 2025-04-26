@@ -1,13 +1,14 @@
 .headerBG{
-    background-image: url('public/images/products/RTX_4090.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    height: 300px;
+    height: 400px;
 }
 
 .body{
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 1.2fr 4fr;
+    background-color: white;
+    border-radius: 24px;
 }
 
 .products-view{

@@ -46,8 +46,7 @@ const ProductCard = ({
                         opacity: 1,
                     },
                     '& .price-tag': {
-                        transform: 'translateX(0)',
-                        opacity: 1,
+                        transform: 'translateX(0)'
                     }
                 },
             }}
@@ -230,7 +229,6 @@ const ProductCard = ({
                             px: 2,
                             borderRadius: '12px',
                             transform: 'translateX(-10px)',
-                            opacity: 0,
                             transition: 'all 0.3s ease',
                         }}
                     >

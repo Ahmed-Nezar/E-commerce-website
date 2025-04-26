@@ -34,7 +34,7 @@ const CustomBreadcrumbs = ({locations}) => {
 
     return (
         <div role="presentation">
-            <Breadcrumbs aria-label="breadcrumb">
+            <Breadcrumbs>
                 <StyledBreadcrumb
                     component= {NavLink}
                     to = "/"

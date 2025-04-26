@@ -33,7 +33,7 @@ function App() {
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/forgot-password" element={<ForgotPassword/>}/>
                         <Route path="/cart" element={<Cart/>}/>
-                        <Route path="/products" element={<Products/>}/>
+                        <Route path="/products/:cn" element={<Products/>}/>
                     </Routes>
                 </div>
                 <Footer/>

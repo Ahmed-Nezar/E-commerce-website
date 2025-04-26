@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
-  Box, Container, Typography,
-  Button, Grid, Card, CardContent,
-  CardMedia, IconButton, Paper,
-  Fade, useTheme, Stack, Rating,
+  Box, Container, Typography, Grid,IconButton, Paper,
+  Fade, useTheme,
 } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import MonitorIcon from '@mui/icons-material/Monitor';
@@ -21,11 +18,12 @@ import { useCart } from '../../context/CartContext';
 import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
 import ProductCard from "../ProductCard/ProductCard.jsx";
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-  const theme = useTheme();
   const { addToCart } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
   const carouselItems = [
     {
@@ -55,6 +53,7 @@ const Home = () => {
     { icon: <KeyboardIcon sx={{ fontSize: 40 }} />, name: 'Keyboards' },
     { icon: <MouseIcon sx={{ fontSize: 40 }} />, name: 'Mice' },
     { icon: <HeadphonesIcon sx={{ fontSize: 40 }} />, name: 'Headsets' },
+    { icon: <MemoryIcon sx={{ fontSize: 40 }} />, name: 'CPUs' },
   ];
 
   const [newReleases] = useState([
@@ -348,6 +347,7 @@ const Home = () => {
                     minWidth: 180,
                     flex: '0 0 auto',
                   }}
+                    onClick={() => navigate(`/products/${category.name.toLowerCase()}`, { state : { category: category.name } })}
                 >
                   <Paper
                     elevation={0}

@@ -1,21 +1,43 @@
-import { AppBar, Toolbar, Typography, Button, Box, Container, Badge, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, Container, Badge, IconButton, Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { useCart } from '../../context/CartContext';
+import { useState, useEffect } from 'react';
 import "./Navbar.css";
 
 const Navbar = ({reference}) => {
     const navigate = useNavigate();
     const { cartCount } = useCart();
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (token) {
+            try {
+                // Decode the JWT token
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                setUser(payload);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+        setUser(null);
+        navigate('/');
+    };
 
     return (
         <AppBar
             position="fixed"
             sx={{
-                background: 'rgba(171, 210, 250, 0.8)', // ABD2FA with opacity
+                background: 'rgba(171, 210, 250, 0.8)',
                 backdropFilter: 'blur(10px)',
-                boxShadow: '0 4px 30px rgba(9, 21, 64, 0.1)', // 091540 with opacity
+                boxShadow: '0 4px 30px rgba(9, 21, 64, 0.1)',
                 borderBottom: '1px solid rgba(171, 210, 250, 0.3)',
             }}
             ref={reference}
@@ -72,54 +94,88 @@ const Navbar = ({reference}) => {
                                 <ShoppingCartIcon sx={{ color: '#3D518C' }} />
                             </Badge>
                         </IconButton>
-                        <Button
-                            variant="text"
-                            onClick={() => navigate('/signin')}
-                            sx={{
-                                color: '#3D518C',
-                                fontWeight: 600,
-                                position: 'relative',
-                                overflow: 'hidden',
-                                '&::after': {
-                                    content: '""',
-                                    position: 'absolute',
-                                    bottom: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '2px',
-                                    backgroundColor: '#3D518C',
-                                    transform: 'scaleX(0)',
-                                    transformOrigin: 'right',
-                                    transition: 'transform 0.3s ease',
-                                },
-                                '&:hover::after': {
-                                    transform: 'scaleX(1)',
-                                    transformOrigin: 'left',
-                                },
-                            }}
-                        >
-                            Sign In
-                        </Button>
-                        <Button
-                            variant="contained"
-                            onClick={() => navigate('/register')}
-                            sx={{
-                                background: 'linear-gradient(90deg, #091540, #3D518C)',
-                                borderRadius: '50px',
-                                px: 3,
-                                fontWeight: 600,
-                                textTransform: 'none',
-                                boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
-                                '&:hover': {
-                                    background: 'linear-gradient(90deg, #091540, #1B2CC1)',
-                                    transform: 'translateY(-2px)',
-                                    boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
-                                },
-                                transition: 'all 0.3s ease',
-                            }}
-                        >
-                            Register
-                        </Button>
+                        
+                        {user ? (
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                <Typography
+                                    sx={{
+                                        color: '#3D518C',
+                                        fontWeight: 600,
+                                    }}
+                                >
+                                    {user.name}
+                                </Typography>
+                                <Button
+                                    variant="outlined"
+                                    onClick={handleLogout}
+                                    sx={{
+                                        color: '#3D518C',
+                                        borderColor: '#3D518C',
+                                        borderRadius: '50px',
+                                        px: 3,
+                                        fontWeight: 600,
+                                        '&:hover': {
+                                            borderColor: '#1B2CC1',
+                                            color: '#1B2CC1',
+                                            background: 'rgba(27, 44, 193, 0.04)',
+                                        }
+                                    }}
+                                >
+                                    Logout
+                                </Button>
+                            </Box>
+                        ) : (
+                            <>
+                                <Button
+                                    variant="text"
+                                    onClick={() => navigate('/signin')}
+                                    sx={{
+                                        color: '#3D518C',
+                                        fontWeight: 600,
+                                        position: 'relative',
+                                        overflow: 'hidden',
+                                        '&::after': {
+                                            content: '""',
+                                            position: 'absolute',
+                                            bottom: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '2px',
+                                            backgroundColor: '#3D518C',
+                                            transform: 'scaleX(0)',
+                                            transformOrigin: 'right',
+                                            transition: 'transform 0.3s ease',
+                                        },
+                                        '&:hover::after': {
+                                            transform: 'scaleX(1)',
+                                            transformOrigin: 'left',
+                                        },
+                                    }}
+                                >
+                                    Sign In
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => navigate('/register')}
+                                    sx={{
+                                        background: 'linear-gradient(90deg, #091540, #3D518C)',
+                                        borderRadius: '50px',
+                                        px: 3,
+                                        fontWeight: 600,
+                                        textTransform: 'none',
+                                        boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
+                                        '&:hover': {
+                                            background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                                            transform: 'translateY(-2px)',
+                                            boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
+                                        },
+                                        transition: 'all 0.3s ease',
+                                    }}
+                                >
+                                    Register
+                                </Button>
+                            </>
+                        )}
                     </Box>
                 </Toolbar>
             </Container>

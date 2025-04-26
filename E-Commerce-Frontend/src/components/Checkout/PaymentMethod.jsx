@@ -70,9 +70,36 @@ const PaymentMethod = ({
 
   return (
     <Box sx={{ mt: 4 }}>
-      {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+      {error && (
+        <Alert 
+          severity="error" 
+          sx={{ 
+            mb: 3,
+            borderRadius: 2,
+            animation: 'slideIn 0.3s ease-out',
+            '@keyframes slideIn': {
+              from: { transform: 'translateY(-20px)', opacity: 0 },
+              to: { transform: 'translateY(0)', opacity: 1 },
+            },
+          }}
+        >
+          {error}
+        </Alert>
+      )}
+      
       <FormControl component="fieldset" sx={{ width: '100%' }}>
-        <FormLabel component="legend" sx={{ mb: 2, fontWeight: 600, fontSize: '1.1rem' }}>
+        <FormLabel 
+          component="legend" 
+          sx={{ 
+            mb: 3,
+            fontWeight: 600,
+            fontSize: '1.2rem',
+            color: '#091540',
+            '&.Mui-focused': {
+              color: '#091540'
+            }
+          }}
+        >
           Select Payment Method
         </FormLabel>
         <RadioGroup
@@ -86,12 +113,18 @@ const PaymentMethod = ({
             elevation={0}
             sx={{
               mb: 2,
-              p: 2,
-              borderRadius: 2,
+              p: 3,
+              borderRadius: 3,
               border: '1px solid',
-              borderColor: paymentMethod === 'Credit Card' ? 'primary.main' : 'divider',
+              borderColor: paymentMethod === 'Credit Card' ? '#1B2CC1' : 'rgba(0, 0, 0, 0.1)',
+              background: paymentMethod === 'Credit Card' ? 'rgba(27, 44, 193, 0.02)' : 'transparent',
               transition: 'all 0.3s ease',
-              '&:hover': { borderColor: 'primary.main' },
+              transform: paymentMethod === 'Credit Card' ? 'scale(1.02)' : 'scale(1)',
+              '&:hover': { 
+                borderColor: '#1B2CC1',
+                transform: 'scale(1.02)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
+              },
             }}
           >
             <FormControlLabel
@@ -234,18 +267,24 @@ const PaymentMethod = ({
               </Box>
             </Collapse>
           </Paper>
-          
+
           {/* PayPal Option */}
           <Paper
             elevation={0}
             sx={{
               mb: 2,
-              p: 2,
-              borderRadius: 2,
+              p: 3,
+              borderRadius: 3,
               border: '1px solid',
-              borderColor: paymentMethod === 'PayPal' ? 'primary.main' : 'divider',
+              borderColor: paymentMethod === 'PayPal' ? '#1B2CC1' : 'rgba(0, 0, 0, 0.1)',
+              background: paymentMethod === 'PayPal' ? 'rgba(27, 44, 193, 0.02)' : 'transparent',
               transition: 'all 0.3s ease',
-              '&:hover': { borderColor: 'primary.main' },
+              transform: paymentMethod === 'PayPal' ? 'scale(1.02)' : 'scale(1)',
+              '&:hover': { 
+                borderColor: '#1B2CC1',
+                transform: 'scale(1.02)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
+              },
             }}
           >
             <FormControlLabel
@@ -292,17 +331,23 @@ const PaymentMethod = ({
               </Box>
             </Collapse>
           </Paper>
-          
+
           {/* Cash On Delivery Option */}
           <Paper
             elevation={0}
             sx={{
-              p: 2,
-              borderRadius: 2,
+              p: 3,
+              borderRadius: 3,
               border: '1px solid',
-              borderColor: paymentMethod === 'Cash On Delivery' ? 'primary.main' : 'divider',
+              borderColor: paymentMethod === 'Cash On Delivery' ? '#1B2CC1' : 'rgba(0, 0, 0, 0.1)',
+              background: paymentMethod === 'Cash On Delivery' ? 'rgba(27, 44, 193, 0.02)' : 'transparent',
               transition: 'all 0.3s ease',
-              '&:hover': { borderColor: 'primary.main' },
+              transform: paymentMethod === 'Cash On Delivery' ? 'scale(1.02)' : 'scale(1)',
+              '&:hover': { 
+                borderColor: '#1B2CC1',
+                transform: 'scale(1.02)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
+              },
             }}
           >
             <FormControlLabel

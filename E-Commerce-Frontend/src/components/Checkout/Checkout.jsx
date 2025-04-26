@@ -349,10 +349,24 @@ const Checkout = () => {
           sx={{
             p: { xs: 3, md: 5 },
             borderRadius: 4,
-            background: 'rgba(255, 255, 255, 0.9)',
+            background: 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(255, 255, 255, 0.3)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              inset: 0,
+              padding: '2px',
+              borderRadius: '16px',
+              background: 'linear-gradient(45deg, #091540, #3D518C, #1B2CC1, #7692FF)',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
+              animation: 'gradient 4s ease infinite',
+            }
           }}
         >
           <Box
@@ -379,7 +393,22 @@ const Checkout = () => {
             </Typography>
           </Box>
 
-          <Stepper activeStep={activeStep} sx={{ mb: 5 }} alternativeLabel>
+          <Stepper 
+            activeStep={activeStep} 
+            sx={{ 
+              mb: 5,
+              '& .MuiStepLabel-root .Mui-completed': {
+                color: '#3D518C',
+              },
+              '& .MuiStepLabel-root .Mui-active': {
+                color: '#1B2CC1',
+              },
+              '& .MuiStepConnector-line': {
+                borderColor: 'rgba(0, 0, 0, 0.1)',
+              }
+            }} 
+            alternativeLabel
+          >
             {steps.map((label, index) => {
               let icon;
               if (index === 0) {

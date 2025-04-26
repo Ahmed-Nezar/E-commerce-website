@@ -12,7 +12,7 @@ const Navbar = ({reference}) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const token = localStorage.getItem('token');
         if (token) {
             try {
                 // Decode the JWT token
@@ -26,9 +26,9 @@ const Navbar = ({reference}) => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
         setUser(null);
         navigate('/');
+        window.location.reload(); // Force reload to clear all states
     };
 
     return (

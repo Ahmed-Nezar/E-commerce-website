@@ -45,13 +45,10 @@ const SignIn = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Store token and user data
-        if (formData.rememberMe) {
-          localStorage.setItem('token', data.token);
-        } else {
-          sessionStorage.setItem('token', data.token);
-        }
-        navigate('/');
+        // Store token in localStorage regardless of rememberMe
+        localStorage.setItem('token', data.token);
+        // Force page reload to update all components
+        window.location.href = '/';
       } else {
         setError(data.message || 'Login failed. Please check your credentials.');
       }

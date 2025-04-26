@@ -332,49 +332,107 @@ const Home = () => {
           >
             Browse Categories
           </Typography>
-          <Grid container spacing={2} justifyContent="center" sx={{ 
-            flexWrap: 'nowrap', 
-            overflowX: 'hidden',
-            pb: 2,
-            position: 'relative',
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
+          <Box 
+            sx={{
               width: '100%',
-              height: '100%',
-              background: 'linear-gradient(90deg, rgba(171, 210, 250, 0.15) 0%, transparent 5%, transparent 95%, rgba(171, 210, 250, 0.15) 100%)',
-              pointerEvents: 'none',
-              zIndex: 1,
-            },
-            '@keyframes scrollCategories': {
-              '0%': {
-                transform: 'translateX(0)',
+              overflow: 'hidden',
+              py: 2,
+              position: 'relative',
+              '&::before, &::after': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                width: '100px',
+                height: '100%',
+                zIndex: 2,
               },
-              '100%': {
-                transform: 'translateX(-50%)',
+              '&::before': {
+                left: 0,
+                background: 'linear-gradient(90deg, rgba(246, 249, 252,1) 0%, rgba(246, 249, 252,0) 100%)',
               },
-            },
-          }}>
+              '&::after': {
+                right: 0,
+                background: 'linear-gradient(90deg, rgba(246, 249, 252,0) 0%, rgba(246, 249, 252,1) 100%)',
+              }
+            }}
+          >
             <Box
               sx={{
                 display: 'flex',
                 gap: 2,
-                animation: 'scrollCategories 30s linear infinite',
+                width: 'max-content',
+                animation: 'scroll 40s linear infinite',
                 '&:hover': {
                   animationPlayState: 'paused',
                 },
+                '@keyframes scroll': {
+                  '0%': {
+                    transform: 'translateX(0)',
+                  },
+                  '100%': {
+                    transform: 'translateX(calc(-50%))',
+                  }
+                }
               }}
             >
-              {[...partCategories, ...partCategories].map((category, index) => (
+              {/* First set of categories */}
+              {partCategories.map((category, index) => (
                 <Box
-                  key={`${category.name}-${index}`}
+                  key={`first-${category.name}-${index}`}
                   sx={{ 
                     minWidth: 180,
                     flex: '0 0 auto',
                   }}
-                    onClick={() => navigate(`/products/${category.name.toLowerCase()}`, { state : { category: category.name } })}
+                  onClick={() => navigate(`/products/${category.name.toLowerCase()}`, { state : { category: category.name } })}
+                >
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      p: 3,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 2,
+                      borderRadius: 4,
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      background: 'rgba(255, 255, 255, 0.8)',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: '0 12px 24px rgba(0,0,0,0.1)',
+                        '& .category-icon': {
+                          transform: 'scale(1.2)',
+                          color: '#1976d2',
+                        },
+                      },
+                    }}
+                  >
+                    <Box
+                      className="category-icon"
+                      sx={{
+                        transition: 'all 0.3s ease',
+                        color: '#3D518C',
+                      }}
+                    >
+                      {category.icon}
+                    </Box>
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      {category.name}
+                    </Typography>
+                  </Paper>
+                </Box>
+              ))}
+              {/* Duplicate set for seamless loop */}
+              {partCategories.map((category, index) => (
+                <Box
+                  key={`second-${category.name}-${index}`}
+                  sx={{ 
+                    minWidth: 180,
+                    flex: '0 0 auto',
+                  }}
+                  onClick={() => navigate(`/products/${category.name.toLowerCase()}`, { state : { category: category.name } })}
                 >
                   <Paper
                     elevation={0}
@@ -416,7 +474,7 @@ const Home = () => {
                 </Box>
               ))}
             </Box>
-          </Grid>
+          </Box>
         </Container>
 
         {/* New Releases Section */}

@@ -5,8 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function BasicSelect() {
-    const [sortVal, setSortVal] = React.useState('');
+export default function BasicSelect({sortVal, setSortVal}) {
+    // const [sortVal, setSortVal] = React.useState('');
 
     const handleChange = (event) => {
         setSortVal(event.target.value);
@@ -24,6 +24,7 @@ export default function BasicSelect() {
                     onChange={handleChange}
                 >
                     <MenuItem value="highToLow">Price: High to Low</MenuItem>
+                    <MenuItem value="lowToHigh">Price: Low to High</MenuItem>
                     <MenuItem value="nameAsc">Name: A - Z</MenuItem>
                     <MenuItem value="nameDesc">Name: Z - A</MenuItem>
                     <MenuItem value="ratingHigh">Ratings: Highest</MenuItem>

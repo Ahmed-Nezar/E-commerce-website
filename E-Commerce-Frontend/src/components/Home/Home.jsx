@@ -58,85 +58,112 @@ const Home = () => {
 
   const [newReleases] = useState([
     {
-      id: 1,
+      _id: '1',
       name: 'Razer Basilisk V3',
+      category: 'Mice',
+      description: 'Pro Gaming Mouse with advanced features',
+      brand: 'Razer',
       price: 69.99,
       image: '/images/products/Razer_Basilisk_V3.jpg',
-      description: 'Pro Gaming Mouse',
       stock: 25,
-      rating: 4.7
+      rating: 4.7,
+      numReviews: 128
     },
     {
-      id: 2,
+      _id: '2',
       name: 'RTX 5060 Ti',
+      category: 'GPUs',
+      description: 'Mid-Range Gaming GPU for exceptional performance',
+      brand: 'NVIDIA',
       price: 499.99,
       image: '/images/products/RTX_5060_Ti.png',
-      description: 'Mid-Range Gaming GPU',
       stock: 3,
-      rating: 4.9
+      rating: 4.9,
+      numReviews: 75
     },
     {
-      id: 3,
+      _id: '3',
       name: 'Razer Kraken V4',
+      category: 'Headsets',
+      description: 'Premium Wireless Gaming Headset',
+      brand: 'Razer',
       price: 199.99,
       image: '/images/products/Razer_Kraken_V4.jpg',
-      description: 'Wireless Gaming Headset',
       stock: 10,
-      rating: 4.8
+      rating: 4.8,
+      numReviews: 234
     },    
     {
-      id: 4,
+      _id: '4',
       name: 'Samsung Odyssey OLED G8',
+      category: 'Monitors',
+      description: '34" Ultra-Wide Gaming Monitor with OLED Technology',
+      brand: 'Samsung',
       price: 1299.99,
       image: '/images/products/Samsung-Odyssey-OLED-G8.jpg',
-      description: '34" Ultra-Wide Gaming Monitor',
       stock: 12,
-      rating: 4.9
+      rating: 4.9,
+      numReviews: 89
     },
     {
-      id: 5,
+      _id: '5',
       name: 'Keychron Q5 HE',
+      category: 'Keyboards',
+      description: 'Hot-swappable Mechanical Keyboard with Premium Build',
+      brand: 'Keychron',
       price: 199.99,
       image: '/images/products/Keychron_Q5_HE.png',
-      description: 'Hot-swappable Mechanical Keyboard',
       stock: 15,
-      rating: 4.6
+      rating: 4.6,
+      numReviews: 156
     },    
     {
-      id: 6,
+      _id: '6',
       name: 'Lian Li O11 Vision',
+      category: 'Cases',
+      description: 'Premium ATX PC Case with Excellent Airflow',
+      brand: 'Lian Li',
       price: 219.99,
       image: '/images/products/O11VP_000a.png',
-      description: 'Premium ATX PC Case',
       stock: 7,
-      rating: 4.8
+      rating: 4.8,
+      numReviews: 92
     },
     {
-      id: 7,
+      _id: '7',
       name: 'NVIDIA Quantum X800',
+      category: 'GPUs',
+      description: 'Next-gen GPU Technology for Ultimate Performance',
+      brand: 'NVIDIA',
       price: 1499.99,
       image: '/images/products/NVIDIA_Quantum-X800.jpg',
-      description: 'Next-gen GPU Technology',
       stock: 5,
-      rating: 4.8
+      rating: 4.8,
+      numReviews: 45
     },
     {
-      id: 8,
+      _id: '8',
       name: 'Dark Power Pro 13 1600W',
+      category: 'PSUs',
+      description: 'Platinum Rated Power Supply for High-End Systems',
+      brand: 'be quiet!',
       price: 399.99,
       image: '/images/products/Dark_Power_Pro_13_1600W.jpg',
-      description: 'Platinum Rated PSU',
       stock: 8,
-      rating: 4.7
+      rating: 4.7,
+      numReviews: 167
     },
     {
-      id: 9,
+      _id: '9',
       name: 'ADATA SD 8.0 Express',
+      category: 'Storage',
+      description: 'High-Speed Storage Solution with Advanced Technology',
+      brand: 'ADATA',
       price: 129.99,
       image: '/images/products/adata-SD-8.0-Express-UE720.jpg',
-      description: 'High-Speed Storage Solution',
       stock: 20,
-      rating: 4.5
+      rating: 4.5,
+      numReviews: 203
     }
   ]);
 
@@ -483,7 +510,7 @@ const Home = () => {
                 margin: '0 auto'
               }}>
                 {newReleases.map((product, index) => (
-                  <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+                  <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
                     <motion.div 
                       variants={itemVariants}
                       custom={index}

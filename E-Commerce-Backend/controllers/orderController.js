@@ -1,0 +1,279 @@
+// controllers/orderController.js
+const mongoose = require('mongoose');
+const { Order, Product }   = require('../config/db');
+const ObjectId = mongoose.Types.ObjectId;
+
+// —————— Helper: aggregate the unpaid cart and populate products ——————
+async function aggregateCart(userId) {
+    const [cart] = await Order.aggregate([
+        {$match: {user: new ObjectId(userId), isPaid: false}},
+        // unwind items (if any), lookup each product, then regroup
+        {$unwind: {path: '$orderItems', preserveNullAndEmptyArrays: true}},
+        {
+            $lookup: {
+                from: 'products',
+                localField: 'orderItems.product',
+                foreignField: '_id',
+                as: 'orderItems.product'
+            }
+        },
+        {$unwind: {path: '$orderItems.product', preserveNullAndEmptyArrays: true}},
+        {
+            $group: {
+                _id: '$_id',
+                user: {$first: '$user'},
+                orderItems: {
+                    $push: {
+                        $cond: [
+                            {$ifNull: ['$orderItems.product', false]},
+                            {
+                                product: '$orderItems.product',
+                                quantity: '$orderItems.quantity',
+                                price: '$orderItems.price'
+                            },
+                            '$$REMOVE'
+                        ]
+                    }
+                },
+                shippingAddress: {$first: '$shippingAddress'},
+                paymentMethod: {$first: '$paymentMethod'},
+                totalPrice: {$first: '$totalPrice'},
+                isPaid: {$first: '$isPaid'},
+                paidAt: {$first: '$paidAt'},
+                isDelivered: {$first: '$isDelivered'},
+                deliveredAt: {$first: '$deliveredAt'},
+                createdAt: {$first: '$createdAt'},
+                updatedAt: {$first: '$updatedAt'}
+            }
+        }
+    ]);
+
+    return cart || null;
+}
+
+// GET /api/orders/cart
+exports.getCart = async (req, res, next) => {
+    try {
+        let cart = await aggregateCart(req.user._id);
+
+        // If no cart exists yet, return an empty shell
+        if (!cart) {
+            return res.json({
+                user: req.user._id,
+                orderItems: [],
+                shippingAddress: {},
+                paymentMethod: '',
+                totalPrice: 0,
+                isPaid: false
+            });
+        }
+
+        res.json(cart);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// POST /api/orders/cart
+// { productId, quantity }
+exports.addToCart = async (req, res, next) => {
+    try {
+        const { productId, quantity = 1 } = req.body;
+        const userId = req.user._id;
+
+        const prod = await Product.findById(productId, 'price');
+        if (!prod) return res.status(404).json({ message: 'Product not found' });
+
+        // Single atomic update: if item exists, increment qty, else push new
+        await Order.updateOne(
+            { user: userId, isPaid: false },
+            [
+                {
+                    $set: {
+                        orderItems: {
+                            $let: {
+                                vars: {
+                                    items: { $ifNull: ['$orderItems', []] }
+                                },
+                                in: {
+                                    $cond: [
+                                        {
+                                            $in: [
+                                                new ObjectId(productId),
+                                                { $map: { input: '$$items', as: 'i', in: '$$i.product' } }
+                                            ]
+                                        },
+                                        {
+                                            $map: {
+                                                input: '$$items',
+                                                as: 'i',
+                                                in: {
+                                                    $cond: [
+                                                        { $eq: ['$$i.product', new ObjectId(productId)] },
+                                                        {
+                                                            product: '$$i.product',
+                                                            quantity: { $add: ['$$i.quantity', quantity] },
+                                                            price: '$$i.price'
+                                                        },
+                                                        '$$i'
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            $concatArrays: [
+                                                '$$items',
+                                                [{ product: new ObjectId(productId), quantity, price: prod.price }]
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        totalPrice: {
+                            $add: [
+                                { $ifNull: ['$totalPrice', 0] },
+                                { $multiply: [prod.price, quantity] }
+                            ]
+                        },
+                    }
+                }
+            ],
+            { upsert: true }
+        );
+
+        const cart = await aggregateCart(userId);
+        res.json(cart);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// PUT /api/orders/cart/:productId
+// { quantity }
+exports.updateCartItem = async (req, res, next) => {
+    try {
+        const { productId } = req.params;
+        const { quantity }  = req.body;
+        const userId = req.user._id;
+
+        // Recalculate totalPrice delta: fetch old qty and price
+        const [{ oldItem }] = await Order.aggregate([
+            { $match: { user: new ObjectId(userId), isPaid: false } },
+            {
+                $project: {
+                    oldItem: {
+                        $first: {
+                            $filter: {
+                                input: '$orderItems',
+                                as: 'i',
+                                cond: { $eq: ['$$i.product', new ObjectId(productId)] }
+                            }
+                        }
+                    }
+                }
+            }
+        ]);
+
+        if (!oldItem) return res.status(404).json({ message: 'Item not in cart' });
+
+        const deltaQty = quantity - oldItem.quantity;
+        const deltaPrice = deltaQty * oldItem.price;
+
+        // Update the item's quantity and adjust totalPrice
+        await Order.updateOne(
+            { user: userId, isPaid: false, 'orderItems.product': new ObjectId(productId) },
+            {
+                $set: { 'orderItems.$.quantity': quantity },
+                $inc: { totalPrice: deltaPrice }
+            }
+        );
+
+        // If quantity <= 0, also pull the item
+        if (quantity <= 0) {
+            await Order.updateOne(
+                { user: userId, isPaid: false },
+                { $pull: { orderItems: { product: new ObjectId(productId) } } }
+            );
+        }
+
+        const cart = await aggregateCart(userId);
+        res.json(cart);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// DELETE /api/orders/cart/:productId
+exports.removeCartItem = async (req, res, next) => {
+    try {
+        const { productId } = req.params;
+        const userId = req.user._id;
+
+        // Find the item price*qty to decrement totalPrice
+        const [{ oldItem }] = await Order.aggregate([
+            { $match: { user: new ObjectId(userId), isPaid: false } },
+            {
+                $project: {
+                    oldItem: {
+                        $first: {
+                            $filter: {
+                                input: '$orderItems',
+                                as: 'i',
+                                cond: { $eq: ['$$i.product', new ObjectId(productId)] }
+                            }
+                        }
+                    }
+                }
+            }
+        ]);
+
+        if (!oldItem) return res.status(404).json({ message: 'Item not in cart' });
+
+        const decrement = oldItem.price * oldItem.quantity;
+
+        // Pull item and decrement price in one go
+        await Order.updateOne(
+            { user: userId, isPaid: false },
+            {
+                $pull: { orderItems: { product: new ObjectId(productId) } },
+                $inc:  { totalPrice: -decrement }
+            }
+        );
+
+        const cart = await aggregateCart(userId);
+        res.json(cart);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// POST /api/orders/checkout
+exports.checkout = async (req, res, next) => {
+    try {
+        const userId = req.user._id;
+        const { shippingAddress, paymentMethod } = req.body;
+
+        // Finalize the unpaid order
+        const order = await Order.findOneAndUpdate(
+            { user: userId, isPaid: false },
+            {
+                $set: {
+                    shippingAddress,
+                    paymentMethod,
+                    isPaid: true,
+                    paidAt: new Date()
+                }
+            },
+            { new: true }
+        ).populate('orderItems.product');
+
+        if (!order || order.orderItems.length === 0) {
+            return res.status(400).json({ message: 'Cart is empty or no cart found' });
+        }
+
+        res.json({ message: 'Order completed', order });
+    } catch (err) {
+        next(err);
+    }
+};

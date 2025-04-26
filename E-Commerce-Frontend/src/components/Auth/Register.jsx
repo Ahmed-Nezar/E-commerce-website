@@ -10,7 +10,13 @@ import {
   Typography,
   Container,
   Paper,
-  Fade
+  Fade,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Alert
 } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
@@ -20,16 +26,25 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    profilePic: ''
+    gender: '',
+    isAdmin: false
   });
+
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
     
     if (formData.password !== formData.confirmPassword) {
-      // TODO: Show error message
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (!formData.gender) {
+      setError('Please select your gender');
       return;
     }
 
@@ -43,18 +58,21 @@ const Register = () => {
           name: formData.name,
           email: formData.email,
           password: formData.password,
-          profilePic: formData.profilePic
+          gender: formData.gender,
+          isAdmin: formData.isAdmin
         }),
       });
 
+      const data = await response.json();
+      
       if (response.ok) {
         navigate('/signin');
       } else {
-        // TODO: Show error message
+        setError(data.message || 'Registration failed');
       }
     } catch (error) {
       console.error('Registration error:', error);
-      // TODO: Show error message
+      setError('An error occurred during registration');
     }
   };
 
@@ -155,6 +173,22 @@ const Register = () => {
             Create Account
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%', maxWidth: '800px' }}>
+            {error && (
+              <Alert 
+                severity="error" 
+                sx={{ 
+                  mb: 3,
+                  borderRadius: 2,
+                  animation: 'slideIn 0.3s ease-out',
+                  '@keyframes slideIn': {
+                    from: { transform: 'translateY(-20px)', opacity: 0 },
+                    to: { transform: 'translateY(0)', opacity: 1 },
+                  },
+                }}
+              >
+                {error}
+              </Alert>
+            )}
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -237,6 +271,56 @@ const Register = () => {
                     },
                   }}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl component="fieldset" sx={{ width: '100%' }}>
+                  <FormLabel 
+                    component="legend" 
+                    sx={{ 
+                      mb: 1,
+                      fontWeight: 500,
+                      color: '#091540',
+                      '&.Mui-focused': {
+                        color: '#091540'
+                      }
+                    }}
+                  >
+                    Gender
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel 
+                      value="Male" 
+                      control={<Radio />} 
+                      label="Male"
+                      sx={{ 
+                        '& .MuiRadio-root': {
+                          color: '#3D518C',
+                          '&.Mui-checked': {
+                            color: '#1B2CC1'
+                          }
+                        }
+                      }} 
+                    />
+                    <FormControlLabel 
+                      value="Female" 
+                      control={<Radio />} 
+                      label="Female"
+                      sx={{ 
+                        '& .MuiRadio-root': {
+                          color: '#3D518C',
+                          '&.Mui-checked': {
+                            color: '#1B2CC1'
+                          }
+                        }
+                      }} 
+                    />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
             </Grid>
             <Button

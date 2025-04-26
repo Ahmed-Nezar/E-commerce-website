@@ -97,14 +97,40 @@ const Navbar = ({reference}) => {
                         
                         {user ? (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                <Typography
-                                    sx={{
-                                        color: '#3D518C',
-                                        fontWeight: 600,
-                                    }}
-                                >
-                                    {user.name}
-                                </Typography>
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    gap: 1,
+                                    background: 'linear-gradient(90deg, #091540, #3D518C)',
+                                    padding: '4px',
+                                    paddingRight: '16px',
+                                    borderRadius: '50px',
+                                    boxShadow: '0 4px 12px rgba(9, 21, 64, 0.2)',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'translateY(-2px)',
+                                        boxShadow: '0 6px 16px rgba(9, 21, 64, 0.3)',
+                                        background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                                    }
+                                }}>
+                                    <Avatar
+                                        src={user.profilePic}
+                                        alt={user.name}
+                                        sx={{
+                                            width: 40,
+                                            height: 40,
+                                            border: '2px solid #fff'
+                                        }}
+                                    />
+                                    <Typography
+                                        sx={{
+                                            color: '#fff',
+                                            fontWeight: 600,
+                                        }}
+                                    >
+                                        {user.name}
+                                    </Typography>
+                                </Box>
                                 <Button
                                     variant="outlined"
                                     onClick={handleLogout}

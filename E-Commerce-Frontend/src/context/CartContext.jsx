@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
@@ -19,6 +19,56 @@ export const CartProvider = ({ children }) => {
     country: ''
   });
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [userId, setUserId] = useState(null);
+
+  // Load cart data when user changes
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        setUserId(payload._id);
+        
+        // Load cart data for this user
+        const savedCart = localStorage.getItem(`cart_${payload._id}`);
+        if (savedCart) {
+          const { items, address, payment } = JSON.parse(savedCart);
+          setCartItems(items || []);
+          setShippingAddress(address || {
+            address: '',
+            city: '',
+            postalCode: '',
+            country: ''
+          });
+          setPaymentMethod(payment || '');
+        }
+      } catch (error) {
+        console.error('Error loading cart:', error);
+      }
+    } else {
+      // Clear cart when logged out
+      setUserId(null);
+      setCartItems([]);
+      setShippingAddress({
+        address: '',
+        city: '',
+        postalCode: '',
+        country: ''
+      });
+      setPaymentMethod('');
+    }
+  }, []);
+
+  // Save cart data whenever it changes
+  useEffect(() => {
+    if (userId) {
+      localStorage.setItem(`cart_${userId}`, JSON.stringify({
+        items: cartItems,
+        address: shippingAddress,
+        payment: paymentMethod
+      }));
+    }
+  }, [cartItems, shippingAddress, paymentMethod, userId]);
 
   const addToCart = (product) => {
     setCartItems(prev => {
@@ -28,7 +78,7 @@ export const CartProvider = ({ children }) => {
           i.product === product._id ? { ...i, quantity: i.quantity + 1 } : i
         );
       }
-      return [...prev, { 
+      return [...prev, {
         product: product._id,
         quantity: 1,
         price: product.price,
@@ -61,6 +111,9 @@ export const CartProvider = ({ children }) => {
       country: ''
     });
     setPaymentMethod('');
+    if (userId) {
+      localStorage.removeItem(`cart_${userId}`);
+    }
   };
 
   const value = {

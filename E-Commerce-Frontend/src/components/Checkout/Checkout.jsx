@@ -50,8 +50,8 @@ const Checkout = () => {
   const steps = ['Shipping Information', 'Payment Method', 'Review Order'];
 
   useEffect(() => {
-    // Check if token exists in localStorage or sessionStorage
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    // Check if token exists in localStorage
+    const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
     
     // If cart is empty, redirect to cart page
@@ -147,7 +147,7 @@ const Checkout = () => {
 
   const handleSubmitOrder = async () => {
     try {
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       
       // Prepare order data
       const orderData = {

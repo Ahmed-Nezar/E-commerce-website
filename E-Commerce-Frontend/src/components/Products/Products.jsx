@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 import "../Products/Products.css";
 import * as React from "react";
 import { useParams } from "react-router-dom";
+import { useCart } from '../../context/CartContext';
 
 const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -43,10 +44,20 @@ const catImgs = {
 
 
 const Products = () => {
+    const { addToCart } = useCart();
+    const [addedItems, setAddedItems] = useState({});
+
+    const handleAddToCart = (product) => {
+        addToCart(product);
+        setAddedItems(prev => ({ ...prev, [product._id]: true }));
+        setTimeout(() => {
+            setAddedItems(prev => ({ ...prev, [product._id]: false }));
+        }, 2000);
+    };
 
     const [products,setProducts] = useState([
         {
-            id: 1,
+            _id: '1',
             name: 'Razer Basilisk V3',
             price: 69.99,
             image: '/images/products/Razer_Basilisk_V3.jpg',
@@ -55,7 +66,7 @@ const Products = () => {
             rating: 4.7
         },
         {
-            id: 2,
+            _id: '2',
             name: 'RTX 5060 Ti',
             price: 499.99,
             image: '/images/products/RTX_5060_Ti.png',
@@ -64,7 +75,7 @@ const Products = () => {
             rating: 4.9
         },
         {
-            id: 3,
+            _id: '3',
             name: 'Razer Kraken V4',
             price: 199.99,
             image: '/images/products/Razer_Kraken_V4.jpg',
@@ -73,7 +84,7 @@ const Products = () => {
             rating: 4.8
         },
         {
-            id: 4,
+            _id: '4',
             name: 'Samsung Odyssey OLED G8',
             price: 1299.99,
             image: '/images/products/Samsung-Odyssey-OLED-G8.jpg',
@@ -82,7 +93,7 @@ const Products = () => {
             rating: 4.9
         },
         {
-            id: 5,
+            _id: '5',
             name: 'Keychron Q5 HE',
             price: 199.99,
             image: '/images/products/Keychron_Q5_HE.png',
@@ -91,7 +102,7 @@ const Products = () => {
             rating: 4.6
         },
         {
-            id: 6,
+            _id: '6',
             name: 'Lian Li O11 Vision',
             price: 219.99,
             image: '/images/products/O11VP_000a.png',
@@ -100,7 +111,7 @@ const Products = () => {
             rating: 4.8
         },
         {
-            id: 7,
+            _id: '7',
             name: 'NVIDIA Quantum X800',
             price: 1499.99,
             image: '/images/products/NVIDIA_Quantum-X800.jpg',
@@ -109,7 +120,7 @@ const Products = () => {
             rating: 4.8
         },
         {
-            id: 8,
+            _id: '8',
             name: 'Dark Power Pro 13 1600W',
             price: 399.99,
             image: '/images/products/Dark_Power_Pro_13_1600W.jpg',
@@ -118,7 +129,7 @@ const Products = () => {
             rating: 4.7
         },
         {
-            id: 9,
+            _id: '9',
             name: 'ADATA SD 8.0 Express',
             price: 129.99,
             image: '/images/products/adata-SD-8.0-Express-UE720.jpg',
@@ -234,32 +245,32 @@ const Products = () => {
 
                         {/* Products Grid */}
                         <div className="d-grid gap-4 m-3 products-view justify-content-center">
-                                {sortedProducts.map((product, index) => (
-                                    <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-                                        <motion.div
-                                            variants={itemVariants}
-                                            custom={index}
-                                            initial="hidden"
-                                            animate="visible"
-                                            whileHover={{ scale: 1.02 }}
-                                            transition={{ type: "spring", stiffness: 300 }}
+                            {sortedProducts.map((product, index) => (
+                                <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
+                                    <motion.div
+                                        variants={itemVariants}
+                                        custom={index}
+                                        initial="hidden"
+                                        animate="visible"
+                                        whileHover={{ scale: 1.02 }}
+                                        transition={{ type: "spring", stiffness: 300 }}
+                                    >
+                                        <Tilt
+                                            tiltMaxAngleX={8}
+                                            tiltMaxAngleY={8}
+                                            scale={1}
+                                            transitionSpeed={1500}
+                                            gyroscope={true}
                                         >
-                                            <Tilt
-                                                tiltMaxAngleX={8}
-                                                tiltMaxAngleY={8}
-                                                scale={1}
-                                                transitionSpeed={1500}
-                                                gyroscope={true}
-                                            >
-                                                <ProductCard className="product-card"
-                                                    product={product}
-                                                    handleAddToCart={product.id}
-                                                    addedItems={product.id}
-                                                />
-                                            </Tilt>
-                                        </motion.div>
-                                    </Grid>
-                                ))}
+                                            <ProductCard 
+                                                product={product}
+                                                handleAddToCart={handleAddToCart}
+                                                addedItems={addedItems}
+                                            />
+                                        </Tilt>
+                                    </motion.div>
+                                </Grid>
+                            ))}
                         </div>
                         <Pagination count={10} showFirstButton showLastButton sx={{display: 'flex', justifyContent: 'center', margin: '2rem auto'}}/>
                     </div>

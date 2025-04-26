@@ -13,15 +13,15 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useTheme } from '@mui/material/styles';
 
 const ProductCard = ({
-                         product,
-                         handleAddToCart,
-                         addedItems
-                     }) => {
+    product,
+    handleAddToCart,
+    addedItems
+}) => {
     const theme = useTheme();
     const [hoveredProduct, setHoveredProduct] = useState(null);
     return (
         <Card
-            onMouseEnter={() => setHoveredProduct(product.id)}
+            onMouseEnter={() => setHoveredProduct(product._id)}
             onMouseLeave={() => setHoveredProduct(null)}
             sx={{
                 height: '100%',
@@ -34,7 +34,7 @@ const ProductCard = ({
                 background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(255, 255, 255, 0.3)',
-                boxShadow: hoveredProduct === product.id
+                boxShadow: hoveredProduct === product._id
                     ? '0 22px 40px rgba(0,0,0,0.15), 0 8px 16px rgba(25, 118, 210, 0.1)'
                     : '0 8px 16px rgba(0,0,0,0.1)',
                 '&:hover': {
@@ -174,12 +174,12 @@ const ProductCard = ({
                         fontWeight: 700,
                         mb: 1,
                         fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem' },
-                        background: hoveredProduct === product.id
+                        background: hoveredProduct === product._id
                             ? 'linear-gradient(45deg, #091540, #3D518C)'
                             : 'none',
                         backgroundClip: 'text',
                         WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: hoveredProduct === product.id ? 'transparent' : 'inherit',
+                        WebkitTextFillColor: hoveredProduct === product._id ? 'transparent' : 'inherit',
                         transition: 'all 0.3s ease',
                     }}
                 >
@@ -245,14 +245,14 @@ const ProductCard = ({
                             borderRadius: '12px',
                             px: 2,
                             py: 1,
-                            background: addedItems[product.id]
+                            background: addedItems[product._id]
                                 ? 'linear-gradient(45deg, #2e7d32, #4caf50)'
                                 : 'linear-gradient(45deg, #091540, #3D518C)',
                             boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
                             textTransform: 'none',
                             fontWeight: 600,
                             '&:hover': {
-                                background: addedItems[product.id]
+                                background: addedItems[product._id]
                                     ? 'linear-gradient(45deg, #1b5e20, #2e7d32)'
                                     : 'linear-gradient(45deg, #091540, #1B2CC1)',
                                 transform: 'translateY(-2px)',
@@ -261,7 +261,7 @@ const ProductCard = ({
                             transition: 'all 0.3s ease',
                         }}
                     >
-                        {addedItems[product.id] ? 'Added!' : 'Add to Cart'}
+                        {addedItems[product._id] ? 'Added!' : 'Add to Cart'}
                     </Button>
                 </Stack>
             </CardContent>

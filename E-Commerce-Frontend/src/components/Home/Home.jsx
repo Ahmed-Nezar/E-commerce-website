@@ -528,8 +528,8 @@ const Home = () => {
                       >
                         <ProductCard
                             product={product}
-                            handleAddToCart={product.id}
-                            addedItems={product.id}
+                            handleAddToCart={handleAddToCart}
+                            addedItems={addedItems}
                         />
                       </Tilt>
                     </motion.div>

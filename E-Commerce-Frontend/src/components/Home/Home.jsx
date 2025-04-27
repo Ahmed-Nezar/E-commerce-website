@@ -476,7 +476,7 @@ const Home = () => {
             </Box>
           </Box>
         </Container>
-
+          <div></div>
         {/* New Releases Section */}
         <Box 
           component={motion.div}
@@ -568,7 +568,7 @@ const Home = () => {
                 margin: '0 auto'
               }}>
                 {newReleases.map((product, index) => (
-                  <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
+                  <Grid sx={{maxWidth: "300px"}} item key={product._id} xs={12} sm={6} md={4} lg={3}>
                     <motion.div 
                       variants={itemVariants}
                       custom={index}

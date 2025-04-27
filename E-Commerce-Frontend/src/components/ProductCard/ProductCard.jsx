@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useTheme } from '@mui/material/styles';
+import "./ProductCard.css";
 
 const ProductCard = ({
     product,
@@ -238,6 +239,7 @@ const ProductCard = ({
                     </Box>
                     <Button
                         variant="contained"
+                        className="add-to-cart-button"
                         startIcon={<ShoppingCartIcon />}
                         onClick={() => handleAddToCart(product)}
                         disabled={product.stock === 0}

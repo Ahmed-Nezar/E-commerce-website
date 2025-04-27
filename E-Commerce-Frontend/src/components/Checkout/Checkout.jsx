@@ -15,6 +15,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PaymentIcon from '@mui/icons-material/Payment';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useCart } from '../../context/CartContext';
+import { ENV } from '../../App.jsx';
 
 // Import step components
 import ShippingInfo from '../Checkout/ShippingInfo';
@@ -183,7 +184,7 @@ const Checkout = () => {
       }
 
       // Send order to backend
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/orders`, {
+      const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

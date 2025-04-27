@@ -19,6 +19,7 @@ import {
   Alert
 } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { ENV } from '../../App.jsx';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -49,7 +50,7 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
+      const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

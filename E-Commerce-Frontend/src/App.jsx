@@ -10,7 +10,7 @@ import Cart from './components/Cart/Cart.jsx'
 import Checkout from './components/checkout/Checkout.jsx'
 import Home from './components/Home/Home.jsx'
 import { CartProvider } from './context/CartContext.jsx'
-const ENV = import.meta.env;
+export const ENV = import.meta.env;
 import Products from "./components/Products/Products.jsx";
 
 function App() {

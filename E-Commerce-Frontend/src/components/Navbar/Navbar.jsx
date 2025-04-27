@@ -17,6 +17,7 @@ const Navbar = ({reference}) => {
             try {
                 // Decode the JWT token
                 const payload = JSON.parse(atob(token.split('.')[1]));
+                payload.name = payload.name?.split(' ').slice(0,2).join(' ');
                 setUser(payload);
             } catch (error) {
                 console.error('Error decoding token:', error);
@@ -126,6 +127,10 @@ const Navbar = ({reference}) => {
                                         sx={{
                                             color: '#fff',
                                             fontWeight: 600,
+                                            overflow: "hidden",
+                                            whiteSpace: "nowrap",
+                                            textOverflow: "ellipsis",
+                                            maxWidth: "80px",
                                         }}
                                     >
                                         {user.name}

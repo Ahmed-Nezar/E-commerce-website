@@ -5,7 +5,7 @@ const VerifyTokenForAdmin = async (req, res, next) => {
   const authorization = req.headers["authorization"];
 
   if (!authorization) {
-    res.status(200).json({ error: "You must login first" });
+    res.status(401).json({ error: "You must login first" });
     next("ERROR IN: VerifyTokenForAdmin function => Token is required");
     return;
   }
@@ -16,14 +16,14 @@ const VerifyTokenForAdmin = async (req, res, next) => {
       req.user = decoded;
       next();
     } else {
-      res.status(200).json({ error: "You are not authorized" });
+      res.status(403).json({ error: "You are not authorized" });
       next("ERROR IN: VerifyTokenForAdmin function => Invalid role");
     }
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-      res.status(200).json({ error: "Session Expired, please login again" });
+      res.status(401).json({ error: "Session Expired, please login again" });
     } else {
-      res.status(200).json({ error: "Invalid credentials" });
+      res.status(401).json({ error: "Invalid credentials" });
     }
     next(`ERROR IN: VerifyTokenForAdmin function => ${error}`);
   }
@@ -33,7 +33,7 @@ const VerifyTokenForUser = async (req, res, next) => {
   const authorization = req.headers["authorization"];
 
   if (!authorization) {
-    res.status(200).json({ error: "You must login first" });
+    res.status(401).json({ error: "You must login first" });
     next("ERROR IN: VerifyTokenForUser function => Token is required");
     return;
   }
@@ -43,9 +43,9 @@ const VerifyTokenForUser = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-      res.status(200).json({ error: "Session Expired, please login again" });
+      res.status(401).json({ error: "Session Expired, please login again" });
     } else {
-      res.status(200).json({ error: "Invalid credentials" });
+      res.status(401).json({ error: "Invalid credentials" });
     }
     next(`ERROR IN: VerifyTokenForUser function => ${error}`);
   }

@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const dotenv = require('dotenv');
+const path = require('path');
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 
 async function connectDB() {
     try {
+        if (!process.env.MONGO_URI) {
+            throw new Error('MONGO_URI is not defined!');
+        }
         // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
         await mongoose.connect(process.env.MONGO_URI, clientOptions);
         await mongoose.connection.db.admin().command({ ping: 1 });
@@ -47,6 +53,20 @@ userSchema.pre('save', async function(next) {
         this.profilePic = `${process.env.VITE_BACKEND_URL}/avatar}/${rand}`;
     }
 
+    next();
+});
+
+// Set a random avatar before insertMany
+userSchema.pre('insertMany', async function(next, docs) {
+    for (let doc of docs) {
+        doc.password = await bcrypt.hash(doc.password, 10);
+        // only set if missing
+        if (!doc.profilePic) {
+            const [min, max] = doc.gender === 'Male' ? [1, 50] : [51, 100];
+            const rand       = Math.floor(Math.random() * (max - min + 1)) + min;
+            doc.profilePic   = `${process.env.VITE_BACKEND_URL}/avatar/${rand}`;
+        }
+    }
     next();
 });
 

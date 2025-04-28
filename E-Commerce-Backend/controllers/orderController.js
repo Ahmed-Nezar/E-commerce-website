@@ -75,7 +75,6 @@ exports.getCart = async (req, res, next) => {
 };
 
 // POST /api/orders/cart
-// { productId, quantity }
 exports.addToCart = async (req, res, next) => {
     try {
         const { productId, quantity = 1 } = req.body;
@@ -136,6 +135,8 @@ exports.addToCart = async (req, res, next) => {
                                 { $multiply: [prod.price, quantity] }
                             ]
                         },
+                        createdAt: { $ifNull: ['$createdAt', new Date()] },
+                        updatedAt: new Date()
                     }
                 }
             ],
@@ -252,27 +253,33 @@ exports.removeCartItem = async (req, res, next) => {
 exports.checkout = async (req, res, next) => {
     try {
         const userId = req.user._id;
-        const { shippingAddress, paymentMethod } = req.body;
+        const {shippingAddress, paymentMethod} = req.body;
 
-        // Finalize the unpaid order
-        const order = await Order.findOneAndUpdate(
-            { user: userId, isPaid: false },
-            {
-                $set: {
-                    shippingAddress,
-                    paymentMethod,
-                    isPaid: true,
-                    paidAt: new Date()
-                }
-            },
-            { new: true }
-        ).populate('orderItems.product');
-
-        if (!order || order.orderItems.length === 0) {
-            return res.status(400).json({ message: 'Cart is empty or no cart found' });
+        // 1) Load the unpaid order
+        const order = await Order.findOne({user: userId, isPaid: false});
+        if (!order) {
+            return res
+                .status(400)
+                .json({message: 'No open cart found'});
         }
 
-        res.json({ message: 'Order completed', order });
+        // 2) Fail if no items
+        if (!order.orderItems || order.orderItems.length === 0) {
+            return res
+                .status(400)
+                .json({message: 'Cart is empty, cannot checkout'});
+        }
+
+        // 3) Otherwise finalize it
+        order.shippingAddress = shippingAddress;
+        order.paymentMethod = paymentMethod;
+        order.isPaid = true;
+        order.paidAt = new Date();
+
+        await order.save();
+        await order.populate('orderItems.product');
+
+        return res.json({message: 'Order completed', order});
     } catch (err) {
         next(err);
     }

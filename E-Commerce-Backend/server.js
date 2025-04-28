@@ -18,7 +18,6 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 // Connect to MongoDB
 connectDB().catch(e => console.error(e));
 
-
 const allowedOrigins = process.env.VITE_FRONTEND_URL.split(',').map(origin => origin.trim());
 function corsOptionsDelegate (origin, callback) {
     // Check if the origin is in the allowedOrigins array
@@ -53,7 +52,7 @@ app.use(
     app.use('/api/auth', authRoutes);
 //* require login for all other routes
     app.use('/api/users', verifyToken("user"), userRoutes);
-    app.use('/api/products', verifyToken("user"), productRoutes);
+    app.use('/api/products', productRoutes);
     app.use('/api/orders', verifyToken("user"), orderRoutes);
     app.use('/api/reviews', verifyToken("user"), reviewRoutes);
     app.use('/api/coupons', verifyToken("admin"), couponRoutes);
@@ -63,4 +62,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
+
+module.exports = app;
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

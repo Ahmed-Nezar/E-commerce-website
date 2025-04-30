@@ -8,6 +8,10 @@ router.put('/cart/:productId', oc.updateCartItem);
 router.delete('/cart/:productId', oc.removeCartItem);
 router.post('/checkout', oc.checkout);
 
+// APIs for Paid Orders
+router.get('/history', oc.getOrderHistory); // View all paid orders (paginated)
+router.put('/:orderId', oc.editPaidOrder);  // Edit a specific paid order
+
 /*
     ----------------
     ** Fully Tested:

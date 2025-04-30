@@ -13,11 +13,14 @@ router.delete('/wishlist/:productId', verify(), pc.removeFromWishlist);
 
 // ——— Public endpoints ———
 router.get('/',       verify(), pc.getProducts);
-router.get('/:id',    verify(), pc.getProductById);
+router.get('/getById/:id',    verify(), pc.getProductById);
+router.get('/getCategories', verify(), pc.getCategories);
+router.get('/getBrands', verify(), pc.getBrands);
 
 // ——— Admin-only endpoints ———
 router.post('/create',       verify('admin'), pc.createProduct);
 router.put('/update/:id',    verify('admin'), pc.updateProduct);
+
 router.delete('/delete/:id', verify('admin'), pc.deleteProduct);
 
 module.exports = router;

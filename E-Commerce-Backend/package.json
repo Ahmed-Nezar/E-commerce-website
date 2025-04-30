@@ -19,7 +19,10 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.13.2"
+    "mkdirp": "^3.0.1",
+    "mongoose": "^8.13.2",
+    "node-fetch": "^2.7.0",
+    "unsplash-js": "^7.0.19"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

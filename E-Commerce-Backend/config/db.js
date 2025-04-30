@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
+const clientOptions = { serverApi: { version: '1', strict: false, deprecationErrors: true } };
 
 async function connectDB() {
     try {

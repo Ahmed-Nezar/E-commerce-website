@@ -284,3 +284,74 @@ exports.checkout = async (req, res, next) => {
         next(err);
     }
 };
+
+// *********************** APIs For Order History ***********************
+
+// ==========================
+// GET /api/orders/history
+// View all paid orders (paginated)
+// ==========================
+exports.getOrderHistory = async (req, res, next) => {
+    try {
+        const page  = Math.max(1, parseInt(req.query.page, 10)  || 1);
+        const limit = Math.max(1, parseInt(req.query.limit, 10) || 10);
+        const skip  = (page - 1) * limit;
+
+        const userId = req.user._id;
+
+        const filter = { user: userId, isPaid: true };
+
+        const totalNumberOfItems = await Order.countDocuments(filter);
+        const data = await Order.find(filter)
+            .populate('orderItems.product')
+            .sort({ paidAt: -1 }) // newest orders first
+            .skip(skip)
+            .limit(limit);
+
+        res.status(200).json({
+            currentPage: page,
+            totalPages:  Math.max(1, Math.ceil(totalNumberOfItems / limit)),
+            totalNumberOfItems,
+            data
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ==========================
+// PUT /api/orders/:orderId
+// Edit an existing paid order
+// ==========================
+exports.editPaidOrder = async (req, res, next) => {
+    try {
+        const { orderId } = req.params;
+        const userId = req.user._id;
+        const { shippingAddress, isDelivered } = req.body;
+
+        // Find the paid order belonging to the user
+        const order = await Order.findOne({ _id: orderId, user: userId, isPaid: true });
+        if (!order) {
+            return res.status(404).json({ message: 'Paid order not found' });
+        }
+
+        // Update allowed fields
+        if (shippingAddress) {
+            order.shippingAddress = shippingAddress;
+        }
+        if (typeof isDelivered === 'boolean') {
+            order.isDelivered = isDelivered;
+            if (isDelivered) {
+                order.deliveredAt = new Date();
+            }
+        }
+
+        await order.save();
+        await order.populate('orderItems.product');
+
+        res.status(201).json({ message: 'Order updated', order });
+    } catch (err) {
+        next(err);
+    }
+};
+

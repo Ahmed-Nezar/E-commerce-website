@@ -40,19 +40,9 @@ async function seedData() {
         const createdUsers = await User.insertMany(usersData);
         const userIds = createdUsers.map(u => u._id);
 
-        // 4) Seed Products
-        const productsData = [
-            { name: 'NVIDIA RTX 4090',      category: 'GPU',         brand: 'NVIDIA',   description: 'Top-tier gaming GPU',      price: 1599.99, image: '/images/RTX_4090.jpg',       stock: 5,  rating: 4.9 },
-            { name: 'AMD Ryzen 9 7950X',     category: 'CPU',         brand: 'AMD',      description: '16-core desktop CPU',      price: 699.99,  image: '/images/Ryzen9_7950X.jpg',     stock: 10, rating: 4.8 },
-            { name: 'Samsung 980 Pro 1TB',    category: 'Storage',     brand: 'Samsung',  description: 'High-speed NVMe SSD',      price: 149.99,  image: '/images/980Pro_1TB.jpg',      stock: 20, rating: 4.7 },
-            { name: 'Corsair Vengeance 16GB', category: 'Memory',      brand: 'Corsair',  description: 'DDR5 RAM kit',             price: 129.99,  image: '/images/Vengeance_16GB.jpg',  stock: 15, rating: 4.6 },
-            { name: 'ASUS ROG Strix B650E',   category: 'Motherboard', brand: 'ASUS',     description: 'AM5 ATX motherboard',      price: 279.99,  image: '/images/ROG_B650E.jpg',      stock: 8,  rating: 4.5 },
-            { name: 'Seasonic Prime TX-850', category: 'PSU',         brand: 'Seasonic', description: '850W Platinum PSU',        price: 189.99,  image: '/images/Prime_TX-850.jpg',   stock: 12, rating: 4.8 },
-            { name: 'Lian Li O11 Dynamic',   category: 'Case',        brand: 'Lian Li',  description: 'Tempered glass ATX case',  price: 149.99,  image: '/images/O11_Dynamic.jpg',    stock: 7,  rating: 4.7 },
-            { name: 'LG UltraGear 27GN950',   category: 'Monitor',     brand: 'LG',       description: '4K 144Hz gaming monitor',  price: 799.99,  image: '/images/27GN950.jpg',       stock: 6,  rating: 4.6 },
-            { name: 'Keychron K8 Pro',       category: 'Keyboard',    brand: 'Keychron', description: 'Wireless mechanical keyboard', price: 129.99, image: '/images/K8_Pro.jpg',        stock: 18, rating: 4.5 },
-            { name: 'Logitech G502 Hero',    category: 'Mouse',       brand: 'Logitech', description: 'Wired gaming mouse',       price: 49.99,   image: '/images/G502_Hero.jpg',     stock: 25, rating: 4.8 },
-        ];
+        // read from json file and set products data
+        const productsData = require("./productsData.json");
+
         const createdProducts = await Product.insertMany(productsData);
         const productIds = createdProducts.map(p => p._id);
 
@@ -61,17 +51,21 @@ async function seedData() {
         await User.findByIdAndUpdate(userIds[0], { $set: { wishList: productIds.slice(0,3) } });
         await User.findByIdAndUpdate(userIds[1], { $set: { wishList: productIds.slice(3,5) } });
 
-        // 6) Seed Reviews (one per product)
+        // ————— 6) Seed Reviews —————
         const reviewComments = [
             'Excellent!', 'Really good', 'Worth the price', 'Top performance',
             'Average', 'Solid build', 'Highly recommend', 'Good value',
             'Fantastic', 'Very pleased'
         ];
+
         const reviewsData = createdProducts.map((prod, i) => ({
             user:    userIds[i % userIds.length],
-            product: productIds[i],
-            rating:  [5,4,4,5,3,4,5,4,5,4][i],
-            comment: reviewComments[i]
+            product: prod._id,
+            // pick rating from 1–5 (or from your small array via modulo)
+            rating:  reviewComments.length
+                ? [5,4,4,5,3,4,5,4,5,4][i % reviewComments.length]
+                : Math.floor(Math.random() * 5) + 1,
+            comment: reviewComments[i % reviewComments.length]
         }));
         await Review.insertMany(reviewsData);
 

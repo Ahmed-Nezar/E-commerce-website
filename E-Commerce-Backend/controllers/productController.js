@@ -1,20 +1,102 @@
 // controllers/productController.js
 const { Product, User} = require('../config/db');
 
-// @desc    Fetch all products with optional filters
-// @route   GET /api/products
+
+exports.getCategories = async (req, res, next) => {
+    try {
+        const categories = await Product.distinct('category');
+        console.log(categories);
+        res.status(200).json(categories);
+    } catch (err) {
+        next(err);
+    }
+}
+
+// GET /api/products/getBrands?category=CPU
+exports.getBrands = async (req, res, next) => {
+    try {
+        const { category } = req.query;
+
+        let filter = {};
+        if (category) {
+            filter = {
+                category: { $regex: category, $options: 'i' }
+            }
+        }
+
+        // Apply a filter to the distinct query
+        const brands = await Product.distinct('brand', filter);
+
+        res.status(200).json(brands);
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+// @desc    Fetch all products with optional filters + pagination
+// @route   GET /api/products?page=&limit=&keyword=&category=&minPrice=&maxPrice=
 // @access  Public
 exports.getProducts = async (req, res, next) => {
     try {
-        const { keyword, category, minPrice, maxPrice } = req.query;
-        let filter = {};
-        if (keyword) filter.name = { $regex: keyword, $options: 'i' };
-        if (category) filter.category = category;
-        if (minPrice) filter.price = { ...filter.price, $gte: Number(minPrice) };
-        if (maxPrice) filter.price = { ...filter.price, $lte: Number(maxPrice) };
+        const {
+            page:  pageQ,
+            limit: limitQ,
+            keyword,
+            category,
+            brand,
+            minPrice,
+            maxPrice,
+            stock,
+            sortPrice,  // 'lowToHigh' OR 'highToLow'
+            sortName,   // 'nameAsc' OR 'nameDesc'
+            sortRating  // 'lowToHigh' OR 'highToLow'
+        } = req.query;
 
-        const products = await Product.find(filter);
-        res.json(products);
+        // Pagination
+        const page  = Math.max(1, parseInt(pageQ, 10)  || 1);
+        const limit = Math.max(1, parseInt(limitQ, 10) || 10);
+        const skip  = (page - 1) * limit;
+
+        // Filter
+        const filter = {};
+        if (keyword)  filter.name     = { $regex: keyword, $options: 'i' };
+        if (category) filter.category = { $regex: category, $options: 'i' }; // ← added options:i
+        if (brand)    filter.brand    = { $regex: brand, $options: 'i' };
+        if (stock)    filter.stock    = { $gte: 1 };
+        if (minPrice || maxPrice) {
+            filter.price = {};
+            if (minPrice) filter.price.$gte = +minPrice;
+            if (maxPrice) filter.price.$lte = +maxPrice;
+        }
+
+        // Sort
+        const sort = {};
+        if (sortPrice) {
+            sort.price = sortPrice === 'lowToHigh' ? 1 : -1;
+        }
+        if (sortName) {
+            sort.name = sortName === 'nameAsc' ? 1 : -1;
+        }
+        if (sortRating) {
+            sort.rating = sortRating === 'lowToHigh' ? 1 : -1;
+        }
+
+        // Count
+        const totalNumberOfItems = await Product.countDocuments(filter);
+
+        // Fetch paginated + sorted
+        const data = await Product.find(filter)
+            .sort(sort)
+            .skip(skip)
+            .limit(limit);
+
+        res.json({
+            currentPage:  page,
+            totalPages:   Math.max(1, Math.ceil(totalNumberOfItems / limit)),
+            totalNumberOfItems,
+            data,
+        });
     } catch (err) {
         next(err);
     }
@@ -99,11 +181,31 @@ exports.deleteProduct = async (req, res, next) => {
 
 // ——— Wishlist endpoints (user only) ———
 
-// GET /api/products/wishlist
+// @desc    Get paginated wishlist
+// @route   GET /api/products/wishlist?page=&limit=
+// @access  User
 exports.getWishlist = async (req, res, next) => {
     try {
-        const user = await User.findById(req.user._id).populate('wishList');
-        res.json(user.wishList);
+        const page  = Math.max(1, parseInt(req.query.page, 10)  || 1);
+        const limit = Math.max(1, parseInt(req.query.limit, 10) || 10);
+        const skip  = (page - 1) * limit;
+
+        // load full wishlist
+        const user = await User.findById(req.user._id);
+        const wishlistIds = user.wishList;
+
+        const totalNumberOfItems = wishlistIds.length;
+        const slice = wishlistIds.slice(skip, skip + limit);
+
+        // populate just the page
+        const data = await Product.find({ _id: { $in: slice } });
+
+        res.json({
+            currentPage:  page,
+            totalPages:   Math.max(1, Math.ceil(totalNumberOfItems / limit)),
+            totalNumberOfItems,
+            data,
+        });
     } catch (err) {
         next(err);
     }

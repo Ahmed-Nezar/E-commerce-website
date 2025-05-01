@@ -72,7 +72,7 @@ const fetchData = async (
         if (category) query.append("category", selectedCategories.join("|"));
         if (sortVal) query.append("sortQuery", sortVal);
         if (inStockOnly) query.append("stock", inStockOnly.toString());
-        if (selectedBrands.length > 0) query.append("brands", selectedBrands.join("|"));
+        if (selectedBrands.length > 0) query.append("brand", selectedBrands.join("|"));
         if (fromPrice) query.append("minPrice", fromPrice.toString());
         if (toPrice) query.append("maxPrice", toPrice.toString());
         query.append("limit", "12");

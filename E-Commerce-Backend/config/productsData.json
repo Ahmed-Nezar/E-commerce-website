@@ -1,17 +1,17 @@
 [
   {
     "name": "A4Tech Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "A4Tech",
     "description": "A4Tech high-performance gaming motherboard",
     "price": 315.93,
     "image": "/images/products-backend/A4Tech_Motherboards.jpg",
-    "stock": 13,
+    "stock": 0,
     "rating": 4.6
   },
   {
     "name": "Acer Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "Acer",
     "description": "Acer high-performance gaming motherboard",
     "price": 137.1,
@@ -21,7 +21,7 @@
   },
   {
     "name": "ADATA Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "ADATA",
     "description": "ADATA high-performance gaming motherboard",
     "price": 385.16,
@@ -31,7 +31,7 @@
   },
   {
     "name": "Aero Cool Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "Aero Cool",
     "description": "Aero Cool high-performance gaming motherboard",
     "price": 133.84,
@@ -41,7 +41,7 @@
   },
   {
     "name": "amd Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "amd",
     "description": "amd high-performance gaming motherboard",
     "price": 225.48,
@@ -51,7 +51,7 @@
   },
   {
     "name": "Antec Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "Antec",
     "description": "Antec high-performance gaming motherboard",
     "price": 243.33,
@@ -61,7 +61,7 @@
   },
   {
     "name": "AOC Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "AOC",
     "description": "AOC high-performance gaming motherboard",
     "price": 398.72,
@@ -71,7 +71,7 @@
   },
   {
     "name": "ARCTIC Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "ARCTIC",
     "description": "ARCTIC high-performance gaming motherboard",
     "price": 288.78,
@@ -81,7 +81,7 @@
   },
   {
     "name": "ARKTEK Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "ARKTEK",
     "description": "ARKTEK high-performance gaming motherboard",
     "price": 117.32,
@@ -91,7 +91,7 @@
   },
   {
     "name": "ASROCK Gaming Motherboard",
-    "category": "Motherboards",
+    "category": "Motherboard",
     "brand": "ASROCK",
     "description": "ASROCK high-performance gaming motherboard",
     "price": 266.14,
@@ -401,7 +401,7 @@
   },
   {
     "name": "GAMMA 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "GAMMA",
     "description": "GAMMA high-performance 1tb ssd",
     "price": 241.32,
@@ -411,7 +411,7 @@
   },
   {
     "name": "Gigabyte 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "Gigabyte",
     "description": "Gigabyte high-performance 1tb ssd",
     "price": 235.91,
@@ -421,7 +421,7 @@
   },
   {
     "name": "GIGAMAX 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "GIGAMAX",
     "description": "GIGAMAX high-performance 1tb ssd",
     "price": 164.49,
@@ -431,7 +431,7 @@
   },
   {
     "name": "Glorious 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "Glorious",
     "description": "Glorious high-performance 1tb ssd",
     "price": 279.67,
@@ -441,7 +441,7 @@
   },
   {
     "name": "HelloGanss 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "HelloGanss",
     "description": "HelloGanss high-performance 1tb ssd",
     "price": 174.83,
@@ -451,7 +451,7 @@
   },
   {
     "name": "HIKVISION 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "HIKVISION",
     "description": "HIKVISION high-performance 1tb ssd",
     "price": 74.4,
@@ -461,7 +461,7 @@
   },
   {
     "name": "HIS 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "HIS",
     "description": "HIS high-performance 1tb ssd",
     "price": 288.48,
@@ -471,7 +471,7 @@
   },
   {
     "name": "HK GAMING 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "HK GAMING",
     "description": "HK GAMING high-performance 1tb ssd",
     "price": 62.72,
@@ -481,7 +481,7 @@
   },
   {
     "name": "HP 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "HP",
     "description": "HP high-performance 1tb ssd",
     "price": 250.08,
@@ -491,7 +491,7 @@
   },
   {
     "name": "HyperX 1TB SSD",
-    "category": "Storages",
+    "category": "Storage",
     "brand": "HyperX",
     "description": "HyperX high-performance 1tb ssd",
     "price": 243.65,
@@ -601,7 +601,7 @@
   },
   {
     "name": "Mad Catz ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "Mad Catz",
     "description": "Mad Catz high-performance atx tower case",
     "price": 99.01,
@@ -611,7 +611,7 @@
   },
   {
     "name": "MARVO ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "MARVO",
     "description": "MARVO high-performance atx tower case",
     "price": 170.98,
@@ -621,7 +621,7 @@
   },
   {
     "name": "Marvo Scorpion ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "Marvo Scorpion",
     "description": "Marvo Scorpion high-performance atx tower case",
     "price": 179.98,
@@ -631,7 +631,7 @@
   },
   {
     "name": "Meetion ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "Meetion",
     "description": "Meetion high-performance atx tower case",
     "price": 70.77,
@@ -641,7 +641,7 @@
   },
   {
     "name": "Mercury ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "Mercury",
     "description": "Mercury high-performance atx tower case",
     "price": 96.88,
@@ -651,7 +651,7 @@
   },
   {
     "name": "Microsoft ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "Microsoft",
     "description": "Microsoft high-performance atx tower case",
     "price": 120.1,
@@ -661,7 +661,7 @@
   },
   {
     "name": "MSI ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "MSI",
     "description": "MSI high-performance atx tower case",
     "price": 67.57,
@@ -671,7 +671,7 @@
   },
   {
     "name": "Noctua ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "Noctua",
     "description": "Noctua high-performance atx tower case",
     "price": 84.19,
@@ -681,7 +681,7 @@
   },
   {
     "name": "NUBWO ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "NUBWO",
     "description": "NUBWO high-performance atx tower case",
     "price": 160.47,
@@ -691,7 +691,7 @@
   },
   {
     "name": "NZXT ATX Tower Case",
-    "category": "Cases",
+    "category": "Case",
     "brand": "NZXT",
     "description": "NZXT high-performance atx tower case",
     "price": 179.83,
@@ -701,7 +701,7 @@
   },
   {
     "name": "Obinslab Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "Obinslab",
     "description": "Obinslab high-performance mechanical keyboard",
     "price": 50.21,
@@ -711,7 +711,7 @@
   },
   {
     "name": "ONIKUMA Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "ONIKUMA",
     "description": "ONIKUMA high-performance mechanical keyboard",
     "price": 95.32,
@@ -721,7 +721,7 @@
   },
   {
     "name": "Palit Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "Palit",
     "description": "Palit high-performance mechanical keyboard",
     "price": 113.42,
@@ -731,7 +731,7 @@
   },
   {
     "name": "Patriot Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "Patriot",
     "description": "Patriot high-performance mechanical keyboard",
     "price": 147.71,
@@ -741,7 +741,7 @@
   },
   {
     "name": "Phillips Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "Phillips",
     "description": "Phillips high-performance mechanical keyboard",
     "price": 49.51,
@@ -751,7 +751,7 @@
   },
   {
     "name": "PNY Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "PNY",
     "description": "PNY high-performance mechanical keyboard",
     "price": 147.12,
@@ -761,7 +761,7 @@
   },
   {
     "name": "PowerColor Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "PowerColor",
     "description": "PowerColor high-performance mechanical keyboard",
     "price": 41.77,
@@ -771,7 +771,7 @@
   },
   {
     "name": "QNAP Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "QNAP",
     "description": "QNAP high-performance mechanical keyboard",
     "price": 124.5,
@@ -781,7 +781,7 @@
   },
   {
     "name": "Raidmax Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "Raidmax",
     "description": "Raidmax high-performance mechanical keyboard",
     "price": 60.56,
@@ -791,7 +791,7 @@
   },
   {
     "name": "Razer Mechanical Keyboard",
-    "category": "Keyboards",
+    "category": "Keyboard",
     "brand": "Razer",
     "description": "Razer high-performance mechanical keyboard",
     "price": 59.16,
@@ -1001,7 +1001,7 @@
   },
   {
     "name": "Transcend 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "Transcend",
     "description": "Transcend high-performance 27\" gaming monitor",
     "price": 568.42,
@@ -1011,7 +1011,7 @@
   },
   {
     "name": "TwinMos 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "TwinMos",
     "description": "TwinMos high-performance 27\" gaming monitor",
     "price": 479.36,
@@ -1021,7 +1021,7 @@
   },
   {
     "name": "UGreen 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "UGreen",
     "description": "UGreen high-performance 27\" gaming monitor",
     "price": 431.63,
@@ -1031,7 +1031,7 @@
   },
   {
     "name": "Vento 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "Vento",
     "description": "Vento high-performance 27\" gaming monitor",
     "price": 410.17,
@@ -1041,7 +1041,7 @@
   },
   {
     "name": "View Sonic 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "View Sonic",
     "description": "View Sonic high-performance 27\" gaming monitor",
     "price": 214.57,
@@ -1051,7 +1051,7 @@
   },
   {
     "name": "WD 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "WD",
     "description": "WD high-performance 27\" gaming monitor",
     "price": 599.27,
@@ -1061,7 +1061,7 @@
   },
   {
     "name": "X Rocker 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "X Rocker",
     "description": "X Rocker high-performance 27\" gaming monitor",
     "price": 238.45,
@@ -1071,7 +1071,7 @@
   },
   {
     "name": "Xander 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "Xander",
     "description": "Xander high-performance 27\" gaming monitor",
     "price": 567.67,
@@ -1081,7 +1081,7 @@
   },
   {
     "name": "XFX 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "XFX",
     "description": "XFX high-performance 27\" gaming monitor",
     "price": 209.52,
@@ -1091,7 +1091,7 @@
   },
   {
     "name": "XIBERIA 27\" Gaming Monitor",
-    "category": "Monitors",
+    "category": "Monitor",
     "brand": "XIBERIA",
     "description": "XIBERIA high-performance 27\" gaming monitor",
     "price": 250.03,
@@ -1202,7 +1202,7 @@
   { "name": "NVIDIA RTX 4090",      "category": "GPU",         "brand": "NVIDIA",   "description": "Top-tier gaming GPU",      "price": 1599.99, "image": "/images/products-backend/RTX_4090.jpg",       "stock": 5,  "rating": 4.9 },
   { "name": "AMD Ryzen 9 7950X",     "category": "CPU",         "brand": "AMD",      "description": "16-core desktop CPU",      "price": 699.99,  "image": "/images/products-backend/Ryzen9_7950X.jpg",     "stock": 10, "rating": 4.8 },
   { "name": "Samsung 980 Pro 1TB",    "category": "Storage",     "brand": "Samsung",  "description": "High-speed NVMe SSD",      "price": 149.99,  "image": "/images/products-backend/SSD_980_Pro_1TB.jpg",      "stock": 20, "rating": 4.7 },
-  { "name": "Corsair Vengeance 16GB", "category": "Memory",      "brand": "Corsair",  "description": "DDR5 RAM kit",             "price": 129.99,  "image": "/images/products-backend/Vengeance_16GB.jpg",  "stock": 15, "rating": 4.6 },
+  { "name": "Corsair Vengeance 16GB", "category": "RAM",      "brand": "Corsair",  "description": "DDR5 RAM kit",             "price": 129.99,  "image": "/images/products-backend/Vengeance_16GB.jpg",  "stock": 15, "rating": 4.6 },
   { "name": "ASUS ROG Strix B650E",   "category": "Motherboard", "brand": "ASUS",     "description": "AM5 ATX motherboard",      "price": 279.99,  "image": "/images/products-backend/ROG_B650E.jpg",      "stock": 8,  "rating": 4.5 },
   { "name": "Seasonic Prime TX-850", "category": "PSU",         "brand": "Seasonic", "description": "850W Platinum PSU",        "price": 189.99,  "image": "/images/products-backend/Prime_TX-850.jpg",   "stock": 12, "rating": 4.8 },
   { "name": "Lian Li O11 Dynamic",   "category": "Case",        "brand": "Lian Li",  "description": "Tempered glass ATX case",  "price": 149.99,  "image": "/images/products-backend/O11_Dynamic.jpg",    "stock": 7,  "rating": 4.7 },

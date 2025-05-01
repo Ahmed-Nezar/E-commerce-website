@@ -5,8 +5,7 @@ const { Product, User} = require('../config/db');
 exports.getCategories = async (req, res, next) => {
     try {
         const categories = await Product.distinct('category');
-        console.log(categories);
-        res.status(200).json(categories);
+        res.status(200).json({data: categories});
     } catch (err) {
         next(err);
     }
@@ -27,7 +26,7 @@ exports.getBrands = async (req, res, next) => {
         // Apply a filter to the distinct query
         const brands = await Product.distinct('brand', filter);
 
-        res.status(200).json(brands);
+        res.status(200).json({data: brands});
     } catch (err) {
         next(err);
     }

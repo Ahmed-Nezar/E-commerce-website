@@ -5,7 +5,7 @@
     "brand": "A4Tech",
     "description": "A4Tech high-performance gaming motherboard",
     "price": 315.93,
-    "image": "/images/A4Tech_Motherboards.jpg",
+    "image": "/images/products-backend/A4Tech_Motherboards.jpg",
     "stock": 13,
     "rating": 4.6
   },
@@ -15,7 +15,7 @@
     "brand": "Acer",
     "description": "Acer high-performance gaming motherboard",
     "price": 137.1,
-    "image": "/images/Acer_Motherboards.jpg",
+    "image": "/images/products-backend/Acer_Motherboards.jpg",
     "stock": 7,
     "rating": 4.1
   },
@@ -25,7 +25,7 @@
     "brand": "ADATA",
     "description": "ADATA high-performance gaming motherboard",
     "price": 385.16,
-    "image": "/images/ADATA_Motherboards.jpg",
+    "image": "/images/products-backend/ADATA_Motherboards.jpg",
     "stock": 11,
     "rating": 4.4
   },
@@ -35,7 +35,7 @@
     "brand": "Aero Cool",
     "description": "Aero Cool high-performance gaming motherboard",
     "price": 133.84,
-    "image": "/images/Aero_Cool_Motherboards.jpg",
+    "image": "/images/products-backend/Aero_Cool_Motherboards.jpg",
     "stock": 9,
     "rating": 5.0
   },
@@ -45,7 +45,7 @@
     "brand": "amd",
     "description": "amd high-performance gaming motherboard",
     "price": 225.48,
-    "image": "/images/amd_Motherboards.jpg",
+    "image": "/images/products-backend/amd_Motherboards.jpg",
     "stock": 16,
     "rating": 4.0
   },
@@ -55,7 +55,7 @@
     "brand": "Antec",
     "description": "Antec high-performance gaming motherboard",
     "price": 243.33,
-    "image": "/images/Antec_Motherboards.jpg",
+    "image": "/images/products-backend/Antec_Motherboards.jpg",
     "stock": 9,
     "rating": 4.6
   },
@@ -65,7 +65,7 @@
     "brand": "AOC",
     "description": "AOC high-performance gaming motherboard",
     "price": 398.72,
-    "image": "/images/AOC_Motherboards.jpg",
+    "image": "/images/products-backend/AOC_Motherboards.jpg",
     "stock": 16,
     "rating": 4.2
   },
@@ -75,7 +75,7 @@
     "brand": "ARCTIC",
     "description": "ARCTIC high-performance gaming motherboard",
     "price": 288.78,
-    "image": "/images/ARCTIC_Motherboards.jpg",
+    "image": "/images/products-backend/ARCTIC_Motherboards.jpg",
     "stock": 5,
     "rating": 4.9
   },
@@ -85,7 +85,7 @@
     "brand": "ARKTEK",
     "description": "ARKTEK high-performance gaming motherboard",
     "price": 117.32,
-    "image": "/images/ARKTEK_Motherboards.jpg",
+    "image": "/images/products-backend/ARKTEK_Motherboards.jpg",
     "stock": 19,
     "rating": 4.1
   },
@@ -95,7 +95,7 @@
     "brand": "ASROCK",
     "description": "ASROCK high-performance gaming motherboard",
     "price": 266.14,
-    "image": "/images/ASROCK_Motherboards.jpg",
+    "image": "/images/products-backend/ASROCK_Motherboards.jpg",
     "stock": 21,
     "rating": 4.9
   },
@@ -105,7 +105,7 @@
     "brand": "Asus",
     "description": "Asus high-performance desktop processor",
     "price": 629.34,
-    "image": "/images/Asus_CPU.jpg",
+    "image": "/images/products-backend/Asus_CPU.jpg",
     "stock": 14,
     "rating": 4.5
   },
@@ -115,7 +115,7 @@
     "brand": "AULA",
     "description": "AULA high-performance desktop processor",
     "price": 796.15,
-    "image": "/images/AULA_CPU.jpg",
+    "image": "/images/products-backend/AULA_CPU.jpg",
     "stock": 11,
     "rating": 4.0
   },
@@ -125,7 +125,7 @@
     "brand": "AVerMedia",
     "description": "AVerMedia high-performance desktop processor",
     "price": 424.15,
-    "image": "/images/AVerMedia_CPU.jpg",
+    "image": "/images/products-backend/AVerMedia_CPU.jpg",
     "stock": 23,
     "rating": 3.7
   },
@@ -135,7 +135,7 @@
     "brand": "BenQ",
     "description": "BenQ high-performance desktop processor",
     "price": 422.38,
-    "image": "/images/BenQ_CPU.jpg",
+    "image": "/images/products-backend/BenQ_CPU.jpg",
     "stock": 12,
     "rating": 3.8
   },
@@ -145,7 +145,7 @@
     "brand": "Bitfenix",
     "description": "Bitfenix high-performance desktop processor",
     "price": 479.57,
-    "image": "/images/Bitfenix_CPU.jpg",
+    "image": "/images/products-backend/Bitfenix_CPU.jpg",
     "stock": 21,
     "rating": 4.5
   },
@@ -155,7 +155,7 @@
     "brand": "Blue - Yeti",
     "description": "Blue - Yeti high-performance desktop processor",
     "price": 633.48,
-    "image": "/images/Blue_-_Yeti_CPU.jpg",
+    "image": "/images/products-backend/Blue_-_Yeti_CPU.jpg",
     "stock": 25,
     "rating": 3.8
   },
@@ -165,7 +165,7 @@
     "brand": "coolermaster",
     "description": "coolermaster high-performance desktop processor",
     "price": 689.74,
-    "image": "/images/coolermaster_CPU.jpg",
+    "image": "/images/products-backend/coolermaster_CPU.jpg",
     "stock": 17,
     "rating": 4.0
   },
@@ -175,7 +175,7 @@
     "brand": "Corsair",
     "description": "Corsair high-performance desktop processor",
     "price": 356.98,
-    "image": "/images/Corsair_CPU.jpg",
+    "image": "/images/products-backend/Corsair_CPU.jpg",
     "stock": 25,
     "rating": 4.9
   },
@@ -185,7 +185,7 @@
     "brand": "Cougar",
     "description": "Cougar high-performance desktop processor",
     "price": 513.03,
-    "image": "/images/Cougar_CPU.jpg",
+    "image": "/images/products-backend/Cougar_CPU.jpg",
     "stock": 19,
     "rating": 5.0
   },
@@ -195,7 +195,7 @@
     "brand": "Creative",
     "description": "Creative high-performance desktop processor",
     "price": 389.29,
-    "image": "/images/Creative_CPU.jpg",
+    "image": "/images/products-backend/Creative_CPU.jpg",
     "stock": 13,
     "rating": 4.2
   },
@@ -205,7 +205,7 @@
     "brand": "Crucial",
     "description": "Crucial high-performance graphics card",
     "price": 1274.62,
-    "image": "/images/Crucial_GPU.jpg",
+    "image": "/images/products-backend/Crucial_GPU.jpg",
     "stock": 19,
     "rating": 4.5
   },
@@ -215,7 +215,7 @@
     "brand": "CRYORIG",
     "description": "CRYORIG high-performance graphics card",
     "price": 761.56,
-    "image": "/images/CRYORIG_GPU.jpg",
+    "image": "/images/products-backend/CRYORIG_GPU.jpg",
     "stock": 16,
     "rating": 4.5
   },
@@ -225,7 +225,7 @@
     "brand": "D-Link",
     "description": "D-Link high-performance graphics card",
     "price": 433.17,
-    "image": "/images/D-Link_GPU.jpg",
+    "image": "/images/products-backend/D-Link_GPU.jpg",
     "stock": 23,
     "rating": 4.4
   },
@@ -235,7 +235,7 @@
     "brand": "DAHUA",
     "description": "DAHUA high-performance graphics card",
     "price": 1210.28,
-    "image": "/images/DAHUA_GPU.jpg",
+    "image": "/images/products-backend/DAHUA_GPU.jpg",
     "stock": 18,
     "rating": 4.0
   },
@@ -245,7 +245,7 @@
     "brand": "darkFlash",
     "description": "darkFlash high-performance graphics card",
     "price": 992.17,
-    "image": "/images/darkFlash_GPU.jpg",
+    "image": "/images/products-backend/darkFlash_GPU.jpg",
     "stock": 21,
     "rating": 4.7
   },
@@ -255,7 +255,7 @@
     "brand": "DATOTEC",
     "description": "DATOTEC high-performance graphics card",
     "price": 435.79,
-    "image": "/images/DATOTEC_GPU.jpg",
+    "image": "/images/products-backend/DATOTEC_GPU.jpg",
     "stock": 25,
     "rating": 3.7
   },
@@ -265,7 +265,7 @@
     "brand": "DEEPCOOL",
     "description": "DEEPCOOL high-performance graphics card",
     "price": 1008.24,
-    "image": "/images/DEEPCOOL_GPU.jpg",
+    "image": "/images/products-backend/DEEPCOOL_GPU.jpg",
     "stock": 23,
     "rating": 4.8
   },
@@ -275,7 +275,7 @@
     "brand": "Dell",
     "description": "Dell high-performance graphics card",
     "price": 1444.79,
-    "image": "/images/Dell_GPU.jpg",
+    "image": "/images/products-backend/Dell_GPU.jpg",
     "stock": 14,
     "rating": 3.7
   },
@@ -285,7 +285,7 @@
     "brand": "Dierya",
     "description": "Dierya high-performance graphics card",
     "price": 1459.38,
-    "image": "/images/Dierya_GPU.jpg",
+    "image": "/images/products-backend/Dierya_GPU.jpg",
     "stock": 16,
     "rating": 4.3
   },
@@ -295,7 +295,7 @@
     "brand": "DUCKY",
     "description": "DUCKY high-performance graphics card",
     "price": 1321.08,
-    "image": "/images/DUCKY_GPU.jpg",
+    "image": "/images/products-backend/DUCKY_GPU.jpg",
     "stock": 10,
     "rating": 4.1
   },
@@ -305,7 +305,7 @@
     "brand": "DXRACER",
     "description": "DXRACER high-performance ddr5 ram kit",
     "price": 191.33,
-    "image": "/images/DXRACER_RAM.jpg",
+    "image": "/images/products-backend/DXRACER_RAM.jpg",
     "stock": 24,
     "rating": 4.9
   },
@@ -315,7 +315,7 @@
     "brand": "Elgato",
     "description": "Elgato high-performance ddr5 ram kit",
     "price": 52.13,
-    "image": "/images/Elgato_RAM.jpg",
+    "image": "/images/products-backend/Elgato_RAM.jpg",
     "stock": 8,
     "rating": 4.7
   },
@@ -325,7 +325,7 @@
     "brand": "Enermax",
     "description": "Enermax high-performance ddr5 ram kit",
     "price": 58.78,
-    "image": "/images/Enermax_RAM.jpg",
+    "image": "/images/products-backend/Enermax_RAM.jpg",
     "stock": 16,
     "rating": 3.6
   },
@@ -335,7 +335,7 @@
     "brand": "EVGA",
     "description": "EVGA high-performance ddr5 ram kit",
     "price": 68.81,
-    "image": "/images/EVGA_RAM.jpg",
+    "image": "/images/products-backend/EVGA_RAM.jpg",
     "stock": 10,
     "rating": 4.9
   },
@@ -345,7 +345,7 @@
     "brand": "extra",
     "description": "extra high-performance ddr5 ram kit",
     "price": 66.15,
-    "image": "/images/extra_RAM.jpg",
+    "image": "/images/products-backend/extra_RAM.jpg",
     "stock": 6,
     "rating": 4.4
   },
@@ -355,7 +355,7 @@
     "brand": "FSP",
     "description": "FSP high-performance ddr5 ram kit",
     "price": 168.36,
-    "image": "/images/FSP_RAM.jpg",
+    "image": "/images/products-backend/FSP_RAM.jpg",
     "stock": 18,
     "rating": 4.2
   },
@@ -365,7 +365,7 @@
     "brand": "G.Skill",
     "description": "G.Skill high-performance ddr5 ram kit",
     "price": 174.18,
-    "image": "/images/G.Skill_RAM.jpg",
+    "image": "/images/products-backend/G.Skill_RAM.jpg",
     "stock": 18,
     "rating": 3.8
   },
@@ -375,7 +375,7 @@
     "brand": "Gainward",
     "description": "Gainward high-performance ddr5 ram kit",
     "price": 168.5,
-    "image": "/images/Gainward_RAM.jpg",
+    "image": "/images/products-backend/Gainward_RAM.jpg",
     "stock": 23,
     "rating": 4.1
   },
@@ -385,7 +385,7 @@
     "brand": "GALAX",
     "description": "GALAX high-performance ddr5 ram kit",
     "price": 182.92,
-    "image": "/images/GALAX_RAM.jpg",
+    "image": "/images/products-backend/GALAX_RAM.jpg",
     "stock": 11,
     "rating": 4.0
   },
@@ -395,7 +395,7 @@
     "brand": "GAMDIAS",
     "description": "GAMDIAS high-performance ddr5 ram kit",
     "price": 115.49,
-    "image": "/images/GAMDIAS_RAM.jpg",
+    "image": "/images/products-backend/GAMDIAS_RAM.jpg",
     "stock": 17,
     "rating": 3.6
   },
@@ -405,7 +405,7 @@
     "brand": "GAMMA",
     "description": "GAMMA high-performance 1tb ssd",
     "price": 241.32,
-    "image": "/images/GAMMA_Storages.jpg",
+    "image": "/images/products-backend/GAMMA_Storages.jpg",
     "stock": 10,
     "rating": 3.8
   },
@@ -415,7 +415,7 @@
     "brand": "Gigabyte",
     "description": "Gigabyte high-performance 1tb ssd",
     "price": 235.91,
-    "image": "/images/Gigabyte_Storages.jpg",
+    "image": "/images/products-backend/Gigabyte_Storages.jpg",
     "stock": 7,
     "rating": 4.8
   },
@@ -425,7 +425,7 @@
     "brand": "GIGAMAX",
     "description": "GIGAMAX high-performance 1tb ssd",
     "price": 164.49,
-    "image": "/images/GIGAMAX_Storages.jpg",
+    "image": "/images/products-backend/GIGAMAX_Storages.jpg",
     "stock": 10,
     "rating": 3.7
   },
@@ -435,7 +435,7 @@
     "brand": "Glorious",
     "description": "Glorious high-performance 1tb ssd",
     "price": 279.67,
-    "image": "/images/Glorious_Storages.jpg",
+    "image": "/images/products-backend/Glorious_Storages.jpg",
     "stock": 20,
     "rating": 3.8
   },
@@ -445,7 +445,7 @@
     "brand": "HelloGanss",
     "description": "HelloGanss high-performance 1tb ssd",
     "price": 174.83,
-    "image": "/images/HelloGanss_Storages.jpg",
+    "image": "/images/products-backend/HelloGanss_Storages.jpg",
     "stock": 19,
     "rating": 4.5
   },
@@ -455,7 +455,7 @@
     "brand": "HIKVISION",
     "description": "HIKVISION high-performance 1tb ssd",
     "price": 74.4,
-    "image": "/images/HIKVISION_Storages.jpg",
+    "image": "/images/products-backend/HIKVISION_Storages.jpg",
     "stock": 15,
     "rating": 4.4
   },
@@ -465,7 +465,7 @@
     "brand": "HIS",
     "description": "HIS high-performance 1tb ssd",
     "price": 288.48,
-    "image": "/images/HIS_Storages.jpg",
+    "image": "/images/products-backend/HIS_Storages.jpg",
     "stock": 16,
     "rating": 3.9
   },
@@ -475,7 +475,7 @@
     "brand": "HK GAMING",
     "description": "HK GAMING high-performance 1tb ssd",
     "price": 62.72,
-    "image": "/images/HK_GAMING_Storages.jpg",
+    "image": "/images/products-backend/HK_GAMING_Storages.jpg",
     "stock": 6,
     "rating": 5.0
   },
@@ -485,7 +485,7 @@
     "brand": "HP",
     "description": "HP high-performance 1tb ssd",
     "price": 250.08,
-    "image": "/images/HP_Storages.jpg",
+    "image": "/images/products-backend/HP_Storages.jpg",
     "stock": 9,
     "rating": 5.0
   },
@@ -495,7 +495,7 @@
     "brand": "HyperX",
     "description": "HyperX high-performance 1tb ssd",
     "price": 243.65,
-    "image": "/images/HyperX_Storages.jpg",
+    "image": "/images/products-backend/HyperX_Storages.jpg",
     "stock": 15,
     "rating": 4.6
   },
@@ -505,7 +505,7 @@
     "brand": "INNO3D",
     "description": "INNO3D high-performance 750w power supply",
     "price": 147.92,
-    "image": "/images/INNO3D_PSU.jpg",
+    "image": "/images/products-backend/INNO3D_PSU.jpg",
     "stock": 16,
     "rating": 4.3
   },
@@ -515,7 +515,7 @@
     "brand": "Intel",
     "description": "Intel high-performance 750w power supply",
     "price": 88.97,
-    "image": "/images/Intel_PSU.jpg",
+    "image": "/images/products-backend/Intel_PSU.jpg",
     "stock": 22,
     "rating": 3.8
   },
@@ -525,7 +525,7 @@
     "brand": "Kingston",
     "description": "Kingston high-performance 750w power supply",
     "price": 184.55,
-    "image": "/images/Kingston_PSU.jpg",
+    "image": "/images/products-backend/Kingston_PSU.jpg",
     "stock": 16,
     "rating": 3.9
   },
@@ -535,7 +535,7 @@
     "brand": "Lenovo",
     "description": "Lenovo high-performance 750w power supply",
     "price": 96.55,
-    "image": "/images/Lenovo_PSU.jpg",
+    "image": "/images/products-backend/Lenovo_PSU.jpg",
     "stock": 24,
     "rating": 4.8
   },
@@ -545,7 +545,7 @@
     "brand": "LEPA",
     "description": "LEPA high-performance 750w power supply",
     "price": 104.69,
-    "image": "/images/LEPA_PSU.jpg",
+    "image": "/images/products-backend/LEPA_PSU.jpg",
     "stock": 9,
     "rating": 4.5
   },
@@ -555,7 +555,7 @@
     "brand": "Lexar",
     "description": "Lexar high-performance 750w power supply",
     "price": 244.61,
-    "image": "/images/Lexar_PSU.jpg",
+    "image": "/images/products-backend/Lexar_PSU.jpg",
     "stock": 12,
     "rating": 4.3
   },
@@ -565,7 +565,7 @@
     "brand": "LG",
     "description": "LG high-performance 750w power supply",
     "price": 176.03,
-    "image": "/images/LG_PSU.jpg",
+    "image": "/images/products-backend/LG_PSU.jpg",
     "stock": 25,
     "rating": 4.3
   },
@@ -575,7 +575,7 @@
     "brand": "Lian Li",
     "description": "Lian Li high-performance 750w power supply",
     "price": 192.07,
-    "image": "/images/Lian_Li_PSU.jpg",
+    "image": "/images/products-backend/Lian_Li_PSU.jpg",
     "stock": 7,
     "rating": 3.6
   },
@@ -585,7 +585,7 @@
     "brand": "LITEON",
     "description": "LITEON high-performance 750w power supply",
     "price": 241.53,
-    "image": "/images/LITEON_PSU.jpg",
+    "image": "/images/products-backend/LITEON_PSU.jpg",
     "stock": 8,
     "rating": 4.0
   },
@@ -595,7 +595,7 @@
     "brand": "logitech",
     "description": "logitech high-performance 750w power supply",
     "price": 211.66,
-    "image": "/images/logitech_PSU.jpg",
+    "image": "/images/products-backend/logitech_PSU.jpg",
     "stock": 25,
     "rating": 4.1
   },
@@ -605,7 +605,7 @@
     "brand": "Mad Catz",
     "description": "Mad Catz high-performance atx tower case",
     "price": 99.01,
-    "image": "/images/Mad_Catz_Cases.jpg",
+    "image": "/images/products-backend/Mad_Catz_Cases.jpg",
     "stock": 7,
     "rating": 4.6
   },
@@ -615,7 +615,7 @@
     "brand": "MARVO",
     "description": "MARVO high-performance atx tower case",
     "price": 170.98,
-    "image": "/images/MARVO_Cases.jpg",
+    "image": "/images/products-backend/MARVO_Cases.jpg",
     "stock": 10,
     "rating": 4.9
   },
@@ -625,7 +625,7 @@
     "brand": "Marvo Scorpion",
     "description": "Marvo Scorpion high-performance atx tower case",
     "price": 179.98,
-    "image": "/images/Marvo_Scorpion_Cases.jpg",
+    "image": "/images/products-backend/Marvo_Scorpion_Cases.jpg",
     "stock": 8,
     "rating": 4.7
   },
@@ -635,7 +635,7 @@
     "brand": "Meetion",
     "description": "Meetion high-performance atx tower case",
     "price": 70.77,
-    "image": "/images/Meetion_Cases.jpg",
+    "image": "/images/products-backend/Meetion_Cases.jpg",
     "stock": 18,
     "rating": 4.5
   },
@@ -645,7 +645,7 @@
     "brand": "Mercury",
     "description": "Mercury high-performance atx tower case",
     "price": 96.88,
-    "image": "/images/Mercury_Cases.jpg",
+    "image": "/images/products-backend/Mercury_Cases.jpg",
     "stock": 8,
     "rating": 4.2
   },
@@ -655,7 +655,7 @@
     "brand": "Microsoft",
     "description": "Microsoft high-performance atx tower case",
     "price": 120.1,
-    "image": "/images/Microsoft_Cases.jpg",
+    "image": "/images/products-backend/Microsoft_Cases.jpg",
     "stock": 12,
     "rating": 4.9
   },
@@ -665,7 +665,7 @@
     "brand": "MSI",
     "description": "MSI high-performance atx tower case",
     "price": 67.57,
-    "image": "/images/MSI_Cases.jpg",
+    "image": "/images/products-backend/MSI_Cases.jpg",
     "stock": 6,
     "rating": 4.8
   },
@@ -675,7 +675,7 @@
     "brand": "Noctua",
     "description": "Noctua high-performance atx tower case",
     "price": 84.19,
-    "image": "/images/Noctua_Cases.jpg",
+    "image": "/images/products-backend/Noctua_Cases.jpg",
     "stock": 6,
     "rating": 3.7
   },
@@ -685,7 +685,7 @@
     "brand": "NUBWO",
     "description": "NUBWO high-performance atx tower case",
     "price": 160.47,
-    "image": "/images/NUBWO_Cases.jpg",
+    "image": "/images/products-backend/NUBWO_Cases.jpg",
     "stock": 16,
     "rating": 4.3
   },
@@ -695,7 +695,7 @@
     "brand": "NZXT",
     "description": "NZXT high-performance atx tower case",
     "price": 179.83,
-    "image": "/images/NZXT_Cases.jpg",
+    "image": "/images/products-backend/NZXT_Cases.jpg",
     "stock": 15,
     "rating": 3.6
   },
@@ -705,7 +705,7 @@
     "brand": "Obinslab",
     "description": "Obinslab high-performance mechanical keyboard",
     "price": 50.21,
-    "image": "/images/Obinslab_Keyboards.jpg",
+    "image": "/images/products-backend/Obinslab_Keyboards.jpg",
     "stock": 25,
     "rating": 3.9
   },
@@ -715,7 +715,7 @@
     "brand": "ONIKUMA",
     "description": "ONIKUMA high-performance mechanical keyboard",
     "price": 95.32,
-    "image": "/images/ONIKUMA_Keyboards.jpg",
+    "image": "/images/products-backend/ONIKUMA_Keyboards.jpg",
     "stock": 17,
     "rating": 4.1
   },
@@ -725,7 +725,7 @@
     "brand": "Palit",
     "description": "Palit high-performance mechanical keyboard",
     "price": 113.42,
-    "image": "/images/Palit_Keyboards.jpg",
+    "image": "/images/products-backend/Palit_Keyboards.jpg",
     "stock": 17,
     "rating": 4.5
   },
@@ -735,7 +735,7 @@
     "brand": "Patriot",
     "description": "Patriot high-performance mechanical keyboard",
     "price": 147.71,
-    "image": "/images/Patriot_Keyboards.jpg",
+    "image": "/images/products-backend/Patriot_Keyboards.jpg",
     "stock": 12,
     "rating": 5.0
   },
@@ -745,7 +745,7 @@
     "brand": "Phillips",
     "description": "Phillips high-performance mechanical keyboard",
     "price": 49.51,
-    "image": "/images/Phillips_Keyboards.jpg",
+    "image": "/images/products-backend/Phillips_Keyboards.jpg",
     "stock": 17,
     "rating": 3.7
   },
@@ -755,7 +755,7 @@
     "brand": "PNY",
     "description": "PNY high-performance mechanical keyboard",
     "price": 147.12,
-    "image": "/images/PNY_Keyboards.jpg",
+    "image": "/images/products-backend/PNY_Keyboards.jpg",
     "stock": 5,
     "rating": 5.0
   },
@@ -765,7 +765,7 @@
     "brand": "PowerColor",
     "description": "PowerColor high-performance mechanical keyboard",
     "price": 41.77,
-    "image": "/images/PowerColor_Keyboards.jpg",
+    "image": "/images/products-backend/PowerColor_Keyboards.jpg",
     "stock": 14,
     "rating": 4.4
   },
@@ -775,7 +775,7 @@
     "brand": "QNAP",
     "description": "QNAP high-performance mechanical keyboard",
     "price": 124.5,
-    "image": "/images/QNAP_Keyboards.jpg",
+    "image": "/images/products-backend/QNAP_Keyboards.jpg",
     "stock": 18,
     "rating": 4.5
   },
@@ -785,7 +785,7 @@
     "brand": "Raidmax",
     "description": "Raidmax high-performance mechanical keyboard",
     "price": 60.56,
-    "image": "/images/Raidmax_Keyboards.jpg",
+    "image": "/images/products-backend/Raidmax_Keyboards.jpg",
     "stock": 24,
     "rating": 4.2
   },
@@ -795,7 +795,7 @@
     "brand": "Razer",
     "description": "Razer high-performance mechanical keyboard",
     "price": 59.16,
-    "image": "/images/Razer_Keyboards.jpg",
+    "image": "/images/products-backend/Razer_Keyboards.jpg",
     "stock": 12,
     "rating": 4.7
   },
@@ -805,7 +805,7 @@
     "brand": "Redragon",
     "description": "Redragon high-performance gaming mouse",
     "price": 35.29,
-    "image": "/images/Redragon_Mouse.jpg",
+    "image": "/images/products-backend/Redragon_Mouse.jpg",
     "stock": 9,
     "rating": 4.0
   },
@@ -815,7 +815,7 @@
     "brand": "ROCCAT",
     "description": "ROCCAT high-performance gaming mouse",
     "price": 71.48,
-    "image": "/images/ROCCAT_Mouse.jpg",
+    "image": "/images/products-backend/ROCCAT_Mouse.jpg",
     "stock": 5,
     "rating": 4.3
   },
@@ -825,7 +825,7 @@
     "brand": "Rosewill",
     "description": "Rosewill high-performance gaming mouse",
     "price": 76.95,
-    "image": "/images/Rosewill_Mouse.jpg",
+    "image": "/images/products-backend/Rosewill_Mouse.jpg",
     "stock": 14,
     "rating": 3.9
   },
@@ -835,7 +835,7 @@
     "brand": "Samsung",
     "description": "Samsung high-performance gaming mouse",
     "price": 59.18,
-    "image": "/images/Samsung_Mouse.jpg",
+    "image": "/images/products-backend/Samsung_Mouse.jpg",
     "stock": 5,
     "rating": 4.8
   },
@@ -845,7 +845,7 @@
     "brand": "SanDisk",
     "description": "SanDisk high-performance gaming mouse",
     "price": 65.24,
-    "image": "/images/SanDisk_Mouse.jpg",
+    "image": "/images/products-backend/SanDisk_Mouse.jpg",
     "stock": 18,
     "rating": 4.4
   },
@@ -855,7 +855,7 @@
     "brand": "SAPPHIRE",
     "description": "SAPPHIRE high-performance gaming mouse",
     "price": 75.08,
-    "image": "/images/SAPPHIRE_Mouse.jpg",
+    "image": "/images/products-backend/SAPPHIRE_Mouse.jpg",
     "stock": 8,
     "rating": 3.5
   },
@@ -865,7 +865,7 @@
     "brand": "Seagate",
     "description": "Seagate high-performance gaming mouse",
     "price": 37.98,
-    "image": "/images/Seagate_Mouse.jpg",
+    "image": "/images/products-backend/Seagate_Mouse.jpg",
     "stock": 15,
     "rating": 4.0
   },
@@ -875,7 +875,7 @@
     "brand": "Seasonic",
     "description": "Seasonic high-performance gaming mouse",
     "price": 24.05,
-    "image": "/images/Seasonic_Mouse.jpg",
+    "image": "/images/products-backend/Seasonic_Mouse.jpg",
     "stock": 22,
     "rating": 4.8
   },
@@ -885,7 +885,7 @@
     "brand": "Silicon Power",
     "description": "Silicon Power high-performance gaming mouse",
     "price": 26.45,
-    "image": "/images/Silicon_Power_Mouse.jpg",
+    "image": "/images/products-backend/Silicon_Power_Mouse.jpg",
     "stock": 6,
     "rating": 4.3
   },
@@ -895,7 +895,7 @@
     "brand": "SilverStone",
     "description": "SilverStone high-performance gaming mouse",
     "price": 69.36,
-    "image": "/images/SilverStone_Mouse.jpg",
+    "image": "/images/products-backend/SilverStone_Mouse.jpg",
     "stock": 17,
     "rating": 4.0
   },
@@ -905,7 +905,7 @@
     "brand": "SONY",
     "description": "SONY high-performance wired headset",
     "price": 30.98,
-    "image": "/images/SONY_Headsets.jpg",
+    "image": "/images/products-backend/SONY_Headsets.jpg",
     "stock": 9,
     "rating": 4.4
   },
@@ -915,7 +915,7 @@
     "brand": "SteelSeries",
     "description": "SteelSeries high-performance wired headset",
     "price": 61.12,
-    "image": "/images/SteelSeries_Headsets.jpg",
+    "image": "/images/products-backend/SteelSeries_Headsets.jpg",
     "stock": 21,
     "rating": 4.6
   },
@@ -925,7 +925,7 @@
     "brand": "T-DAGGER",
     "description": "T-DAGGER high-performance wired headset",
     "price": 116.86,
-    "image": "/images/T-DAGGER_Headsets.jpg",
+    "image": "/images/products-backend/T-DAGGER_Headsets.jpg",
     "stock": 15,
     "rating": 4.5
   },
@@ -935,7 +935,7 @@
     "brand": "Team Group",
     "description": "Team Group high-performance wired headset",
     "price": 111.16,
-    "image": "/images/Team_Group_Headsets.jpg",
+    "image": "/images/products-backend/Team_Group_Headsets.jpg",
     "stock": 15,
     "rating": 3.7
   },
@@ -945,7 +945,7 @@
     "brand": "TechnoZone",
     "description": "TechnoZone high-performance wired headset",
     "price": 41.52,
-    "image": "/images/TechnoZone_Headsets.jpg",
+    "image": "/images/products-backend/TechnoZone_Headsets.jpg",
     "stock": 25,
     "rating": 3.7
   },
@@ -955,7 +955,7 @@
     "brand": "THERMALRIGHT",
     "description": "THERMALRIGHT high-performance wired headset",
     "price": 28.22,
-    "image": "/images/THERMALRIGHT_Headsets.jpg",
+    "image": "/images/products-backend/THERMALRIGHT_Headsets.jpg",
     "stock": 9,
     "rating": 3.7
   },
@@ -965,7 +965,7 @@
     "brand": "thermaltake",
     "description": "thermaltake high-performance wired headset",
     "price": 63.44,
-    "image": "/images/thermaltake_Headsets.jpg",
+    "image": "/images/products-backend/thermaltake_Headsets.jpg",
     "stock": 10,
     "rating": 4.5
   },
@@ -975,7 +975,7 @@
     "brand": "Toshiba",
     "description": "Toshiba high-performance wired headset",
     "price": 99.3,
-    "image": "/images/Toshiba_Headsets.jpg",
+    "image": "/images/products-backend/Toshiba_Headsets.jpg",
     "stock": 14,
     "rating": 4.7
   },
@@ -985,7 +985,7 @@
     "brand": "TOTO LINK",
     "description": "TOTO LINK high-performance wired headset",
     "price": 43.23,
-    "image": "/images/TOTO_LINK_Headsets.jpg",
+    "image": "/images/products-backend/TOTO_LINK_Headsets.jpg",
     "stock": 8,
     "rating": 4.0
   },
@@ -995,7 +995,7 @@
     "brand": "TP-LINK",
     "description": "TP-LINK high-performance wired headset",
     "price": 92.36,
-    "image": "/images/TP-LINK_Headsets.jpg",
+    "image": "/images/products-backend/TP-LINK_Headsets.jpg",
     "stock": 9,
     "rating": 4.8
   },
@@ -1005,7 +1005,7 @@
     "brand": "Transcend",
     "description": "Transcend high-performance 27\" gaming monitor",
     "price": 568.42,
-    "image": "/images/Transcend_Monitors.jpg",
+    "image": "/images/products-backend/Transcend_Monitors.jpg",
     "stock": 21,
     "rating": 4.2
   },
@@ -1015,7 +1015,7 @@
     "brand": "TwinMos",
     "description": "TwinMos high-performance 27\" gaming monitor",
     "price": 479.36,
-    "image": "/images/TwinMos_Monitors.jpg",
+    "image": "/images/products-backend/TwinMos_Monitors.jpg",
     "stock": 20,
     "rating": 4.6
   },
@@ -1025,7 +1025,7 @@
     "brand": "UGreen",
     "description": "UGreen high-performance 27\" gaming monitor",
     "price": 431.63,
-    "image": "/images/UGreen_Monitors.jpg",
+    "image": "/images/products-backend/UGreen_Monitors.jpg",
     "stock": 13,
     "rating": 4.1
   },
@@ -1035,7 +1035,7 @@
     "brand": "Vento",
     "description": "Vento high-performance 27\" gaming monitor",
     "price": 410.17,
-    "image": "/images/Vento_Monitors.jpg",
+    "image": "/images/products-backend/Vento_Monitors.jpg",
     "stock": 12,
     "rating": 4.1
   },
@@ -1045,7 +1045,7 @@
     "brand": "View Sonic",
     "description": "View Sonic high-performance 27\" gaming monitor",
     "price": 214.57,
-    "image": "/images/View_Sonic_Monitors.jpg",
+    "image": "/images/products-backend/View_Sonic_Monitors.jpg",
     "stock": 15,
     "rating": 4.9
   },
@@ -1055,7 +1055,7 @@
     "brand": "WD",
     "description": "WD high-performance 27\" gaming monitor",
     "price": 599.27,
-    "image": "/images/WD_Monitors.jpg",
+    "image": "/images/products-backend/WD_Monitors.jpg",
     "stock": 13,
     "rating": 3.6
   },
@@ -1065,7 +1065,7 @@
     "brand": "X Rocker",
     "description": "X Rocker high-performance 27\" gaming monitor",
     "price": 238.45,
-    "image": "/images/X_Rocker_Monitors.jpg",
+    "image": "/images/products-backend/X_Rocker_Monitors.jpg",
     "stock": 15,
     "rating": 4.4
   },
@@ -1075,7 +1075,7 @@
     "brand": "Xander",
     "description": "Xander high-performance 27\" gaming monitor",
     "price": 567.67,
-    "image": "/images/Xander_Monitors.jpg",
+    "image": "/images/products-backend/Xander_Monitors.jpg",
     "stock": 25,
     "rating": 4.1
   },
@@ -1085,7 +1085,7 @@
     "brand": "XFX",
     "description": "XFX high-performance 27\" gaming monitor",
     "price": 209.52,
-    "image": "/images/XFX_Monitors.jpg",
+    "image": "/images/products-backend/XFX_Monitors.jpg",
     "stock": 9,
     "rating": 5.0
   },
@@ -1095,7 +1095,7 @@
     "brand": "XIBERIA",
     "description": "XIBERIA high-performance 27\" gaming monitor",
     "price": 250.03,
-    "image": "/images/XIBERIA_Monitors.jpg",
+    "image": "/images/products-backend/XIBERIA_Monitors.jpg",
     "stock": 12,
     "rating": 4.4
   },
@@ -1105,7 +1105,7 @@
     "brand": "XIGMATEK",
     "description": "XIGMATEK high-performance liquid cpu cooler",
     "price": 42.93,
-    "image": "/images/XIGMATEK_Coolers.jpg",
+    "image": "/images/products-backend/XIGMATEK_Coolers.jpg",
     "stock": 12,
     "rating": 3.8
   },
@@ -1115,7 +1115,7 @@
     "brand": "XPG",
     "description": "XPG high-performance liquid cpu cooler",
     "price": 191.43,
-    "image": "/images/XPG_Coolers.jpg",
+    "image": "/images/products-backend/XPG_Coolers.jpg",
     "stock": 16,
     "rating": 3.9
   },
@@ -1125,7 +1125,7 @@
     "brand": "YMDK",
     "description": "YMDK high-performance liquid cpu cooler",
     "price": 190.62,
-    "image": "/images/YMDK_Coolers.jpg",
+    "image": "/images/products-backend/YMDK_Coolers.jpg",
     "stock": 8,
     "rating": 3.7
   },
@@ -1135,7 +1135,7 @@
     "brand": "YooMa",
     "description": "YooMa high-performance liquid cpu cooler",
     "price": 165.14,
-    "image": "/images/YooMa_Coolers.jpg",
+    "image": "/images/products-backend/YooMa_Coolers.jpg",
     "stock": 7,
     "rating": 4.9
   },
@@ -1145,7 +1145,7 @@
     "brand": "ZALMAN",
     "description": "ZALMAN high-performance liquid cpu cooler",
     "price": 114.36,
-    "image": "/images/ZALMAN_Coolers.jpg",
+    "image": "/images/products-backend/ZALMAN_Coolers.jpg",
     "stock": 17,
     "rating": 3.6
   },
@@ -1155,7 +1155,7 @@
     "brand": "Zotac",
     "description": "Zotac high-performance liquid cpu cooler",
     "price": 61.26,
-    "image": "/images/Zotac_Coolers.jpg",
+    "image": "/images/products-backend/Zotac_Coolers.jpg",
     "stock": 22,
     "rating": 4.3
   },
@@ -1165,7 +1165,7 @@
     "brand": "A4Tech",
     "description": "A4Tech high-performance liquid cpu cooler",
     "price": 138.93,
-    "image": "/images/A4Tech_Coolers.jpg",
+    "image": "/images/products-backend/A4Tech_Coolers.jpg",
     "stock": 12,
     "rating": 4.8
   },
@@ -1175,7 +1175,7 @@
     "brand": "Acer",
     "description": "Acer high-performance liquid cpu cooler",
     "price": 66.38,
-    "image": "/images/Acer_Coolers.jpg",
+    "image": "/images/products-backend/Acer_Coolers.jpg",
     "stock": 10,
     "rating": 4.9
   },
@@ -1185,7 +1185,7 @@
     "brand": "ADATA",
     "description": "ADATA high-performance liquid cpu cooler",
     "price": 133.63,
-    "image": "/images/ADATA_Coolers.jpg",
+    "image": "/images/products-backend/ADATA_Coolers.jpg",
     "stock": 9,
     "rating": 4.3
   },
@@ -1195,18 +1195,18 @@
     "brand": "Aero Cool",
     "description": "Aero Cool high-performance liquid cpu cooler",
     "price": 139.54,
-    "image": "/images/Aero_Cool_Coolers.jpg",
+    "image": "/images/products-backend/Aero_Cool_Coolers.jpg",
     "stock": 15,
     "rating": 3.9
   },
-  { "name": "NVIDIA RTX 4090",      "category": "GPU",         "brand": "NVIDIA",   "description": "Top-tier gaming GPU",      "price": 1599.99, "image": "/images/RTX_4090.jpg",       "stock": 5,  "rating": 4.9 },
-  { "name": "AMD Ryzen 9 7950X",     "category": "CPU",         "brand": "AMD",      "description": "16-core desktop CPU",      "price": 699.99,  "image": "/images/Ryzen9_7950X.jpg",     "stock": 10, "rating": 4.8 },
-  { "name": "Samsung 980 Pro 1TB",    "category": "Storage",     "brand": "Samsung",  "description": "High-speed NVMe SSD",      "price": 149.99,  "image": "/images/SSD_980_Pro_1TB.jpg",      "stock": 20, "rating": 4.7 },
-  { "name": "Corsair Vengeance 16GB", "category": "Memory",      "brand": "Corsair",  "description": "DDR5 RAM kit",             "price": 129.99,  "image": "/images/Vengeance_16GB.jpg",  "stock": 15, "rating": 4.6 },
-  { "name": "ASUS ROG Strix B650E",   "category": "Motherboard", "brand": "ASUS",     "description": "AM5 ATX motherboard",      "price": 279.99,  "image": "/images/ROG_B650E.jpg",      "stock": 8,  "rating": 4.5 },
-  { "name": "Seasonic Prime TX-850", "category": "PSU",         "brand": "Seasonic", "description": "850W Platinum PSU",        "price": 189.99,  "image": "/images/Prime_TX-850.jpg",   "stock": 12, "rating": 4.8 },
-  { "name": "Lian Li O11 Dynamic",   "category": "Case",        "brand": "Lian Li",  "description": "Tempered glass ATX case",  "price": 149.99,  "image": "/images/O11_Dynamic.jpg",    "stock": 7,  "rating": 4.7 },
-  { "name": "LG UltraGear 27GN950",   "category": "Monitor",     "brand": "LG",       "description": "4K 144Hz gaming monitor",  "price": 799.99,  "image": "/images/LG_UltraGear.jpg",       "stock": 6,  "rating": 4.6 },
-  { "name": "Keychron K8 Pro",       "category": "Keyboard",    "brand": "Keychron", "description": "Wireless mechanical keyboard", "price": 129.99, "image": "/images/K8_Pro.jpg",        "stock": 18, "rating": 4.5 },
-  { "name": "Logitech G502 Hero",    "category": "Mouse",       "brand": "Logitech", "description": "Wired gaming mouse",       "price": 49.99,   "image": "/images/G502_Hero.jpg",     "stock": 25, "rating": 4.8 }
+  { "name": "NVIDIA RTX 4090",      "category": "GPU",         "brand": "NVIDIA",   "description": "Top-tier gaming GPU",      "price": 1599.99, "image": "/images/products-backend/RTX_4090.jpg",       "stock": 5,  "rating": 4.9 },
+  { "name": "AMD Ryzen 9 7950X",     "category": "CPU",         "brand": "AMD",      "description": "16-core desktop CPU",      "price": 699.99,  "image": "/images/products-backend/Ryzen9_7950X.jpg",     "stock": 10, "rating": 4.8 },
+  { "name": "Samsung 980 Pro 1TB",    "category": "Storage",     "brand": "Samsung",  "description": "High-speed NVMe SSD",      "price": 149.99,  "image": "/images/products-backend/SSD_980_Pro_1TB.jpg",      "stock": 20, "rating": 4.7 },
+  { "name": "Corsair Vengeance 16GB", "category": "Memory",      "brand": "Corsair",  "description": "DDR5 RAM kit",             "price": 129.99,  "image": "/images/products-backend/Vengeance_16GB.jpg",  "stock": 15, "rating": 4.6 },
+  { "name": "ASUS ROG Strix B650E",   "category": "Motherboard", "brand": "ASUS",     "description": "AM5 ATX motherboard",      "price": 279.99,  "image": "/images/products-backend/ROG_B650E.jpg",      "stock": 8,  "rating": 4.5 },
+  { "name": "Seasonic Prime TX-850", "category": "PSU",         "brand": "Seasonic", "description": "850W Platinum PSU",        "price": 189.99,  "image": "/images/products-backend/Prime_TX-850.jpg",   "stock": 12, "rating": 4.8 },
+  { "name": "Lian Li O11 Dynamic",   "category": "Case",        "brand": "Lian Li",  "description": "Tempered glass ATX case",  "price": 149.99,  "image": "/images/products-backend/O11_Dynamic.jpg",    "stock": 7,  "rating": 4.7 },
+  { "name": "LG UltraGear 27GN950",   "category": "Monitor",     "brand": "LG",       "description": "4K 144Hz gaming monitor",  "price": 799.99,  "image": "/images/products-backend/LG_UltraGear.jpg",       "stock": 6,  "rating": 4.6 },
+  { "name": "Keychron K8 Pro",       "category": "Keyboard",    "brand": "Keychron", "description": "Wireless mechanical keyboard", "price": 129.99, "image": "/images/products-backend/K8_Pro.jpg",        "stock": 18, "rating": 4.5 },
+  { "name": "Logitech G502 Hero",    "category": "Mouse",       "brand": "Logitech", "description": "Wired gaming mouse",       "price": 49.99,   "image": "/images/products-backend/G502_Hero.jpg",     "stock": 25, "rating": 4.8 }
 ]

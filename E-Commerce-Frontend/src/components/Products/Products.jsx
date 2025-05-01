@@ -2,19 +2,15 @@ import {useState} from "react";
 import CustomBreadcrumbs from "../CustomBreadcrumbs/CustomBreadcrumbs.jsx";
 import ProductCard from "../ProductCard/ProductCard.jsx";
 import SelectComp from "../SelectComp/SelectComp.jsx";
-import SliderComp from "../SliderComp/SliderComp.jsx";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Typography from "@mui/material/Typography";
-import {Checkbox, FormControlLabel, Grid, FormGroup, Pagination} from "@mui/material";
+import { Grid,  Pagination} from "@mui/material";
 import Tilt from 'react-parallax-tilt';
-import { motion } from 'framer-motion';
+import {motion} from 'framer-motion';
 import "../Products/Products.css";
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from '../../context/CartContext';
+import Drawer from "../Drawer/Drawer.jsx";
+import Filter from "../Filter/Filter.jsx";
 
 const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -164,7 +160,9 @@ const Products = () => {
         }
     }, [sortVal, products]);
 
-    const [priceRange, setPriceRange] = useState([0, 999999]);
+    const [fromPrice, setFromPrice] = useState(0);
+    const [toPrice, setToPrice] = useState(999999);
+
     const [inStockOnly, setInStockOnly] = useState(false);
     const [selectedBrands, setSelectedBrands] = useState([]);
 
@@ -174,7 +172,7 @@ const Products = () => {
                 {/* Top Banner Image */}
                 <div className="d-grid align-content-center headerBG" style={{backgroundImage: `linear-gradient(to bottom, rgb(0 0 0 / 80%), rgb(1 63 181 / 80%)), `+
                 `url(${catImgs[cn.toLowerCase()]})`}}>
-                    <h1 className="text-white">{cn[0].toUpperCase()+cn.slice(1)}</h1>
+                    <h1 className="text-white" style={{fontSize: "inherit"}}>{cn[0].toUpperCase()+cn.slice(1)}</h1>
                 </div>
 
 
@@ -184,62 +182,30 @@ const Products = () => {
                         {
                             route: 'products',
                             title: 'Products',
+                        },{
+                            route: 'products/'+cn,
+                            title: cn[0].toUpperCase()+cn.slice(1),
                         }
                     ]} />
                 </div>
 
                 {/* Filters and Products Grid */}
                 <div className="d-grid mx-5 gap-6 body">
-
                     {/* Filters Sidebar */}
-                    <div className="col-lg-12 col-lg-4 mt-4 d-flex flex-column">
-                        <h1>Filter</h1>
-                        <div className="m-4">
-                            <Accordion sx={{margin: '1px 0 !important'}}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    id="panel1-header"
-                                >
-                                    <Typography component="span">Price</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <SliderComp min={0} max={999999} rangeText="EGP" sx={ "width: 65%" }/>
-                                </AccordionDetails>
-                            </Accordion>
-                            <Accordion sx={{margin: '1px 0 !important'}}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    id="panel2-header"
-                                >
-                                    <Typography component="span">Stock</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <FormGroup>
-                                        <FormControlLabel control={<Checkbox  />} label="In Stock" />
-                                    </FormGroup>
-                                </AccordionDetails>
-                            </Accordion>
-                            <Accordion sx={{margin: '1px 0 !important'}}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    id="panel2-header"
-                                >
-                                    <Typography component="span">Brand</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <FormGroup>
-                                        <FormControlLabel control={<Checkbox  />} label="Intel" />
-                                        <FormControlLabel  control={<Checkbox />} label="AMD" />
-                                    </FormGroup>
-                                </AccordionDetails>
-                            </Accordion>
-                        </div>
-                    </div>
+                    <Drawer>
+                        <Filter
+                            fromPrice={fromPrice}
+                            toPrice={toPrice}
+                            setFromPrice={setFromPrice}
+                            setToPrice={setToPrice}
+                            cn={cn}
+                        />
+                    </Drawer>
 
                     {/* Products Section */}
                     <div className="col-lg-12 col-lg-8 mt-4">
                         {/* Sort Control */}
-                        <div className="d-flex mb-5 me-4 justify-content-end">
+                        <div className="d-flex mb-5 mx-4 justify-content-end sort">
                             <SelectComp sortVal={sortVal} setSortVal={setSortVal}/>
                         </div>
 
@@ -247,6 +213,7 @@ const Products = () => {
                         <div className="d-grid gap-4 m-3 products-view justify-content-center">
                             {sortedProducts.map((product, index) => (
                                 <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
+                                    <div className="product-card">
                                     <motion.div
                                         variants={itemVariants}
                                         custom={index}
@@ -262,13 +229,14 @@ const Products = () => {
                                             transitionSpeed={1500}
                                             gyroscope={true}
                                         >
-                                            <ProductCard 
+                                            <ProductCard
                                                 product={product}
                                                 handleAddToCart={handleAddToCart}
                                                 addedItems={addedItems}
                                             />
                                         </Tilt>
                                     </motion.div>
+                                    </div>
                                 </Grid>
                             ))}
                         </div>

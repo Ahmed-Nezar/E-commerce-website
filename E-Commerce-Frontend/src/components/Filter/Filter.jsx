@@ -2,10 +2,32 @@
 import { Accordion, AccordionSummary, AccordionDetails, Typography, TextField, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function Filter({ fromPrice, toPrice, setFromPrice, setToPrice, cn }) {
+export default function Filter({   fromPrice, toPrice, setFromPrice, setToPrice, inStockOnly,
+                                   setInStockOnly, categories, selectedCategories, setSelectedBrands,
+                                   setSelectedCategories, brands, selectedBrands, cn}) {
     return (
         <>
             <h1>Filter</h1>
+            <button
+                onClick={() => {
+                    setFromPrice(0);
+                    setToPrice(999999);
+                    setInStockOnly(inStockOnly);
+                    setSelectedCategories([cn]);
+                    setSelectedBrands([]);
+                }}
+                style={{
+                    margin: '0.5rem 2rem',
+                    padding: '0.5rem 1rem',
+                    backgroundColor: '#d80000',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                }}
+            >
+                Clear All Filters
+            </button>
             <div className="m-4">
                 <Accordion sx={{margin: '1px 0 !important'}}>
                     <AccordionSummary
@@ -46,7 +68,11 @@ export default function Filter({ fromPrice, toPrice, setFromPrice, setToPrice, c
                     </AccordionSummary>
                     <AccordionDetails>
                         <FormGroup>
-                            <FormControlLabel control={<Checkbox  />} label="In Stock" />
+                            <FormControlLabel control={<Checkbox checked={
+                                inStockOnly
+                            }
+                            onChange={() => setInStockOnly(prev => !prev)}
+                            />} label="In Stock" />
                         </FormGroup>
                     </AccordionDetails>
                 </Accordion>
@@ -59,17 +85,21 @@ export default function Filter({ fromPrice, toPrice, setFromPrice, setToPrice, c
                     </AccordionSummary>
                     <AccordionDetails>
                         <FormGroup>
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "gpus"} />} label="GPUs" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "cpus"} />} label="CPUs" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "ram"} />} label="RAM" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "storage"} />} label="Storage" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "psus"} />} label="PSUs" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "networking"} />} label="Networking" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "cases"} />} label="Cases" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "keyboards"} />} label="Keyboards" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "mice"} />} label="Mice" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "headsets"} />} label="Headsets" />
-                            <FormControlLabel control={<Checkbox checked={cn.toLowerCase() === "monitors"} />} label="Monitors" />
+                            {categories.map((category) => (
+                                <FormControlLabel control={<Checkbox
+                                    checked={selectedCategories.includes(category)}
+                                    onChange={() => setSelectedCategories(prev => {
+                                        if (cn === category) {
+                                            return prev;
+                                        }
+                                        if (prev.includes(category)) {
+                                            return prev.filter((item) => item !== category);
+                                        } else {
+                                            return [...prev, category]
+                                        }
+                                    })}/>
+                                } key={category} label={category}/>
+                            ))}
                         </FormGroup>
                     </AccordionDetails>
                 </Accordion>
@@ -82,8 +112,17 @@ export default function Filter({ fromPrice, toPrice, setFromPrice, setToPrice, c
                     </AccordionSummary>
                     <AccordionDetails>
                         <FormGroup>
-                            <FormControlLabel control={<Checkbox  />} label="Intel" />
-                            <FormControlLabel  control={<Checkbox />} label="AMD" />
+                            {brands.map((brand) => (
+                                <FormControlLabel control={<Checkbox
+                                    checked={selectedBrands.includes(brand)}
+                                    onChange={() => setSelectedBrands(prev => {
+                                        if (prev.includes(brand)) {
+                                            return prev.filter((item) => item !== brand);
+                                        } else {
+                                            return [...prev, brand]
+                                        }
+                                    })}/>} key={brand} label={brand}/>
+                            ))}
                         </FormGroup>
                     </AccordionDetails>
                 </Accordion>

@@ -43,7 +43,7 @@ const CustomBreadcrumbs = ({locations}) => {
                 />
                 {
                     locations.map((location, index) => (
-                        <StyledBreadcrumb component={NavLink} to={`/${location.route}`} label={`${location.title}`}/>
+                        <StyledBreadcrumb component={NavLink} to={`/${location.route}`} label={`${location.title}`} key={location.title}/>
                     ))
                 }
             </Breadcrumbs>

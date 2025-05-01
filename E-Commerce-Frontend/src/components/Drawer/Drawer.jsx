@@ -16,7 +16,7 @@ const ResponsiveDrawer = ( {children} ) => {
 
     return (
         <div>
-            {windowWidth <= 652 ? (
+            {windowWidth <= 705 ? (
                 <>
                     <Button variant="contained" onClick={() => setDrawerOpen(true)} className="col-lg-12 col-lg-8 mt-4">
                         <FilterAltIcon />

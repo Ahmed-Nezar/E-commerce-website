@@ -16,7 +16,7 @@
     grid-template-columns: repeat(auto-fit, minmax(314px, 314px));
 }
 
-@media (max-width: 652px) {
+@media (max-width: 705px) {
     .body{
         grid-template-columns: 1fr;
     }

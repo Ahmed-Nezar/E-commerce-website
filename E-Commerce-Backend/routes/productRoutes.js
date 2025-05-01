@@ -12,10 +12,10 @@ router.post('/wishlist/:productId',   verify(), pc.addToWishlist);
 router.delete('/wishlist/:productId', verify(), pc.removeFromWishlist);
 
 // ——— Public endpoints ———
-router.get('/',                pc.getProducts);
-router.get('/getById/:id',     pc.getProductById);
-router.get('/getCategories',   pc.getCategories);
-router.get('/getBrands',       pc.getBrands);
+router.get('/',              pc.getProducts);
+router.get('/getById/:id',   pc.getProductById);
+router.get('/getCategories', pc.getCategories);
+router.get('/getBrands',     pc.getBrands);
 
 // ——— Admin-only endpoints ———
 router.post('/create',       verify('admin'), pc.createProduct);

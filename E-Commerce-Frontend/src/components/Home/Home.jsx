@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
 import {
   Box, Container, Typography, Grid,IconButton, Paper,
-  Fade, useTheme,
+  Fade,
 } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import MonitorIcon from '@mui/icons-material/Monitor';
 import MemoryIcon from '@mui/icons-material/Memory';
-import StorageIcon from '@mui/icons-material/Storage';
-import BatteryChargingFullIcon from '@mui/icons-material/BatteryChargingFull';
-import RouterIcon from '@mui/icons-material/Router';
-import ComputerIcon from '@mui/icons-material/Computer';
-import KeyboardIcon from '@mui/icons-material/Keyboard';
-import MouseIcon from '@mui/icons-material/Mouse';
-import HeadphonesIcon from '@mui/icons-material/Headphones';
+import { RiRam2Line } from "react-icons/ri";
 import { useCart } from '../../context/CartContext';
 import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
 import ProductCard from "../ProductCard/ProductCard.jsx";
 import { useNavigate } from 'react-router-dom';
+import {FiMonitor} from "react-icons/fi";
+import {BsDeviceHdd, BsGpuCard, BsMotherboard, BsMouse2} from "react-icons/bs";
+import {GiComputerFan} from "react-icons/gi";
+import {LiaHeadsetSolid} from "react-icons/lia";
+import {FaRegKeyboard} from "react-icons/fa";
+import {MdOutlinePower} from "react-icons/md";
+import {LuPcCase} from "react-icons/lu";
 
 const Home = () => {
   const { addToCart } = useCart();
@@ -44,16 +44,18 @@ const Home = () => {
   ];
 
   const partCategories = [
-    { icon: <MonitorIcon sx={{ fontSize: 40 }} />, name: 'Monitors' },
-    { icon: <MemoryIcon sx={{ fontSize: 40 }} />, name: 'GPUs' },
-    { icon: <StorageIcon sx={{ fontSize: 40 }} />, name: 'Storage' },
-    { icon: <BatteryChargingFullIcon sx={{ fontSize: 40 }} />, name: 'PSUs' },
-    { icon: <RouterIcon sx={{ fontSize: 40 }} />, name: 'Networking' },
-    { icon: <ComputerIcon sx={{ fontSize: 40 }} />, name: 'Cases' },
-    { icon: <KeyboardIcon sx={{ fontSize: 40 }} />, name: 'Keyboards' },
-    { icon: <MouseIcon sx={{ fontSize: 40 }} />, name: 'Mice' },
-    { icon: <HeadphonesIcon sx={{ fontSize: 40 }} />, name: 'Headsets' },
-    { icon: <MemoryIcon sx={{ fontSize: 40 }} />, name: 'CPUs' },
+    { icon: <BsMotherboard style={{ fontSize: '40px' }} />, name: 'Motherboards'},
+    { icon: <MemoryIcon style={{ fontSize: '40px' }} />, name: 'CPUs' },
+    { icon: <BsGpuCard style={{ fontSize: '40px' }} />, name: 'GPUs' },
+    { icon: <RiRam2Line style={{ fontSize: '40px' }} />, name: 'RAMs' },
+    { icon: <FiMonitor style={{ fontSize: '40px' }} />, name: 'Monitors' },
+    { icon: <BsDeviceHdd style={{ fontSize: '40px' }} />, name: 'Storages' },
+    { icon: <MdOutlinePower style={{ fontSize: '40px' }} />, name: 'PSUs' },
+    { icon: <LuPcCase style={{ fontSize: '40px' }} />, name: 'Cases' },
+    { icon: <FaRegKeyboard style={{ fontSize: '40px' }} />, name: 'Keyboards' },
+    { icon: <BsMouse2 style={{ fontSize: '40px' }} />, name: 'Mice' },
+    { icon: <LiaHeadsetSolid style={{ fontSize: '40px', transform: 'scaleX(-1)'}} />, name: 'Headsets' },
+    { icon: <GiComputerFan style={{ fontSize: '40px' }}/>, name: 'Coolers'}
   ];
 
   const [newReleases] = useState([
@@ -383,7 +385,7 @@ const Home = () => {
                     minWidth: 180,
                     flex: '0 0 auto',
                   }}
-                  onClick={() => navigate(`/products/${category.name.toLowerCase()}`, { state : { category: category.name } })}
+                  onClick={() => navigate(`/products/${category.name}`, { state : { category: category.name } })}
                 >
                   <Paper
                     elevation={0}
@@ -432,7 +434,7 @@ const Home = () => {
                     minWidth: 180,
                     flex: '0 0 auto',
                   }}
-                  onClick={() => navigate(`/products/${category.name.toLowerCase()}`, { state : { category: category.name } })}
+                  onClick={() => navigate(`/products/${category.name}`, { state : { category: category.name } })}
                 >
                   <Paper
                     elevation={0}

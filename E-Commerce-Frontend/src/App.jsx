@@ -35,6 +35,7 @@ function App() {
                         <Route path="/forgot-password" element={<ForgotPassword/>}/>
                         <Route path="/cart" element={<Cart/>}/>
                         <Route path="/checkout" element={<Checkout/>}/>
+                        <Route path="/products" element={<Products/>}/>
                         <Route path="/products/:cn" element={<Products/>}/>
                     </Routes>
                 </div>

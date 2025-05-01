@@ -47,9 +47,7 @@ exports.getProducts = async (req, res, next) => {
             minPrice,
             maxPrice,
             stock,
-            sortPrice,  // 'lowToHigh' OR 'highToLow'
-            sortName,   // 'nameAsc' OR 'nameDesc'
-            sortRating  // 'lowToHigh' OR 'highToLow'
+            sortQuery,  // 'lowToHigh' OR 'highToLow' OR 'nameAsc' OR 'nameDesc' OR 'ratingHigh' OR 'ratingLow'
         } = req.query;
 
         // Pagination
@@ -62,23 +60,23 @@ exports.getProducts = async (req, res, next) => {
         if (keyword)  filter.name     = { $regex: keyword, $options: 'i' };
         if (category) filter.category = { $regex: category, $options: 'i' }; // ← added options:i
         if (brand)    filter.brand    = { $regex: brand, $options: 'i' };
-        if (stock)    filter.stock    = { $gte: 1 };
+        if (stock && (stock === "true"))    filter.stock  = { $gt: 0 };
         if (minPrice || maxPrice) {
             filter.price = {};
             if (minPrice) filter.price.$gte = +minPrice;
             if (maxPrice) filter.price.$lte = +maxPrice;
         }
 
-        // Sort
+        // Sort name, price, rating
         const sort = {};
-        if (sortPrice) {
-            sort.price = sortPrice === 'lowToHigh' ? 1 : -1;
+        if (sortQuery === 'lowToHigh' || sortQuery === 'highToLow') {
+            sort.price = sortQuery === 'lowToHigh' ? 1 : -1;
         }
-        if (sortName) {
-            sort.name = sortName === 'nameAsc' ? 1 : -1;
+        if (sortQuery === 'nameAsc' || sortQuery === 'nameDesc') {
+            sort.name = sortQuery === 'nameAsc' ? 1 : -1;
         }
-        if (sortRating) {
-            sort.rating = sortRating === 'lowToHigh' ? 1 : -1;
+        if (sortQuery === 'ratingLow' || sortQuery === 'ratingHigh') {
+            sort.rating = sortQuery === 'ratingLow' ? 1 : -1;
         }
 
         // Count
@@ -86,6 +84,7 @@ exports.getProducts = async (req, res, next) => {
 
         // Fetch paginated + sorted
         const data = await Product.find(filter)
+            .collation({ locale: 'en', strength: 1 }) // <- enables case-insensitive sorting
             .sort(sort)
             .skip(skip)
             .limit(limit);

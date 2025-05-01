@@ -113,9 +113,9 @@ exports.getProductById = async (req, res, next) => {
         }
         const product = await Product.findById(pid);
         if (product) {
-            res.status(200).json(product);
+            res.status(200).json({ data: product});
         } else {
-            res.status(404).json({ message: 'Product not found' });
+            res.status(404).json({ error: 'Product not found' });
         }
     } catch (err) {
         next(err);
@@ -144,7 +144,7 @@ exports.updateProduct = async (req, res, next) => {
         const { name, price, description, category, brand, stock, image } = req.body;
         const product = await Product.findById(req.params.id);
         if (!product) {
-            res.status(404).json({ message: 'Product not found' });
+            res.status(404).json({ error: 'Product not found' });
         }
         product.name = name ?? product.name;
         product.price = price ?? product.price;
@@ -167,11 +167,11 @@ exports.deleteProduct = async (req, res, next) => {
     try {
         const pid = req.params.id;
         if (!pid) {
-            return  res.status(400).json({ message: 'Product id is missing' });
+            return  res.status(400).json({ error: 'Product id is missing' });
         }
         const product = await Product.findOneAndDelete({_id: pid});
         if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
+            return res.status(404).json({ error: 'Product not found' });
         }
         res.status(200).json({ message: 'Product deleted' });
     } catch (err) {
@@ -216,7 +216,7 @@ exports.addToWishlist = async (req, res, next) => {
     try {
         const { productId } = req.params;
         const prod = await Product.findById(productId);
-        if (!prod) return res.status(404).json({ message: 'Product not found' });
+        if (!prod) return res.status(404).json({ error: 'Product not found' });
 
         await User.findByIdAndUpdate(
             req.user._id,

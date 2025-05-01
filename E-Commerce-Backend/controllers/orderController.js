@@ -58,17 +58,19 @@ exports.getCart = async (req, res, next) => {
 
         // If no cart exists yet, return an empty shell
         if (!cart) {
-            return res.json({
-                user: req.user._id,
-                orderItems: [],
-                shippingAddress: {},
-                paymentMethod: '',
-                totalPrice: 0,
-                isPaid: false
+            return res.status(200).json({
+                data: {
+                    user: req.user._id,
+                    orderItems: [],
+                    shippingAddress: {},
+                    paymentMethod: '',
+                    totalPrice: 0,
+                    isPaid: false
+                }
             });
         }
 
-        res.json(cart);
+        res.status(200).json(cart);
     } catch (err) {
         next(err);
     }
@@ -81,7 +83,7 @@ exports.addToCart = async (req, res, next) => {
         const userId = req.user._id;
 
         const prod = await Product.findById(productId, 'price');
-        if (!prod) return res.status(404).json({ message: 'Product not found' });
+        if (!prod) return res.status(404).json({ error: 'Product not found' });
 
         // Single atomic update: if item exists, increment qty, else push new
         await Order.updateOne(
@@ -144,7 +146,7 @@ exports.addToCart = async (req, res, next) => {
         );
 
         const cart = await aggregateCart(userId);
-        res.json(cart);
+        res.status(200).json({data: cart});
     } catch (err) {
         next(err);
     }
@@ -176,7 +178,7 @@ exports.updateCartItem = async (req, res, next) => {
             }
         ]);
 
-        if (!oldItem) return res.status(404).json({ message: 'Item not in cart' });
+        if (!oldItem) return res.status(404).json({ error: 'Item not in cart' });
 
         const deltaQty = quantity - oldItem.quantity;
         const deltaPrice = deltaQty * oldItem.price;
@@ -199,7 +201,7 @@ exports.updateCartItem = async (req, res, next) => {
         }
 
         const cart = await aggregateCart(userId);
-        res.json(cart);
+        res.status(200).json({data: cart});
     } catch (err) {
         next(err);
     }
@@ -229,7 +231,7 @@ exports.removeCartItem = async (req, res, next) => {
             }
         ]);
 
-        if (!oldItem) return res.status(404).json({ message: 'Item not in cart' });
+        if (!oldItem) return res.status(404).json({ error: 'Item not in cart' });
 
         const decrement = oldItem.price * oldItem.quantity;
 
@@ -243,7 +245,7 @@ exports.removeCartItem = async (req, res, next) => {
         );
 
         const cart = await aggregateCart(userId);
-        res.json(cart);
+        res.status(200).json({data: cart});
     } catch (err) {
         next(err);
     }
@@ -279,7 +281,7 @@ exports.checkout = async (req, res, next) => {
         await order.save();
         await order.populate('orderItems.product');
 
-        return res.json({message: 'Order completed', order});
+        return res.status(200).json({message: 'Order completed', data: order});
     } catch (err) {
         next(err);
     }
@@ -332,7 +334,7 @@ exports.editPaidOrder = async (req, res, next) => {
         // Find the paid order belonging to the user
         const order = await Order.findOne({ _id: orderId, user: userId, isPaid: true });
         if (!order) {
-            return res.status(404).json({ message: 'Paid order not found' });
+            return res.status(404).json({ error: 'Paid order not found' });
         }
 
         // Update allowed fields
@@ -349,7 +351,7 @@ exports.editPaidOrder = async (req, res, next) => {
         await order.save();
         await order.populate('orderItems.product');
 
-        res.status(201).json({ message: 'Order updated', order });
+        res.status(201).json({ message: 'Order updated', data: order });
     } catch (err) {
         next(err);
     }

@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const reviewController = require('../controllers/reviewController');
+const verifyToken = require('../middlewares/VerifyToken');
 
-router.get('/review', (req, res) => {
-    res.send('Review Router');
-});
+router.post('/create', verifyToken(), reviewController.createReview);
+router.get('/get/:productId', reviewController.getReviews);
+router.put('/update/:reviewId', verifyToken(), reviewController.updateReview);
+router.delete('/delete/:reviewId', verifyToken(), reviewController.deleteReview);
 
 module.exports = router;
-

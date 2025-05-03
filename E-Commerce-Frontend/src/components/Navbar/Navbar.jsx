@@ -5,26 +5,32 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useCart } from '../../context/CartContext';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import "./Navbar.css";
+import { jwtDecode } from 'jwt-decode';
 
 const Navbar = ({reference}) => {
     const navigate = useNavigate();
     const { cartCount } = useCart();
     const [user, setUser] = useState(null);
+    const location = useLocation();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             try {
                 // Decode the JWT token
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                payload.name = payload.name?.split(' ').slice(0,2).join(' ');
+                const payload = jwtDecode(token);
                 setUser(payload);
             } catch (error) {
+                handleLogout();
                 console.error('Error decoding token:', error);
             }
+        } else if (user) {
+            setUser(null);
+            navigate('/');
         }
-    }, []);
+    }, [location.pathname]);
 
     const handleLogout = () => {
         localStorage.removeItem('token');

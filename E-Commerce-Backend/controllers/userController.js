@@ -123,33 +123,27 @@ exports.updateUser = async (req, res) => {
     }
 };
 
-// Get all users (Admin only)
 exports.getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find().select('-password');
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching users', error: error.message });
-    }
+  try {
+    const users = await User.find().select('-password');
+    res.status(200).json({ data: users });  
+  } catch (err) {
+    res.status(500).json({ message:'Error fetching users', error: err.message });
+  }
 };
 
-// Delete a user (Admin only)
 exports.deleteUser = async (req, res) => {
-    try {
-        const userId = req.params.id;
-        
-        if (!userId) {
-            return res.status(400).json({ message: 'User ID is required' });
-        }
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(400).json({ message:'Invalid user ID' });
 
-        const user = await User.findOneAndDelete(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+    const user = await User.findByIdAndDelete(id);
+    if (!user) return res.status(404).json({ message:'User not found' });
 
-        res.status(200).json({ message: 'User deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error deleting user', error: error.message });
-    }
+    res.status(204).json();
+  } catch (err) {
+    res.status(500).json({ message:'Error deleting user', error: err.message });
+  }
 };
 

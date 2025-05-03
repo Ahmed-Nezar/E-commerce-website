@@ -103,14 +103,15 @@ const AdminDashboard = () => {
     });
     const data = await response.json();
     setProducts(data.data || []);
-  };
-
+  };  
+  
   const fetchUsers = async () => {
     const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/users`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
-    setUsers(data || []);
+    // works whether your API returns {data:[…]} or just […]
+    setUsers(Array.isArray(data) ? data : data.data || []);
   };
 
   const fetchOrders = async () => {
@@ -420,9 +421,6 @@ const AdminDashboard = () => {
                     <TableCell>{user.gender}</TableCell>
                     <TableCell>{user.isAdmin ? 'Admin' : 'User'}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleOpenDialog('user', user)}>
-                        <EditIcon />
-                      </IconButton>
                       <IconButton onClick={() => handleDelete('user', user._id)}>
                         <DeleteIcon />
                       </IconButton>

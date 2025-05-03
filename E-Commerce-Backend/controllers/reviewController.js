@@ -65,6 +65,20 @@ exports.getReviews = async (req, res, next) => {
     }
 };
 
+// Get all reviews (admin only)
+exports.getAllReviews = async (req, res, next) => {
+    try {
+        const reviews = await Review.find()
+            .populate('user', 'name')
+            .populate('product', 'name')
+            .sort({ createdAt: -1 });
+        
+        res.status(200).json({ data: reviews });
+    } catch (err) {
+        next(err);
+    }
+};
+
 // Update a review
 exports.updateReview = async (req, res, next) => {
     try {

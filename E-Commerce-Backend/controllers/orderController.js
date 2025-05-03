@@ -357,3 +357,137 @@ exports.editPaidOrder = async (req, res, next) => {
     }
 };
 
+// ==========================
+// POST /api/orders
+// Create a new order
+// ==========================
+exports.createOrder = async (req, res, next) => {
+    try {
+        const { 
+            orderItems,
+            shippingAddress,
+            paymentMethod,
+            totalPrice
+        } = req.body;
+
+        if (!orderItems || !shippingAddress || !paymentMethod || !totalPrice) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        const order = new Order({
+            user: req.user._id,
+            orderItems,
+            shippingAddress,
+            paymentMethod,
+            totalPrice
+        });
+
+        const createdOrder = await order.save();
+        res.status(201).json({ data: createdOrder });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ==========================
+// GET /api/orders
+// Get all orders (admin only)
+// ==========================
+exports.getAllOrders = async (req, res, next) => {
+    try {
+        const orders = await Order.find()
+            .populate('user', 'name email')
+            .populate('orderItems.product', 'name price')
+            .sort({ createdAt: -1 });
+        res.status(200).json({ data: orders });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ==========================
+// GET /api/orders/user
+// Get user's orders
+// ==========================
+exports.getUserOrders = async (req, res, next) => {
+    try {
+        const orders = await Order.find({ user: req.user._id })
+            .populate('orderItems.product', 'name price image')
+            .sort({ createdAt: -1 });
+        res.status(200).json({ data: orders });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ==========================
+// GET /api/orders/:id
+// Get order by ID
+// ==========================
+exports.getOrderById = async (req, res, next) => {
+    try {
+        const order = await Order.findById(req.params.id)
+            .populate('user', 'name email')
+            .populate('orderItems.product', 'name price image');
+
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        // Check if the user is admin or the order belongs to the user
+        if (!req.user.isAdmin && order.user._id.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ error: 'Not authorized' });
+        }
+
+        res.status(200).json({ data: order });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ==========================
+// PUT /api/orders/:id
+// Update order status
+// ==========================
+exports.updateOrder = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { isPaid, isDelivered, status } = req.body;
+
+        const order = await Order.findById(id);
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        if (isPaid !== undefined) order.isPaid = isPaid;
+        if (isDelivered !== undefined) order.isDelivered = isDelivered;
+        if (status) order.status = status;
+
+        if (isPaid) order.paidAt = Date.now();
+        if (isDelivered) order.deliveredAt = Date.now();
+
+        const updatedOrder = await order.save();
+        res.status(200).json({ data: updatedOrder });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ==========================
+// DELETE /api/orders/:id
+// Delete order (admin only)
+// ==========================
+exports.deleteOrder = async (req, res, next) => {
+    try {
+        const order = await Order.findByIdAndDelete(req.params.id);
+        
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        res.status(200).json({ message: 'Order deleted successfully' });
+    } catch (err) {
+        next(err);
+    }
+};
+

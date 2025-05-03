@@ -1,34 +1,25 @@
 const express = require('express');
-const router  = express.Router();
-const oc = require('../controllers/orderController');
+const router = express.Router();
+const orderController = require('../controllers/orderController');
+const verifyToken = require('../middlewares/VerifyToken');
 
-router.get('/cart', oc.getCart);
-router.post('/cart', oc.addToCart);
-router.put('/cart/:productId', oc.updateCartItem);
-router.delete('/cart/:productId', oc.removeCartItem);
-router.post('/checkout', oc.checkout);
+// Cart operations
+router.get('/cart', verifyToken(), orderController.getCart);
+router.post('/cart', verifyToken(), orderController.addToCart);
+router.put('/cart/:productId', verifyToken(), orderController.updateCartItem);
+router.delete('/cart/:productId', verifyToken(), orderController.removeCartItem);
 
-// APIs for Paid Orders
-router.get('/history', oc.getOrderHistory); // View all paid orders (paginated)
-router.put('/:orderId', oc.editPaidOrder);  // Edit a specific paid order
+// Order operations
+router.post('/checkout', verifyToken(), orderController.checkout);
+router.get('/history', verifyToken(), orderController.getOrderHistory);
 
-/*
-    ----------------
-    ** Fully Tested:
-    ----------------
-    √ GET /cart without token → error (12 ms)
-    √ GET /cart → empty cart shell (86 ms)
-    √ POST /cart add invalid product → 404 (82 ms)
-    √ POST /cart → add prodA x2 (242 ms)
-    √ POST /cart → add prodB x1 (235 ms)
-    √ PUT /cart/:pid nonexistent → 404 (81 ms)
-    √ PUT /cart/:pid → update prodA to qty=5 (234 ms)
-    √ PUT /cart/:pid qty=0 → removes prodA (309 ms)
-    √ DELETE /cart/:pid nonexistent → 404 (81 ms)
-    √ DELETE /cart/:pid → remove prodB (468 ms)
-    √ POST /checkout with empty cart → 400 (81 ms)
-    √ Full flow: add then checkout (489 ms)
-    √ GET /cart after checkout → empty shell again (81 ms)
-*/
+// Admin routes
+router.get('/', verifyToken('admin'), orderController.getAllOrders);
+router.post('/', verifyToken(), orderController.createOrder);
+router.get('/user', verifyToken(), orderController.getUserOrders);
+router.get('/:id', verifyToken(), orderController.getOrderById);
+router.put('/:id', verifyToken('admin'), orderController.updateOrder);
+router.delete('/:id', verifyToken('admin'), orderController.deleteOrder);
+router.put('/:orderId', verifyToken(), orderController.editPaidOrder);
 
 module.exports = router;

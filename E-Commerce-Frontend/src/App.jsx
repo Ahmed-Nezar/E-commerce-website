@@ -9,6 +9,8 @@ import ForgotPassword from './components/Auth/ForgotPassword.jsx'
 import Cart from './components/Cart/Cart.jsx'
 import Checkout from './components/checkout/Checkout.jsx'
 import Home from './components/Home/Home.jsx'
+import AdminDashboard from './components/Admin/AdminDashboard.jsx'
+import AdminRoute from './components/Auth/AdminRoute.jsx'
 import { CartProvider } from './context/CartContext.jsx'
 export const ENV = import.meta.env;
 import Products from "./components/Products/Products.jsx";
@@ -37,6 +39,14 @@ function App() {
                         <Route path="/checkout" element={<Checkout/>}/>
                         <Route path="/products" element={<Products/>}/>
                         <Route path="/products/:cn" element={<Products/>}/>
+                        <Route 
+                            path="/admin" 
+                            element={
+                                <AdminRoute>
+                                    <AdminDashboard/>
+                                </AdminRoute>
+                            }
+                        />
                     </Routes>
                 </div>
                 <Footer/>

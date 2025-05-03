@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Typography, Button, Box, Container, Badge, IconButton,
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useCart } from '../../context/CartContext';
 import { useState, useEffect } from 'react';
 import "./Navbar.css";
@@ -69,6 +70,20 @@ const Navbar = ({reference}) => {
                         E-Commerce
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                        {user?.isAdmin && (
+                            <IconButton
+                                color="primary"
+                                onClick={() => navigate('/admin')}
+                                sx={{
+                                    transition: 'transform 0.2s ease',
+                                    '&:hover': {
+                                        transform: 'scale(1.1)',
+                                    }
+                                }}
+                            >
+                                <DashboardIcon sx={{ color: '#3D518C' }} />
+                            </IconButton>
+                        )}
                         <IconButton
                             color="primary"
                             onClick={() => navigate('/cart')}

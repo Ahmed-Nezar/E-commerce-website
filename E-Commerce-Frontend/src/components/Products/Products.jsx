@@ -52,6 +52,7 @@ const fetchData = async (
         if (category) brandQuery.append("category", selectedCategories.join("|"));
         // Fetch Brands
         const brandRes = await fetch(`${ENV.VITE_BACKEND_URL}/api/products/getBrands?${brandQuery.toString()}`).then(res => res.json());
+
         if(!brandRes.error) {
             setBrands(brandRes.data);
         } else {

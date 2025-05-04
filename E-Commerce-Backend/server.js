@@ -19,25 +19,28 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 connectDB().catch(e => console.error(e));
 
 const allowedOrigins = process.env.VITE_FRONTEND_URL.split(',').map(origin => origin.trim());
-function corsOptionsDelegate (origin, callback) {
-    // Check if the origin is in the allowedOrigins array
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-    } else {
-        callback(new Error('Not allowed by CORS'));
-    }
-}
 
 // CORS configuration
 const corsOptions = {
-    origin: corsOptionsDelegate,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, origin);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
 app.use(express.json()); // for JSON payloads
+
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+});
 
 // Middleware to serve static files from avatars directory
 app.use(
@@ -55,7 +58,7 @@ app.use(
     app.use('/api/products', productRoutes);
     app.use('/api/orders', verifyToken("user"), orderRoutes);
     app.use('/api/reviews', verifyToken("user"), reviewRoutes);
-    app.use('/api/coupons', verifyToken("admin"), couponRoutes);
+    app.use('/api/coupons', couponRoutes);
 
 // Error Handlers
 app.use(notFound);

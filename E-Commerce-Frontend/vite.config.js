@@ -6,5 +6,9 @@ export default defineConfig({
   // Point Vite at the monorepo root
   envDir: path.resolve(__dirname, '../'),
   plugins: [react()],
-  // …other config
+  server: {
+    allowedHosts: [
+      'assembled-casa-framed-proposition.trycloudflare.com'
+    ]
+  }
 });

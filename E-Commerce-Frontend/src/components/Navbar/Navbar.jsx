@@ -24,7 +24,6 @@ const Navbar = ({reference}) => {
                 setUser(payload);
             } catch (error) {
                 handleLogout();
-                console.error('Error decoding token:', error);
             }
         } else if (user) {
             setUser(null);

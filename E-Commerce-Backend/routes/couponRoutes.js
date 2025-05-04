@@ -1,12 +1,23 @@
-const express = require('express');
-const router = express.Router();
-const couponController = require('../controllers/couponController');
-const verifyToken = require('../middlewares/VerifyToken');
+const express       = require('express');
+const router        = express.Router();
+const verifyToken   = require('../middlewares/VerifyToken');
+const ctrl    = require('../controllers/couponController');
 
-router.get('/', verifyToken(), couponController.getCoupons);
-router.post('/create', verifyToken('admin'), couponController.createCoupon);
-router.put('/:id', verifyToken('admin'), couponController.updateCoupon);
-router.delete('/:id', verifyToken('admin'), couponController.deleteCoupon);
+// → any logged-in user can APPLY
+router.post('/apply', verifyToken(), ctrl.applyCoupon);
+
+// All coupon endpoints are admin‐only
+router.use(verifyToken('admin'));
+
+router
+    .route('/')
+    .get(ctrl.getCoupons)     // GET    /api/coupons
+    .post(ctrl.createCoupon); // POST   /api/coupons
+
+router
+    .route('/:id')
+    .get(    ctrl.getCouponById)  // GET    /api/coupons/:id
+    .put(    ctrl.updateCoupon)   // PUT    /api/coupons/:id
+    .delete( ctrl.deleteCoupon);  // DELETE /api/coupons/:id
 
 module.exports = router;
-

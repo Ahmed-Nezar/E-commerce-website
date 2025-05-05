@@ -14,6 +14,7 @@ import AdminRoute from './components/Auth/AdminRoute.jsx'
 import { CartProvider } from './context/CartContext.jsx'
 export const ENV = import.meta.env;
 import Products from "./components/Products/Products.jsx";
+import ProductDetails from "./components/ProductDetails/ProductDetails.jsx";
 
 function App() {
     const navbarRef = useRef(null);
@@ -39,6 +40,7 @@ function App() {
                         <Route path="/checkout" element={<Checkout/>}/>
                         <Route path="/products" element={<Products/>}/>
                         <Route path="/products/:cn" element={<Products/>}/>
+                        <Route path="/productDetails/:id" element={<ProductDetails />}/>
                         <Route 
                             path="/admin" 
                             element={

@@ -21,6 +21,13 @@ const Navbar = ({reference}) => {
             try {
                 // Decode the JWT token
                 const payload = jwtDecode(token);
+                //check token expiration
+                const currentTime = Date.now() / 1000;
+                if (payload.exp < currentTime) {
+                    setUser(null);
+                    handleLogout();
+                    return;
+                }
                 setUser(payload);
             } catch (error) {
                 handleLogout();

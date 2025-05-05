@@ -10,8 +10,10 @@ import {
     Typography
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useTheme } from '@mui/material/styles';
 import "./ProductCard.css";
+import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({
     product,
@@ -20,6 +22,8 @@ const ProductCard = ({
 }) => {
     const theme = useTheme();
     const [hoveredProduct, setHoveredProduct] = useState(null);
+    const navigate = useNavigate();
+
     return (
         <Card
             onMouseEnter={() => setHoveredProduct(product._id)}
@@ -87,7 +91,9 @@ const ProductCard = ({
                     <Button
                         variant="contained"
                         fullWidth
-                        onClick={() => handleAddToCart(product)}
+                        onClick={() => {
+                            navigate('/productDetails/' + product._id);
+                        }}
                         disabled={product.stock === 0}
                         sx={{
                             py: 1.5,
@@ -104,9 +110,9 @@ const ProductCard = ({
                             },
                             transition: 'all 0.3s ease',
                         }}
-                        startIcon={<ShoppingCartIcon />}
+                        startIcon={<VisibilityIcon />}
                     >
-                        Quick Add
+                        View Product
                     </Button>
                 </Box>
 

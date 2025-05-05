@@ -65,15 +65,30 @@ exports.getReviews = async (req, res, next) => {
     }
 };
 
-// Get all reviews (admin only)
+// Get all reviews (admin only) with pagination
 exports.getAllReviews = async (req, res, next) => {
     try {
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
+
         const reviews = await Review.find()
             .populate('user', 'name')
             .populate('product', 'name')
-            .sort({ createdAt: -1 });
-        
-        res.status(200).json({ data: reviews });
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(parseInt(limit));
+
+        const totalReviews = await Review.countDocuments();
+
+        res.status(200).json({
+            data: reviews,
+            pagination: {
+                total: totalReviews,
+                page: parseInt(page),
+                limit: parseInt(limit),
+                totalPages: Math.ceil(totalReviews / limit),
+            },
+        });
     } catch (err) {
         next(err);
     }

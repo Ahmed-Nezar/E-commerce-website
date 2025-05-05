@@ -123,13 +123,31 @@ exports.updateUser = async (req, res) => {
     }
 };
 
+// Updated getAllUsers method to include pagination
 exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find().select('-password');
-    res.status(200).json({ data: users });  
-  } catch (err) {
-    res.status(500).json({ message:'Error fetching users', error: err.message });
-  }
+    try {
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
+
+        const users = await User.find()
+            .select('-password')
+            .skip(skip)
+            .limit(parseInt(limit));
+
+        const totalUsers = await User.countDocuments();
+
+        res.status(200).json({
+            data: users,
+            pagination: {
+                total: totalUsers,
+                page: parseInt(page),
+                limit: parseInt(limit),
+                totalPages: Math.ceil(totalUsers / limit),
+            },
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching users', error: err.message });
+    }
 };
 
 exports.deleteUser = async (req, res) => {

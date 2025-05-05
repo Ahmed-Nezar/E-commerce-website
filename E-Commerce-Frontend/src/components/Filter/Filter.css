@@ -1,0 +1,14 @@
+.clearBtn:hover:not(:disabled) {
+  background-color: #c90000 !important;
+}
+.clearBtn:active:not(:disabled) {
+    background-color: #a70000 !important;
+    transform: scale(0.99);
+    transition: all 0.1s ease-out;
+}
+
+.clearBtn:disabled{
+    opacity: 0.6;
+    color: #cccccc !important;
+    cursor: not-allowed !important;
+}

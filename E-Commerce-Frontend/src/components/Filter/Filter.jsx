@@ -1,21 +1,43 @@
 
 import { Accordion, AccordionSummary, AccordionDetails, Typography, TextField, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import "./Filter.css"
+
+
 
 export default function Filter({   fromPrice, toPrice, setFromPrice, setToPrice, inStockOnly,
                                    setInStockOnly, categories, selectedCategories, setSelectedBrands,
                                    setSelectedCategories, brands, selectedBrands, cn}) {
+    const isFilterCleared = () => {
+        const noPriceFilter = fromPrice === 0 && toPrice === 999999;
+        const noBrandFilter = selectedBrands.length === 0;
+        const isDefaultCategory = cn
+            ? selectedCategories.length === 1 && selectedCategories[0] === cn
+            : selectedCategories.length === 0;
+
+        return noPriceFilter && noBrandFilter && isDefaultCategory;
+    };
+
     return (
         <>
             <h1>Filter</h1>
             <button
                 onClick={() => {
-                    setFromPrice(0);
-                    setToPrice(999999);
-                    setInStockOnly(inStockOnly);
-                    setSelectedCategories([cn]);
-                    setSelectedBrands([]);
+                    if(cn){
+                        setFromPrice(0);
+                        setToPrice(999999);
+                        setInStockOnly(inStockOnly);
+                        setSelectedCategories([cn]);
+                        setSelectedBrands([]);
+                    } else {
+                        setFromPrice(0);
+                        setToPrice(999999);
+                        setInStockOnly(inStockOnly);
+                        setSelectedCategories([]);
+                        setSelectedBrands([]);
+                    }
                 }}
+                disabled={isFilterCleared()}
                 style={{
                     margin: '0.5rem 2rem',
                     padding: '0.5rem 1rem',
@@ -25,9 +47,11 @@ export default function Filter({   fromPrice, toPrice, setFromPrice, setToPrice,
                     borderRadius: '4px',
                     cursor: 'pointer',
                 }}
+                className="clearBtn"
             >
                 Clear All Filters
             </button>
+
             <div className="m-4">
                 <Accordion sx={{margin: '1px 0 !important'}}>
                     <AccordionSummary
@@ -89,9 +113,6 @@ export default function Filter({   fromPrice, toPrice, setFromPrice, setToPrice,
                                 <FormControlLabel control={<Checkbox
                                     checked={selectedCategories.includes(category)}
                                     onChange={() => setSelectedCategories(prev => {
-                                        if (cn === category) {
-                                            return prev;
-                                        }
                                         if (prev.includes(category)) {
                                             return prev.filter((item) => item !== category);
                                         } else {

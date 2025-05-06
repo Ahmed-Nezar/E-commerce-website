@@ -24,10 +24,14 @@ import {
   Tabs,
   Tab,
   Rating,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import CloseIcon from '@mui/icons-material/Close';
 import { ENV } from '../../App';
 import Loader from '../Loader/Loader.jsx';
 
@@ -74,6 +78,8 @@ const AdminDashboard = () => {
     id: null,
     itemName: ''
   });
+  const [viewingOrder, setViewingOrder] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   // Fetch data based on active tab
   useEffect(() => {
@@ -122,7 +128,6 @@ const AdminDashboard = () => {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
-    // works whether your API returns {data:[…]} or just […]
     setUsers(Array.isArray(data) ? data : data.data || []);
   };
 
@@ -394,6 +399,47 @@ const AdminDashboard = () => {
     }));
   };
 
+  const handleOpenOrderView = (order) => {
+    setViewingOrder(order);
+    setIsEditing(false);
+  };
+
+  const handleCloseOrderView = () => {
+    setViewingOrder(null);
+    setIsEditing(false);
+  };
+
+  const handleOpenOrderEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleOrderStatusUpdate = async () => {
+    setActionLoading(true);
+    try {
+      const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders/${viewingOrder._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+          status: viewingOrder.status,
+          isPaid: viewingOrder.isPaid,
+          isDelivered: viewingOrder.isDelivered
+        })
+      });
+
+      if (!response.ok) throw new Error('Failed to update order');
+
+      await fetchOrders();
+      handleCloseOrderView();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -556,8 +602,8 @@ const AdminDashboard = () => {
                     </TableCell>
                     <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleOpenDialog('order', order)}>
-                        <EditIcon />
+                      <IconButton onClick={() => handleOpenOrderView(order)}>
+                        <VisibilityIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
@@ -920,6 +966,184 @@ const AdminDashboard = () => {
               {deletingId === deleteDialog.id ? 'Deleting...' : 'Delete'}
             </Button>
           </DialogActions>
+        </Dialog>
+
+        {/* Order View/Edit Dialog */}
+        <Dialog 
+          open={Boolean(viewingOrder)} 
+          onClose={handleCloseOrderView}
+          maxWidth="md"
+          fullWidth
+          sx={{
+            '& .MuiDialog-paper': {
+              borderRadius: 2,
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(10px)',
+            }
+          }}
+        >
+          <DialogTitle sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+            mb: 2
+          }}>
+            <Typography variant="h6">
+              {isEditing ? 'Edit Order' : 'Order Details'}
+            </Typography>
+            <Box>
+              {!isEditing && (
+                <IconButton 
+                  onClick={handleOpenOrderEdit}
+                  sx={{ mr: 1 }}
+                >
+                  <EditIcon />
+                </IconButton>
+              )}
+              <IconButton onClick={handleCloseOrderView}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </DialogTitle>
+          <DialogContent>
+            {viewingOrder && (
+              <Box sx={{ mt: 1 }}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="subtitle2" color="text.secondary">Order ID</Typography>
+                    <Typography variant="body1" sx={{ mb: 2 }}>{viewingOrder._id}</Typography>
+
+                    <Typography variant="subtitle2" color="text.secondary">Customer</Typography>
+                    <Typography variant="body1" sx={{ mb: 2 }}>{viewingOrder.user?.name}</Typography>
+
+                    <Typography variant="subtitle2" color="text.secondary">Date</Typography>
+                    <Typography variant="body1" sx={{ mb: 2 }}>
+                      {new Date(viewingOrder.createdAt).toLocaleString()}
+                    </Typography>
+
+                    {isEditing ? (
+                      <Box sx={{ mt: 2 }}>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              checked={viewingOrder.isPaid}
+                              onChange={(e) => setViewingOrder(prev => ({
+                                ...prev,
+                                isPaid: e.target.checked
+                              }))}
+                            />
+                          }
+                          label="Paid"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              checked={viewingOrder.isDelivered}
+                              onChange={(e) => setViewingOrder(prev => ({
+                                ...prev,
+                                isDelivered: e.target.checked
+                              }))}
+                            />
+                          }
+                          label="Delivered"
+                        />
+                      </Box>
+                    ) : (
+                      <>
+                        <Typography variant="subtitle2" color="text.secondary">Payment Status</Typography>
+                        <Typography variant="body1" sx={{ mb: 2 }}>
+                          {viewingOrder.isPaid ? 'Paid' : 'Pending'}
+                        </Typography>
+
+                        <Typography variant="subtitle2" color="text.secondary">Delivery Status</Typography>
+                        <Typography variant="body1" sx={{ mb: 2 }}>
+                          {viewingOrder.isDelivered ? 'Delivered' : 'Pending'}
+                        </Typography>
+                      </>
+                    )}
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="subtitle2" color="text.secondary">Shipping Address</Typography>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 2,
+                        mb: 2,
+                        background: 'rgba(0, 0, 0, 0.03)',
+                        borderRadius: 1
+                      }}
+                    >
+                      <Typography variant="body2">{viewingOrder.shippingAddress?.address}</Typography>
+                      <Typography variant="body2">{viewingOrder.shippingAddress?.city}</Typography>
+                      <Typography variant="body2">{viewingOrder.shippingAddress?.postalCode}</Typography>
+                      <Typography variant="body2">{viewingOrder.shippingAddress?.country}</Typography>
+                    </Paper>
+
+                    <Typography variant="subtitle2" color="text.secondary">Payment Method</Typography>
+                    <Typography variant="body1" sx={{ mb: 2 }}>{viewingOrder.paymentMethod}</Typography>
+
+                    <Typography variant="subtitle2" color="text.secondary">Order Items</Typography>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        mt: 1,
+                        maxHeight: 200,
+                        overflow: 'auto',
+                        background: 'rgba(0, 0, 0, 0.03)',
+                        borderRadius: 1
+                      }}
+                    >
+                      {viewingOrder.orderItems.map((item, index) => (
+                        <Box
+                          key={index}
+                          sx={{
+                            p: 2,
+                            borderBottom: index < viewingOrder.orderItems.length - 1 ? '1px solid rgba(0, 0, 0, 0.1)' : 'none',
+                          }}
+                        >
+                          <Typography variant="body2">
+                            {item.name} x {item.quantity} - ${(item.price * item.quantity).toFixed(2)}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Paper>
+
+                    <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Typography variant="subtitle1">Total Amount</Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                        ${viewingOrder.totalPrice.toFixed(2)}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
+          </DialogContent>
+          {isEditing && (
+            <DialogActions sx={{ p: 2.5, pt: 0 }}>
+              <Button 
+                onClick={handleCloseOrderView}
+                sx={{ color: '#666' }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleOrderStatusUpdate}
+                variant="contained"
+                disabled={actionLoading}
+                sx={{
+                  background: 'linear-gradient(45deg, #091540, #3D518C)',
+                  '&:hover': {
+                    background: 'linear-gradient(45deg, #091540, #1B2CC1)',
+                  }
+                }}
+              >
+                {actionLoading ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </DialogActions>
+          )}
         </Dialog>
       </Paper>
     </Container>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 import Footer from './components/Footer/Footer.jsx'
 import Navbar from './components/Navbar/Navbar.jsx'
@@ -15,6 +15,18 @@ import { CartProvider } from './context/CartContext.jsx'
 export const ENV = import.meta.env;
 import Products from "./components/Products/Products.jsx";
 import ProductDetails from "./components/ProductDetails/ProductDetails.jsx";
+
+// Protected Route component
+const ProtectedRoute = ({ children }) => {
+    const token = localStorage.getItem('token');
+    return token ? children : <Navigate to="/signin" />;
+};
+
+// Public Route component (redirects to home if logged in)
+const PublicRoute = ({ children }) => {
+    const token = localStorage.getItem('token');
+    return !token ? children : <Navigate to="/" />;
+};
 
 function App() {
     const navbarRef = useRef(null);
@@ -33,11 +45,39 @@ function App() {
                 <div className="position-relative" style={{ top: offsetTop }}>
                     <Routes>
                         <Route path="/" element={<Home/>}/>
-                        <Route path="/signin" element={<SignIn/>}/>
-                        <Route path="/register" element={<Register/>}/>
+                        <Route 
+                            path="/signin" 
+                            element={
+                                <PublicRoute>
+                                    <SignIn/>
+                                </PublicRoute>
+                            }
+                        />
+                        <Route 
+                            path="/register" 
+                            element={
+                                <PublicRoute>
+                                    <Register/>
+                                </PublicRoute>
+                            }
+                        />
                         <Route path="/forgot-password" element={<ForgotPassword/>}/>
-                        <Route path="/cart" element={<Cart/>}/>
-                        <Route path="/checkout" element={<Checkout/>}/>
+                        <Route 
+                            path="/cart" 
+                            element={
+                                <ProtectedRoute>
+                                    <Cart/>
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route 
+                            path="/checkout" 
+                            element={
+                                <ProtectedRoute>
+                                    <Checkout/>
+                                </ProtectedRoute>
+                            }
+                        />
                         <Route path="/products" element={<Products/>}/>
                         <Route path="/products/:cn" element={<Products/>}/>
                         <Route path="/productDetails/:id" element={<ProductDetails />}/>

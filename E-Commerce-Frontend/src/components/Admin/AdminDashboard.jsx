@@ -1038,6 +1038,7 @@ const AdminDashboard = () => {
             onClose={handleCloseDialog}
             maxWidth="sm"
             fullWidth
+            onClick={(e) => e.stopPropagation()}
             sx={{
               '& .MuiDialog-paper': {
                 borderRadius: 3,
@@ -1048,8 +1049,29 @@ const AdminDashboard = () => {
               }
             }}
           >
-            <DialogTitle>
-              {selectedItem ? `Edit ${dialogType}` : `Add New ${dialogType}`}
+            <DialogTitle sx={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center',
+              background: 'linear-gradient(45deg, #091540, #3D518C)',
+              color: 'white',
+              p: 2
+            }}>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                {selectedItem ? `Edit ${dialogType}` : `Add New ${dialogType}`}
+              </Typography>
+              <IconButton
+                onClick={handleCloseDialog}
+                sx={{ 
+                  color: 'white',
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 0.1)'
+                  },
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
             </DialogTitle>
             <DialogContent>
               <Box component="form" noValidate sx={{ mt: 1 }}>
@@ -1345,16 +1367,41 @@ const AdminDashboard = () => {
         <Dialog
           open={deleteDialog.open}
           onClose={handleCloseDeleteDialog}
+          onClick={(e) => e.stopPropagation()}
           sx={{
             '& .MuiDialog-paper': {
               borderRadius: 2,
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
               background: 'rgba(255, 255, 255, 0.9)',
               backdropFilter: 'blur(10px)',
+              overflow: 'hidden'
             }
           }}
         >
-          <DialogTitle sx={{ pb: 1 }}>Confirm Delete</DialogTitle>
+          <DialogTitle sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            background: 'linear-gradient(45deg, #d32f2f, #f44336)',
+            color: 'white',
+            p: 2 
+          }}>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              Confirm Delete
+            </Typography>
+            <IconButton
+              onClick={handleCloseDeleteDialog}
+              sx={{ 
+                color: 'white',
+                '&:hover': {
+                  background: 'rgba(255, 255, 255, 0.1)'
+                },
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
           <DialogContent>
             <DialogContentText>
               Are you sure you want to delete {deleteDialog.itemName || 'this item'}? This action cannot be undone.
@@ -1385,6 +1432,7 @@ const AdminDashboard = () => {
         <Dialog 
           open={Boolean(viewingOrder)} 
           onClose={handleCloseOrderView}
+          onClick={(e) => e.stopPropagation()}
           maxWidth="md"
           fullWidth
           sx={{
@@ -1393,12 +1441,7 @@ const AdminDashboard = () => {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
               background: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(10px)',
-              overflow: 'hidden',
-              animation: 'fadeIn 0.3s ease-out',
-              '@keyframes fadeIn': {
-                from: { opacity: 0, transform: 'translateY(-20px)' },
-                to: { opacity: 1, transform: 'translateY(0)' }
-              }
+              overflow: 'hidden'
             }
           }}
         >
@@ -1406,11 +1449,9 @@ const AdminDashboard = () => {
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'center',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-            mb: 2,
-            p: 3,
             background: 'linear-gradient(45deg, #091540, #3D518C)',
-            color: 'white'
+            color: 'white',
+            p: 2
           }}>
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               {isEditing ? 'Edit Order' : 'Order Details'}
@@ -1424,7 +1465,8 @@ const AdminDashboard = () => {
                     color: 'white',
                     '&:hover': {
                       background: 'rgba(255, 255, 255, 0.1)'
-                    }
+                    },
+                    transition: 'all 0.2s ease'
                   }}
                 >
                   <EditIcon />
@@ -1436,7 +1478,8 @@ const AdminDashboard = () => {
                   color: 'white',
                   '&:hover': {
                     background: 'rgba(255, 255, 255, 0.1)'
-                  }
+                  },
+                  transition: 'all 0.2s ease'
                 }}
               >
                 <CloseIcon />

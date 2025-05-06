@@ -249,7 +249,27 @@ const ProductDetails = () => {
                 <div className="p-5">
                     <Button
                         className="border-0 bg-transparent"
-                        style={{ position: "absolute", top: 0, right: 0, padding: 15 }}
+                        style={{ 
+                            position: "absolute",
+                            top: 10,
+                            right: 10,
+                            padding: "8px 12px",
+                            fontSize: "24px",
+                            color: "#666",
+                            zIndex: 1000,
+                            cursor: "pointer",
+                            transition: "all 0.3s ease",
+                            borderRadius: "50%",
+                            width: "40px",
+                            height: "40px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            background: "transparent",
+                            '&:hover': {
+                                background: "rgba(0,0,0,0.05)"
+                            }
+                        }}
                         onClick={() => setModalOpen(o => !o)}
                     >
                         ×

@@ -29,12 +29,23 @@ import {
   Fade,
   Grow,
   Zoom,
+  InputLabel,
+  Select,
+  FormControl,
+  Stack,
+  CircularProgress
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CloseIcon from '@mui/icons-material/Close';
+import PersonIcon from '@mui/icons-material/Person';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import PaymentIcon from '@mui/icons-material/Payment';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 import { ENV } from '../../App';
 import Loader from '../Loader/Loader.jsx';
 
@@ -193,8 +204,17 @@ const AdminDashboard = () => {
           setFormData({
             name: '',
             email: '',
+            password: '',
             gender: '',
             isAdmin: false
+          });
+          break;
+        case 'review':
+          setFormData({
+            rating: 5,
+            comment: '',
+            product: '',
+            user: ''
           });
           break;
       }
@@ -283,8 +303,17 @@ const AdminDashboard = () => {
           body = formData;
           break;
         case 'user':
-          url = `${ENV.VITE_BACKEND_URL}/api/users/${selectedItem._id}`;
-          method = 'PUT';
+          url = selectedItem 
+            ? `${ENV.VITE_BACKEND_URL}/api/users/${selectedItem._id}`
+            : `${ENV.VITE_BACKEND_URL}/api/auth/register`;
+          method = selectedItem ? 'PUT' : 'POST';
+          body = formData;
+          break;
+        case 'review':
+          url = selectedItem
+            ? `${ENV.VITE_BACKEND_URL}/api/reviews/update/${selectedItem._id}`
+            : `${ENV.VITE_BACKEND_URL}/api/reviews/create`;
+          method = selectedItem ? 'PUT' : 'POST';
           body = formData;
           break;
       }
@@ -310,6 +339,9 @@ const AdminDashboard = () => {
           break;
         case 'user':
           await fetchUsers();
+          break;
+        case 'review':
+          await fetchReviews();
           break;
       }
 
@@ -661,6 +693,21 @@ const AdminDashboard = () => {
             </TabPanel>
 
             <TabPanel value={tabValue} index={1}>
+              <Button
+                variant="contained"
+                startIcon={<PersonAddIcon />}
+                onClick={() => handleOpenDialog('user')}
+                sx={{
+                  mb: 3,
+                  background: 'linear-gradient(90deg, #091540, #3D518C)',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                  }
+                }}
+              >
+                Add New User
+              </Button>
+
               <TableContainer>
                 <Table>
                   <TableHead>
@@ -680,6 +727,9 @@ const AdminDashboard = () => {
                         <TableCell>{user.gender}</TableCell>
                         <TableCell>{user.isAdmin ? 'Admin' : 'User'}</TableCell>
                         <TableCell>
+                          <IconButton onClick={() => handleOpenDialog('user', user)}>
+                            <EditIcon />
+                          </IconButton>
                           <IconButton 
                             onClick={() => handleOpenDeleteDialog('user', user._id, user.name)}
                             disabled={deletingId === user._id}
@@ -788,6 +838,21 @@ const AdminDashboard = () => {
             </TabPanel>
 
             <TabPanel value={tabValue} index={4}>
+              <Button
+                variant="contained"
+                startIcon={<ReviewsIcon />}
+                onClick={() => handleOpenDialog('review')}
+                sx={{
+                  mb: 3,
+                  background: 'linear-gradient(90deg, #091540, #3D518C)',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                  }
+                }}
+              >
+                Add New Review
+              </Button>
+
               <TableContainer>
                 <Table>
                   <TableHead>
@@ -811,6 +876,9 @@ const AdminDashboard = () => {
                         <TableCell>{review.comment}</TableCell>
                         <TableCell>{new Date(review.createdAt).toLocaleDateString()}</TableCell>
                         <TableCell>
+                          <IconButton onClick={() => handleOpenDialog('review', review)}>
+                            <EditIcon />
+                          </IconButton>
                           <IconButton 
                             onClick={() => handleOpenDeleteDialog('review', review._id, review.comment)}
                             disabled={deletingId === review._id}
@@ -1022,23 +1090,101 @@ const AdminDashboard = () => {
                       value={formData.email || ''}
                       onChange={handleChange}
                     />
+                    {!selectedItem && (
+                      <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={formData.password || ''}
+                        onChange={handleChange}
+                      />
+                    )}
+                    <FormControl fullWidth margin="normal">
+                      <InputLabel>Gender</InputLabel>
+                      <Select
+                        name="gender"
+                        value={formData.gender || ''}
+                        onChange={handleChange}
+                        label="Gender"
+                      >
+                        <MenuItem value="Male">Male</MenuItem>
+                        <MenuItem value="Female">Female</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={formData.isAdmin || false}
+                          onChange={(e) => setFormData(prev => ({
+                            ...prev,
+                            isAdmin: e.target.checked
+                          }))}
+                        />
+                      }
+                      label="Admin Access"
+                      sx={{ mt: 1 }}
+                    />
+                  </>
+                )}
+
+                {dialogType === 'review' && (
+                  <>
+                    <FormControl fullWidth margin="normal">
+                      <InputLabel>Product</InputLabel>
+                      <Select
+                        name="product"
+                        value={formData.product || ''}
+                        onChange={handleChange}
+                        label="Product"
+                      >
+                        {products.map(product => (
+                          <MenuItem key={product._id} value={product._id}>
+                            {product.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <FormControl fullWidth margin="normal">
+                      <InputLabel>User</InputLabel>
+                      <Select
+                        name="user"
+                        value={formData.user || ''}
+                        onChange={handleChange}
+                        label="User"
+                      >
+                        {users.map(user => (
+                          <MenuItem key={user._id} value={user._id}>
+                            {user.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <Box sx={{ mt: 2, mb: 2 }}>
+                      <Typography component="legend">Rating</Typography>
+                      <Rating
+                        name="rating"
+                        value={formData.rating || 5}
+                        onChange={(event, newValue) => {
+                          setFormData(prev => ({
+                            ...prev,
+                            rating: newValue
+                          }));
+                        }}
+                      />
+                    </Box>
                     <TextField
                       margin="normal"
-                      required
                       fullWidth
-                      label="Gender"
-                      name="gender"
-                      select
-                      SelectProps={{
-                        native: true,
-                      }}
-                      value={formData.gender || ''}
+                      label="Comment"
+                      name="comment"
+                      multiline
+                      rows={4}
+                      value={formData.comment || ''}
                       onChange={handleChange}
-                    >
-                      <option value="">Select gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                    </TextField>
+                    />
                   </>
                 )}
               </Box>

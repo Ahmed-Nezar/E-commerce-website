@@ -16,6 +16,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  DialogContentText,
   DialogActions,
   TextField,
   MenuItem,
@@ -67,6 +68,12 @@ const AdminDashboard = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState({
+    open: false,
+    type: '',
+    id: null,
+    itemName: ''
+  });
 
   // Fetch data based on active tab
   useEffect(() => {
@@ -308,9 +315,26 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDelete = async (type, id) => {
-    if (!window.confirm('Are you sure you want to delete this item?')) return;
-    
+  const handleOpenDeleteDialog = (type, id, itemName) => {
+    setDeleteDialog({
+      open: true,
+      type,
+      id,
+      itemName
+    });
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialog({
+      open: false,
+      type: '',
+      id: null,
+      itemName: ''
+    });
+  };
+
+  const handleDelete = async () => {
+    const { type, id } = deleteDialog;
     setDeletingId(id);
     try {
       let url;
@@ -353,6 +377,8 @@ const AdminDashboard = () => {
           await fetchReviews();
           break;
       }
+
+      handleCloseDeleteDialog();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -451,7 +477,7 @@ const AdminDashboard = () => {
                         <EditIcon />
                       </IconButton>
                       <IconButton 
-                        onClick={() => handleDelete('product', product._id)}
+                        onClick={() => handleOpenDeleteDialog('product', product._id, product.name)}
                         disabled={deletingId === product._id}
                         sx={{
                           opacity: deletingId === product._id ? 0.5 : 1,
@@ -489,7 +515,7 @@ const AdminDashboard = () => {
                     <TableCell>{user.isAdmin ? 'Admin' : 'User'}</TableCell>
                     <TableCell>
                       <IconButton 
-                        onClick={() => handleDelete('user', user._id)}
+                        onClick={() => handleOpenDeleteDialog('user', user._id, user.name)}
                         disabled={deletingId === user._id}
                         sx={{
                           opacity: deletingId === user._id ? 0.5 : 1,
@@ -581,7 +607,7 @@ const AdminDashboard = () => {
                         <EditIcon />
                       </IconButton>
                       <IconButton 
-                        onClick={() => handleDelete('coupon', coupon._id)}
+                        onClick={() => handleOpenDeleteDialog('coupon', coupon._id, coupon.code)}
                         disabled={deletingId === coupon._id}
                         sx={{
                           opacity: deletingId === coupon._id ? 0.5 : 1,
@@ -623,7 +649,7 @@ const AdminDashboard = () => {
                     <TableCell>{new Date(review.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <IconButton 
-                        onClick={() => handleDelete('review', review._id)}
+                        onClick={() => handleOpenDeleteDialog('review', review._id, review.comment)}
                         disabled={deletingId === review._id}
                         sx={{
                           opacity: deletingId === review._id ? 0.5 : 1,
@@ -852,6 +878,46 @@ const AdminDashboard = () => {
               }}
             >
               {actionLoading || uploadingImage ? 'Saving...' : (selectedItem ? 'Update' : 'Create')}
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Delete Confirmation Dialog */}
+        <Dialog
+          open={deleteDialog.open}
+          onClose={handleCloseDeleteDialog}
+          sx={{
+            '& .MuiDialog-paper': {
+              borderRadius: 2,
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(10px)',
+            }
+          }}
+        >
+          <DialogTitle sx={{ pb: 1 }}>Confirm Delete</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete {deleteDialog.itemName || 'this item'}? This action cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{ p: 2, pt: 1 }}>
+            <Button 
+              onClick={handleCloseDeleteDialog}
+              sx={{ color: '#666' }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDelete}
+              variant="contained"
+              color="error"
+              disabled={deletingId === deleteDialog.id}
+              sx={{
+                opacity: deletingId === deleteDialog.id ? 0.7 : 1,
+              }}
+            >
+              {deletingId === deleteDialog.id ? 'Deleting...' : 'Delete'}
             </Button>
           </DialogActions>
         </Dialog>

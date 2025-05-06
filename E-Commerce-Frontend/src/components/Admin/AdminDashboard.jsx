@@ -26,6 +26,9 @@ import {
   Rating,
   FormControlLabel,
   Switch,
+  Fade,
+  Grow,
+  Zoom,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -445,489 +448,617 @@ const AdminDashboard = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Paper elevation={0} sx={{ p: 4, borderRadius: 3, background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)' }}>
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: 700, color: '#091540', mb: 4 }}>
-          Admin Dashboard 
-        </Typography>
-
-        <Tabs 
-          value={tabValue} 
-          onChange={handleTabChange}
-          sx={{
-            mb: 4,
-            '& .MuiTab-root': {
-              fontWeight: 600,
-              color: '#3D518C',
-              '&.Mui-selected': {
-                color: '#1B2CC1',
-              }
+    <Fade in timeout={800}>
+      <Container maxWidth="lg" sx={{ py: 6 }}>
+        <Paper 
+          elevation={0} 
+          sx={{ 
+            p: 4, 
+            borderRadius: 4,
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              inset: 0,
+              padding: '2px',
+              borderRadius: '16px',
+              background: 'linear-gradient(45deg, #091540, #3D518C, #1B2CC1, #7692FF)',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
+              animation: 'gradient 4s ease infinite',
             },
-            '& .MuiTabs-indicator': {
-              backgroundColor: '#1B2CC1',
+            '@keyframes gradient': {
+              '0%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+              '100%': { backgroundPosition: '0% 50%' }
             }
           }}
         >
-          <Tab label="Products" />
-          <Tab label="Users" />
-          <Tab label="Orders" />
-          <Tab label="Coupons" />
-          <Tab label="Reviews" />
-        </Tabs>
+          <Typography 
+            variant="h4" 
+            sx={{ 
+              fontWeight: 700,
+              mb: 5,
+              background: 'linear-gradient(45deg, #091540, #3D518C, #1B2CC1)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textAlign: 'center',
+              letterSpacing: '0.5px',
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
+            }}
+          >
+            Admin Dashboard
+          </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
-            {error}
-          </Alert>
-        )}
-
-        {/* Products Tab */}
-        <TabPanel value={tabValue} index={0}>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => handleOpenDialog('product')}
+          <Tabs 
+            value={tabValue} 
+            onChange={handleTabChange}
+            variant="scrollable"
+            scrollButtons="auto"
             sx={{
-              mb: 3,
-              background: 'linear-gradient(90deg, #091540, #3D518C)',
-              '&:hover': {
+              mb: 4,
+              '& .MuiTab-root': {
+                fontWeight: 600,
+                fontSize: '1rem',
+                minWidth: 120,
+                color: '#666',
+                transition: 'all 0.3s ease',
+                '&.Mui-selected': {
+                  color: '#1B2CC1',
+                  background: 'rgba(27, 44, 193, 0.04)',
+                  borderRadius: 2,
+                }
+              },
+              '& .MuiTabs-indicator': {
+                height: 3,
+                borderRadius: 1.5,
                 background: 'linear-gradient(90deg, #091540, #1B2CC1)',
               }
             }}
           >
-            Add New Product
-          </Button>
+            <Tab 
+              label="Products" 
+              icon={<Grow in timeout={600}><Box component="span" sx={{ display: 'inline-flex', mr: 1 }}>📦</Box></Grow>} 
+              iconPosition="start" 
+            />
+            <Tab 
+              label="Users" 
+              icon={<Grow in timeout={800}><Box component="span" sx={{ display: 'inline-flex', mr: 1 }}>👥</Box></Grow>} 
+              iconPosition="start"
+            />
+            <Tab 
+              label="Orders" 
+              icon={<Grow in timeout={1000}><Box component="span" sx={{ display: 'inline-flex', mr: 1 }}>🛍️</Box></Grow>} 
+              iconPosition="start"
+            />
+            <Tab 
+              label="Coupons" 
+              icon={<Grow in timeout={1200}><Box component="span" sx={{ display: 'inline-flex', mr: 1 }}>🎟️</Box></Grow>} 
+              iconPosition="start"
+            />
+            <Tab 
+              label="Reviews" 
+              icon={<Grow in timeout={1400}><Box component="span" sx={{ display: 'inline-flex', mr: 1 }}>⭐</Box></Grow>} 
+              iconPosition="start"
+            />
+          </Tabs>
 
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Category</TableCell>
-                  <TableCell>Brand</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Stock</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {products.map((product) => (
-                  <TableRow key={product._id}>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell>{product.category}</TableCell>
-                    <TableCell>{product.brand}</TableCell>
-                    <TableCell>${product.price}</TableCell>
-                    <TableCell>{product.stock}</TableCell>
-                    <TableCell>
-                      <IconButton onClick={() => handleOpenDialog('product', product)}>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton 
-                        onClick={() => handleOpenDeleteDialog('product', product._id, product.name)}
-                        disabled={deletingId === product._id}
-                        sx={{
-                          opacity: deletingId === product._id ? 0.5 : 1,
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
+          {error && (
+            <Zoom in>
+              <Alert 
+                severity="error" 
+                sx={{ 
+                  mb: 3,
+                  borderRadius: 2,
+                  animation: 'slideIn 0.3s ease-out',
+                  '@keyframes slideIn': {
+                    from: { transform: 'translateY(-20px)', opacity: 0 },
+                    to: { transform: 'translateY(0)', opacity: 1 },
+                  },
+                }}
+              >
+                {error}
+              </Alert>
+            </Zoom>
+          )}
 
-        {/* Users Tab */}
-        <TabPanel value={tabValue} index={1}>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Gender</TableCell>
-                  <TableCell>Role</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user._id}>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.gender}</TableCell>
-                    <TableCell>{user.isAdmin ? 'Admin' : 'User'}</TableCell>
-                    <TableCell>
-                      <IconButton 
-                        onClick={() => handleOpenDeleteDialog('user', user._id, user.name)}
-                        disabled={deletingId === user._id}
-                        sx={{
-                          opacity: deletingId === user._id ? 0.5 : 1,
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
-
-        {/* Orders Tab */}
-        <TabPanel value={tabValue} index={2}>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Order ID</TableCell>
-                  <TableCell>Customer</TableCell>
-                  <TableCell>Total</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {orders.map((order) => (
-                  <TableRow key={order._id}>
-                    <TableCell>{order._id}</TableCell>
-                    <TableCell>{order.user?.name}</TableCell>
-                    <TableCell>${order.totalPrice}</TableCell>
-                    <TableCell>
-                      {order.isDelivered ? 'Delivered' : order.isPaid ? 'Paid' : 'Pending'}
-                    </TableCell>
-                    <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      <IconButton onClick={() => handleOpenOrderView(order)}>
-                        <VisibilityIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
-
-        {/* Coupons Tab */}
-        <TabPanel value={tabValue} index={3}>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => handleOpenDialog('coupon')}
-            sx={{
-              mb: 3,
-              background: 'linear-gradient(90deg, #091540, #3D518C)',
+          {/* Tabs Content */}
+          <Box sx={{ 
+            position: 'relative',
+            '& .MuiTableContainer-root': {
+              borderRadius: 2,
+              border: '1px solid rgba(0,0,0,0.1)',
+              background: 'rgba(255,255,255,0.8)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+            },
+            '& .MuiTableHead-root': {
+              background: 'linear-gradient(45deg, rgba(9,21,64,0.03), rgba(61,81,140,0.03))',
+              '& .MuiTableCell-head': {
+                fontWeight: 600,
+                color: '#091540',
+              }
+            },
+            '& .MuiTableRow-root': {
+              transition: 'background-color 0.3s ease',
               '&:hover': {
-                background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                backgroundColor: 'rgba(9,21,64,0.02)',
+              }
+            },
+            '& .MuiTableCell-root': {
+              borderColor: 'rgba(0,0,0,0.1)',
+            },
+            '& .MuiIconButton-root': {
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.1)',
+                background: 'rgba(9,21,64,0.05)',
+              }
+            }
+          }}>
+            <TabPanel value={tabValue} index={0}>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => handleOpenDialog('product')}
+                sx={{
+                  mb: 3,
+                  background: 'linear-gradient(90deg, #091540, #3D518C)',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                  }
+                }}
+              >
+                Add New Product
+              </Button>
+
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Category</TableCell>
+                      <TableCell>Brand</TableCell>
+                      <TableCell>Price</TableCell>
+                      <TableCell>Stock</TableCell>
+                      <TableCell>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {products.map((product) => (
+                      <TableRow key={product._id}>
+                        <TableCell>{product.name}</TableCell>
+                        <TableCell>{product.category}</TableCell>
+                        <TableCell>{product.brand}</TableCell>
+                        <TableCell>${product.price}</TableCell>
+                        <TableCell>{product.stock}</TableCell>
+                        <TableCell>
+                          <IconButton onClick={() => handleOpenDialog('product', product)}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton 
+                            onClick={() => handleOpenDeleteDialog('product', product._id, product.name)}
+                            disabled={deletingId === product._id}
+                            sx={{
+                              opacity: deletingId === product._id ? 0.5 : 1,
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={1}>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Gender</TableCell>
+                      <TableCell>Role</TableCell>
+                      <TableCell>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {users.map((user) => (
+                      <TableRow key={user._id}>
+                        <TableCell>{user.name}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>{user.gender}</TableCell>
+                        <TableCell>{user.isAdmin ? 'Admin' : 'User'}</TableCell>
+                        <TableCell>
+                          <IconButton 
+                            onClick={() => handleOpenDeleteDialog('user', user._id, user.name)}
+                            disabled={deletingId === user._id}
+                            sx={{
+                              opacity: deletingId === user._id ? 0.5 : 1,
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={2}>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Order ID</TableCell>
+                      <TableCell>Customer</TableCell>
+                      <TableCell>Total</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {orders.map((order) => (
+                      <TableRow key={order._id}>
+                        <TableCell>{order._id}</TableCell>
+                        <TableCell>{order.user?.name}</TableCell>
+                        <TableCell>${order.totalPrice}</TableCell>
+                        <TableCell>
+                          {order.isDelivered ? 'Delivered' : order.isPaid ? 'Paid' : 'Pending'}
+                        </TableCell>
+                        <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                        <TableCell>
+                          <IconButton onClick={() => handleOpenOrderView(order)}>
+                            <VisibilityIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={3}>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => handleOpenDialog('coupon')}
+                sx={{
+                  mb: 3,
+                  background: 'linear-gradient(90deg, #091540, #3D518C)',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                  }
+                }}
+              >
+                Add New Coupon
+              </Button>
+
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Code</TableCell>
+                      <TableCell>Discount</TableCell>
+                      <TableCell>Valid Until</TableCell>
+                      <TableCell>Usage Limit</TableCell>
+                      <TableCell>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {coupons.map((coupon) => (
+                      <TableRow key={coupon._id}>
+                        <TableCell>{coupon.code}</TableCell>
+                        <TableCell>{coupon.discountPercentage}%</TableCell>
+                        <TableCell>{new Date(coupon.validUntil).toLocaleDateString()}</TableCell>
+                        <TableCell>{coupon.usageLimit}</TableCell>
+                        <TableCell>
+                          <IconButton onClick={() => handleOpenDialog('coupon', coupon)}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton 
+                            onClick={() => handleOpenDeleteDialog('coupon', coupon._id, coupon.code)}
+                            disabled={deletingId === coupon._id}
+                            sx={{
+                              opacity: deletingId === coupon._id ? 0.5 : 1,
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={4}>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Product</TableCell>
+                      <TableCell>User</TableCell>
+                      <TableCell>Rating</TableCell>
+                      <TableCell>Comment</TableCell>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {reviews.map((review) => (
+                      <TableRow key={review._id}>
+                        <TableCell>{review.product?.name}</TableCell>
+                        <TableCell>{review.user?.name}</TableCell>
+                        <TableCell>
+                          <Rating value={review.rating} readOnly />
+                        </TableCell>
+                        <TableCell>{review.comment}</TableCell>
+                        <TableCell>{new Date(review.createdAt).toLocaleDateString()}</TableCell>
+                        <TableCell>
+                          <IconButton 
+                            onClick={() => handleOpenDeleteDialog('review', review._id, review.comment)}
+                            disabled={deletingId === review._id}
+                            sx={{
+                              opacity: deletingId === review._id ? 0.5 : 1,
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
+          </Box>
+
+          <Dialog 
+            open={openDialog} 
+            onClose={handleCloseDialog}
+            maxWidth="sm"
+            fullWidth
+            sx={{
+              '& .MuiDialog-paper': {
+                borderRadius: 3,
+                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                background: 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.3)',
               }
             }}
           >
-            Add New Coupon
-          </Button>
-
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Code</TableCell>
-                  <TableCell>Discount</TableCell>
-                  <TableCell>Valid Until</TableCell>
-                  <TableCell>Usage Limit</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {coupons.map((coupon) => (
-                  <TableRow key={coupon._id}>
-                    <TableCell>{coupon.code}</TableCell>
-                    <TableCell>{coupon.discountPercentage}%</TableCell>
-                    <TableCell>{new Date(coupon.validUntil).toLocaleDateString()}</TableCell>
-                    <TableCell>{coupon.usageLimit}</TableCell>
-                    <TableCell>
-                      <IconButton onClick={() => handleOpenDialog('coupon', coupon)}>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton 
-                        onClick={() => handleOpenDeleteDialog('coupon', coupon._id, coupon.code)}
-                        disabled={deletingId === coupon._id}
-                        sx={{
-                          opacity: deletingId === coupon._id ? 0.5 : 1,
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
-
-        {/* Reviews Tab */}
-        <TabPanel value={tabValue} index={4}>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Product</TableCell>
-                  <TableCell>User</TableCell>
-                  <TableCell>Rating</TableCell>
-                  <TableCell>Comment</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {reviews.map((review) => (
-                  <TableRow key={review._id}>
-                    <TableCell>{review.product?.name}</TableCell>
-                    <TableCell>{review.user?.name}</TableCell>
-                    <TableCell>
-                      <Rating value={review.rating} readOnly />
-                    </TableCell>
-                    <TableCell>{review.comment}</TableCell>
-                    <TableCell>{new Date(review.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      <IconButton 
-                        onClick={() => handleOpenDeleteDialog('review', review._id, review.comment)}
-                        disabled={deletingId === review._id}
-                        sx={{
-                          opacity: deletingId === review._id ? 0.5 : 1,
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
-
-        {/* Dialog for Add/Edit */}
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-          <DialogTitle>
-            {selectedItem ? `Edit ${dialogType}` : `Add New ${dialogType}`}
-          </DialogTitle>
-          <DialogContent>
-            <Box component="form" noValidate sx={{ mt: 1 }}>
-              {dialogType === 'product' && (
-                <>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Name"
-                    name="name"
-                    value={formData.name || ''}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Category"
-                    name="category"
-                    value={formData.category || ''}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Description"
-                    name="description"
-                    value={formData.description || ''}
-                    onChange={handleChange}
-                    multiline
-                    rows={3}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Brand"
-                    name="brand"
-                    value={formData.brand || ''}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Price"
-                    name="price"
-                    type="number"
-                    value={formData.price || ''}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Stock"
-                    name="stock"
-                    type="number"
-                    value={formData.stock || ''}
-                    onChange={handleChange}
-                  />
-                  <Box sx={{ mt: 2, mb: 2 }}>
-                    <input
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      id="product-image"
-                      type="file"
-                      onChange={handleImageChange}
+            <DialogTitle>
+              {selectedItem ? `Edit ${dialogType}` : `Add New ${dialogType}`}
+            </DialogTitle>
+            <DialogContent>
+              <Box component="form" noValidate sx={{ mt: 1 }}>
+                {dialogType === 'product' && (
+                  <>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Name"
+                      name="name"
+                      value={formData.name || ''}
+                      onChange={handleChange}
                     />
-                    <label htmlFor="product-image">
-                      <Button
-                        variant="outlined"
-                        component="span"
-                        fullWidth
-                        disabled={uploadingImage}
-                        sx={{ mb: 1 }}
-                      >
-                        {uploadingImage ? 'Uploading...' : 'Choose Product Image'}
-                      </Button>
-                    </label>
-                    {(imagePreview || formData.image) && (
-                      <Box
-                        sx={{
-                          mt: 2,
-                          width: '100%',
-                          height: '200px',
-                          borderRadius: 1,
-                          overflow: 'hidden',
-                          position: 'relative'
-                        }}
-                      >
-                        <img
-                          src={imagePreview || formData.image}
-                          alt="Product preview"
-                          style={{
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Category"
+                      name="category"
+                      value={formData.category || ''}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Description"
+                      name="description"
+                      value={formData.description || ''}
+                      onChange={handleChange}
+                      multiline
+                      rows={3}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Brand"
+                      name="brand"
+                      value={formData.brand || ''}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Price"
+                      name="price"
+                      type="number"
+                      value={formData.price || ''}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Stock"
+                      name="stock"
+                      type="number"
+                      value={formData.stock || ''}
+                      onChange={handleChange}
+                    />
+                    <Box sx={{ mt: 2, mb: 2 }}>
+                      <input
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        id="product-image"
+                        type="file"
+                        onChange={handleImageChange}
+                      />
+                      <label htmlFor="product-image">
+                        <Button
+                          variant="outlined"
+                          component="span"
+                          fullWidth
+                          disabled={uploadingImage}
+                          sx={{ mb: 1 }}
+                        >
+                          {uploadingImage ? 'Uploading...' : 'Choose Product Image'}
+                        </Button>
+                      </label>
+                      {(imagePreview || formData.image) && (
+                        <Box
+                          sx={{
+                            mt: 2,
                             width: '100%',
-                            height: '100%',
-                            objectFit: 'cover'
+                            height: '200px',
+                            borderRadius: 1,
+                            overflow: 'hidden',
+                            position: 'relative'
                           }}
-                        />
-                      </Box>
-                    )}
-                  </Box>
-                </>
-              )}
+                        >
+                          <img
+                            src={imagePreview || formData.image}
+                            alt="Product preview"
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover'
+                            }}
+                          />
+                        </Box>
+                      )}
+                    </Box>
+                  </>
+                )}
 
-              {dialogType === 'coupon' && (
-                <>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Code"
-                    name="code"
-                    value={formData.code || ''}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Discount Percentage"
-                    name="discountPercentage"
-                    type="number"
-                    value={formData.discountPercentage || ''}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Valid Until"
-                    name="validUntil"
-                    type="date"
-                    value={formData.validUntil ? new Date(formData.validUntil).toISOString().split('T')[0] : ''}
-                    onChange={handleChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Usage Limit"
-                    name="usageLimit"
-                    type="number"
-                    value={formData.usageLimit || ''}
-                    onChange={handleChange}
-                  />
-                </>
-              )}
+                {dialogType === 'coupon' && (
+                  <>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Code"
+                      name="code"
+                      value={formData.code || ''}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Discount Percentage"
+                      name="discountPercentage"
+                      type="number"
+                      value={formData.discountPercentage || ''}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Valid Until"
+                      name="validUntil"
+                      type="date"
+                      value={formData.validUntil ? new Date(formData.validUntil).toISOString().split('T')[0] : ''}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Usage Limit"
+                      name="usageLimit"
+                      type="number"
+                      value={formData.usageLimit || ''}
+                      onChange={handleChange}
+                    />
+                  </>
+                )}
 
-              {dialogType === 'user' && (
-                <>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Name"
-                    name="name"
-                    value={formData.name || ''}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Email"
-                    name="email"
-                    type="email"
-                    value={formData.email || ''}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Gender"
-                    name="gender"
-                    select
-                    SelectProps={{
-                      native: true,
-                    }}
-                    value={formData.gender || ''}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </TextField>
-                </>
-              )}
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button
-              onClick={handleSubmit}
-              variant="contained"
-              disabled={actionLoading || uploadingImage}
-              sx={{
-                background: 'linear-gradient(45deg, #091540, #3D518C)',
-                opacity: (actionLoading || uploadingImage) ? 0.7 : 1,
-              }}
-            >
-              {actionLoading || uploadingImage ? 'Saving...' : (selectedItem ? 'Update' : 'Create')}
-            </Button>
-          </DialogActions>
-        </Dialog>
-
+                {dialogType === 'user' && (
+                  <>
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Name"
+                      name="name"
+                      value={formData.name || ''}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Email"
+                      name="email"
+                      type="email"
+                      value={formData.email || ''}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      label="Gender"
+                      name="gender"
+                      select
+                      SelectProps={{
+                        native: true,
+                      }}
+                      value={formData.gender || ''}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </TextField>
+                  </>
+                )}
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Cancel</Button>
+              <Button
+                onClick={handleSubmit}
+                variant="contained"
+                disabled={actionLoading || uploadingImage}
+                sx={{
+                  background: 'linear-gradient(45deg, #091540, #3D518C)',
+                  opacity: (actionLoading || uploadingImage) ? 0.7 : 1,
+                }}
+              >
+                {actionLoading || uploadingImage ? 'Saving...' : (selectedItem ? 'Update' : 'Create')}
+              </Button>
+            </DialogActions>
+          </Dialog>
+          
         {/* Delete Confirmation Dialog */}
         <Dialog
           open={deleteDialog.open}
@@ -1145,8 +1276,9 @@ const AdminDashboard = () => {
             </DialogActions>
           )}
         </Dialog>
-      </Paper>
-    </Container>
+        </Paper>
+      </Container>
+    </Fade>
   );
 };
 

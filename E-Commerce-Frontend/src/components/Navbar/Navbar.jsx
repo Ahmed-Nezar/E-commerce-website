@@ -49,10 +49,15 @@ const Navbar = ({reference}) => {
         <AppBar
             position="fixed"
             sx={{
-                background: 'rgba(171, 210, 250, 0.8)',
-                backdropFilter: 'blur(10px)',
-                boxShadow: '0 4px 30px rgba(9, 21, 64, 0.1)',
-                borderBottom: '1px solid rgba(171, 210, 250, 0.3)',
+                background: 'rgba(171, 210, 250, 0.65)',
+                backdropFilter: 'blur(12px)',
+                boxShadow: '0 8px 32px rgba(9, 21, 64, 0.12)',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.4)',
+                transition: 'all 0.3s ease-in-out',
+                '&:hover': {
+                    background: 'rgba(171, 210, 250, 0.75)',
+                    boxShadow: '0 8px 32px rgba(9, 21, 64, 0.18)',
+                }
             }}
             ref={reference}
         >

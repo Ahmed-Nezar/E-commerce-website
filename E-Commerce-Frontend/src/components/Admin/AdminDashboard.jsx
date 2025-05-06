@@ -64,6 +64,9 @@ const AdminDashboard = () => {
   const [formData, setFormData] = useState({});
   const [actionLoading, setActionLoading] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   // Fetch data based on active tab
   useEffect(() => {
@@ -188,12 +191,64 @@ const AdminDashboard = () => {
     setOpenDialog(false);
     setSelectedItem(null);
     setFormData({});
+    setSelectedImage(null);
+    setImagePreview('');
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+      
+      // Update formData with temporary preview
+      setFormData(prev => ({
+        ...prev,
+        image: URL.createObjectURL(file)
+      }));
+    }
+  };
+
+  const uploadImage = async (file) => {
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products/upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': localStorage.getItem('token')
+        },
+        body: formData // Don't set Content-Type header - browser will set it with boundary
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to upload image');
+      }
+      
+      const data = await response.json();
+      return data.imagePath;
+    } catch (error) {
+      console.error('Upload error:', error);
+      throw error;
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setActionLoading(true);
     try {
+      let imagePath = formData.image;
+      
+      // If there's a new image selected, upload it first
+      if (selectedImage) {
+        imagePath = await uploadImage(selectedImage);
+      }
+
       let url, method, body;
       const token = localStorage.getItem('token');
 
@@ -203,7 +258,7 @@ const AdminDashboard = () => {
             ? `${ENV.VITE_BACKEND_URL}/api/products/update/${selectedItem._id}`
             : `${ENV.VITE_BACKEND_URL}/api/products/create`;
           method = selectedItem ? 'PUT' : 'POST';
-          body = formData;
+          body = { ...formData, image: imagePath };
           break;
         case 'coupon':
           url = selectedItem
@@ -243,6 +298,8 @@ const AdminDashboard = () => {
           break;
       }
 
+      setSelectedImage(null);
+      setImagePreview('');
       handleCloseDialog();
     } catch (err) {
       setError(err.message);
@@ -649,15 +706,48 @@ const AdminDashboard = () => {
                     value={formData.stock || ''}
                     onChange={handleChange}
                   />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Image URL"
-                    name="image"
-                    value={formData.image || ''}
-                    onChange={handleChange}
-                  />
+                  <Box sx={{ mt: 2, mb: 2 }}>
+                    <input
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      id="product-image"
+                      type="file"
+                      onChange={handleImageChange}
+                    />
+                    <label htmlFor="product-image">
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        fullWidth
+                        disabled={uploadingImage}
+                        sx={{ mb: 1 }}
+                      >
+                        {uploadingImage ? 'Uploading...' : 'Choose Product Image'}
+                      </Button>
+                    </label>
+                    {(imagePreview || formData.image) && (
+                      <Box
+                        sx={{
+                          mt: 2,
+                          width: '100%',
+                          height: '200px',
+                          borderRadius: 1,
+                          overflow: 'hidden',
+                          position: 'relative'
+                        }}
+                      >
+                        <img
+                          src={imagePreview || formData.image}
+                          alt="Product preview"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                          }}
+                        />
+                      </Box>
+                    )}
+                  </Box>
                 </>
               )}
 
@@ -755,13 +845,13 @@ const AdminDashboard = () => {
             <Button
               onClick={handleSubmit}
               variant="contained"
-              disabled={actionLoading}
+              disabled={actionLoading || uploadingImage}
               sx={{
                 background: 'linear-gradient(45deg, #091540, #3D518C)',
-                opacity: actionLoading ? 0.7 : 1,
+                opacity: (actionLoading || uploadingImage) ? 0.7 : 1,
               }}
             >
-              {actionLoading ? 'Saving...' : (selectedItem ? 'Update' : 'Create')}
+              {actionLoading || uploadingImage ? 'Saving...' : (selectedItem ? 'Update' : 'Create')}
             </Button>
           </DialogActions>
         </Dialog>

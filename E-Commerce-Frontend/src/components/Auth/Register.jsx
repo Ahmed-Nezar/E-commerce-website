@@ -32,20 +32,24 @@ const Register = () => {
   });
 
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
+    setLoading(true);
     
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
+      setLoading(false);
       return;
     }
 
     if (!formData.gender) {
       setError('Please select your gender');
+      setLoading(false);
       return;
     }
 
@@ -74,6 +78,8 @@ const Register = () => {
     } catch (error) {
       console.error('Registration error:', error);
       setError('An error occurred during registration');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -328,6 +334,7 @@ const Register = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading}
               sx={{
                 mt: 4,
                 mb: 3,
@@ -338,6 +345,7 @@ const Register = () => {
                 textTransform: 'none',
                 background: 'linear-gradient(90deg, #091540, #3D518C)',
                 boxShadow: '0 4px 12px rgba(9, 21, 64, 0.3)',
+                opacity: loading ? 0.7 : 1,
                 '&:hover': {
                   background: 'linear-gradient(90deg, #091540, #1B2CC1)',
                   boxShadow: '0 6px 16px rgba(9, 21, 64, 0.4)',
@@ -346,7 +354,7 @@ const Register = () => {
                 transition: 'all 0.3s ease'
               }}
             >
-              Create Your Account
+              {loading ? 'Creating Account...' : 'Create Your Account'}
             </Button>
             <Grid container justifyContent="center">
               <Grid item>

@@ -62,6 +62,8 @@ const AdminDashboard = () => {
   const [dialogType, setDialogType] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [formData, setFormData] = useState({});
+  const [actionLoading, setActionLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
 
   // Fetch data based on active tab
   useEffect(() => {
@@ -190,6 +192,7 @@ const AdminDashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setActionLoading(true);
     try {
       let url, method, body;
       const token = localStorage.getItem('token');
@@ -243,12 +246,15 @@ const AdminDashboard = () => {
       handleCloseDialog();
     } catch (err) {
       setError(err.message);
+    } finally {
+      setActionLoading(false);
     }
   };
 
   const handleDelete = async (type, id) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
-
+    
+    setDeletingId(id);
     try {
       let url;
       switch (type) {
@@ -292,6 +298,8 @@ const AdminDashboard = () => {
       }
     } catch (err) {
       setError(err.message);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -385,7 +393,13 @@ const AdminDashboard = () => {
                       <IconButton onClick={() => handleOpenDialog('product', product)}>
                         <EditIcon />
                       </IconButton>
-                      <IconButton onClick={() => handleDelete('product', product._id)}>
+                      <IconButton 
+                        onClick={() => handleDelete('product', product._id)}
+                        disabled={deletingId === product._id}
+                        sx={{
+                          opacity: deletingId === product._id ? 0.5 : 1,
+                        }}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
@@ -417,7 +431,13 @@ const AdminDashboard = () => {
                     <TableCell>{user.gender}</TableCell>
                     <TableCell>{user.isAdmin ? 'Admin' : 'User'}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleDelete('user', user._id)}>
+                      <IconButton 
+                        onClick={() => handleDelete('user', user._id)}
+                        disabled={deletingId === user._id}
+                        sx={{
+                          opacity: deletingId === user._id ? 0.5 : 1,
+                        }}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
@@ -503,7 +523,13 @@ const AdminDashboard = () => {
                       <IconButton onClick={() => handleOpenDialog('coupon', coupon)}>
                         <EditIcon />
                       </IconButton>
-                      <IconButton onClick={() => handleDelete('coupon', coupon._id)}>
+                      <IconButton 
+                        onClick={() => handleDelete('coupon', coupon._id)}
+                        disabled={deletingId === coupon._id}
+                        sx={{
+                          opacity: deletingId === coupon._id ? 0.5 : 1,
+                        }}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
@@ -539,7 +565,13 @@ const AdminDashboard = () => {
                     <TableCell>{review.comment}</TableCell>
                     <TableCell>{new Date(review.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleDelete('review', review._id)}>
+                      <IconButton 
+                        onClick={() => handleDelete('review', review._id)}
+                        disabled={deletingId === review._id}
+                        sx={{
+                          opacity: deletingId === review._id ? 0.5 : 1,
+                        }}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
@@ -720,8 +752,16 @@ const AdminDashboard = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button onClick={handleSubmit} variant="contained">
-              {selectedItem ? 'Update' : 'Create'}
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              disabled={actionLoading}
+              sx={{
+                background: 'linear-gradient(45deg, #091540, #3D518C)',
+                opacity: actionLoading ? 0.7 : 1,
+              }}
+            >
+              {actionLoading ? 'Saving...' : (selectedItem ? 'Update' : 'Create')}
             </Button>
           </DialogActions>
         </Dialog>

@@ -62,14 +62,7 @@ function App() {
                             }
                         />
                         <Route path="/forgot-password" element={<ForgotPassword/>}/>
-                        <Route 
-                            path="/cart" 
-                            element={
-                                <ProtectedRoute>
-                                    <Cart/>
-                                </ProtectedRoute>
-                            }
-                        />
+                        <Route path="/cart" element={<Cart/>}/>
                         <Route 
                             path="/checkout" 
                             element={

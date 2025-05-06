@@ -21,10 +21,22 @@ import {ENV} from "../../App.jsx";
 const SignIn = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    rememberMe: false
+  const [formData, setFormData] = useState(() => {
+    // Check if credentials exist in localStorage
+    const savedCredentials = localStorage.getItem('rememberedCredentials');
+    if (savedCredentials) {
+      const { email, rememberMe } = JSON.parse(savedCredentials);
+      return {
+        email,
+        password: '',
+        rememberMe
+      };
+    }
+    return {
+      email: '',
+      password: '',
+      rememberMe: false
+    };
   });
   const [error, setError] = useState('');
 
@@ -48,8 +60,19 @@ const SignIn = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Store token in localStorage regardless of rememberMe
+        // Handle remember me
+        if (formData.rememberMe) {
+          localStorage.setItem('rememberedCredentials', JSON.stringify({
+            email: formData.email,
+            rememberMe: true
+          }));
+        } else {
+          localStorage.removeItem('rememberedCredentials');
+        }
+
+        // Store token in localStorage
         localStorage.setItem('token', data.token);
+        
         // Force page reload to update all components
         window.location.href = '/';
       } else {

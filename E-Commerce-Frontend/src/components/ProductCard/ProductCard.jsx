@@ -14,6 +14,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useTheme } from '@mui/material/styles';
 import "./ProductCard.css";
 import { useNavigate } from 'react-router-dom';
+import CustomModal from "../CustomModal/CustomModal.jsx";
+import ProductDetails from "../ProductDetails/ProductDetails.jsx";
 
 const ProductCard = ({
     product,
@@ -86,34 +88,38 @@ const ProductCard = ({
                         display: 'flex',
                         alignItems: 'flex-end',
                         p: 2,
+                        cursor: 'pointer',
                     }}
                 >
-                    <Button
-                        variant="contained"
-                        fullWidth
-                        onClick={() => {
-                            navigate('/productDetails/' + product._id);
-                        }}
-                        disabled={product.stock === 0}
-                        sx={{
-                            py: 1.5,
-                            borderRadius: '16px',
-                            textTransform: 'none',
-                            fontSize: '1rem',
-                            fontWeight: 600,
-                            background: 'rgba(255,255,255,0.95)',
-                            color: 'primary.main',
-                            backdropFilter: 'blur(10px)',
-                            '&:hover': {
-                                background: 'rgba(255,255,255,1)',
-                                transform: 'scale(1.02)',
-                            },
-                            transition: 'all 0.3s ease',
-                        }}
-                        startIcon={<VisibilityIcon />}
+                    <CustomModal
+                        triggerButton={
+                            <Button
+                                variant="contained"
+                                fullWidth
+                                disabled={product.stock === 0}
+                                sx={{
+                                    py: 1.5,
+                                    borderRadius: '16px',
+                                    textTransform: 'none',
+                                    fontSize: '1rem',
+                                    fontWeight: 600,
+                                    background: 'rgba(255,255,255,0.95)',
+                                    color: 'primary.main',
+                                    backdropFilter: 'blur(10px)',
+                                    '&:hover': {
+                                        background: 'rgba(255,255,255,1)',
+                                        transform: 'scale(1.02)',
+                                    },
+                                    transition: 'all 0.3s ease',
+                                }}
+                                startIcon={<VisibilityIcon />}
+                            >
+                                Quick View
+                            </Button>
+                        }
                     >
-                        View Product
-                    </Button>
+                        <ProductDetails productId={product._id}/>
+                    </CustomModal>
                 </Box>
 
                 <Stack
@@ -174,7 +180,12 @@ const ProductCard = ({
                 </Stack>
             </Box>
 
-            <CardContent sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, '&:last-child': { pb: { xs: 2, sm: 3 } } }}>
+            <CardContent
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('/productDetails/' + product._id);
+                }}
+                sx={{ flexGrow: 1, p: { xs: 2, sm: 3 }, '&:last-child': { pb: { xs: 2, sm: 3 } } ,cursor: "pointer" }}>
                 <Typography
                     variant="h6"
                     sx={{
@@ -188,6 +199,7 @@ const ProductCard = ({
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: hoveredProduct === product._id ? 'transparent' : 'inherit',
                         transition: 'all 0.3s ease',
+                        cursor: 'pointer',
                     }}
                 >
                     {product.name}
@@ -247,7 +259,10 @@ const ProductCard = ({
                         variant="contained"
                         className="add-to-cart-button"
                         startIcon={<ShoppingCartIcon />}
-                        onClick={() => handleAddToCart(product)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddToCart(product)}
+                        }
                         disabled={product.stock === 0}
                         sx={{
                             borderRadius: '12px',

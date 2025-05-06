@@ -19,6 +19,7 @@ import { ENV } from "../../App.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import "react-inner-image-zoom/lib/styles.min.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Star = ({ selected = false, onClick = f => f }) => (
     <div
@@ -67,11 +68,11 @@ const ProductDetails = ({ productId }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (id) {
+        if (productId || id) {
             // fetch the product by ID
             axios
                 .get(
-                    `${ENV.VITE_BACKEND_URL}/api/products/getById/${id}`
+                    `${ENV.VITE_BACKEND_URL}/api/products/getById/${productId || id}`
                 )
                 .then(({ data }) => {
                     setProduct(data.data);
@@ -82,7 +83,7 @@ const ProductDetails = ({ productId }) => {
                 })
                 .finally(() => setLoading(false));
         }
-    }, [id]);
+    }, [productId, id]);
 
     const addToCart = () => {
         const cart = JSON.parse(localStorage.getItem("products") || "[]");
@@ -93,19 +94,15 @@ const ProductDetails = ({ productId }) => {
 
     const submitFeedback = e => {
         e.preventDefault();
-        // replace with your real feedback POST endpoint if you have one
-        console.log({ firstname, lastname, starsSelected, review });
         setModalOpen(false);
         toast.success("Feedback submitted (demo)");
     };
 
     if (loading) {
         return (
-            <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ height: 480 }}
-            >
-                <img src="/images/preloader.gif" alt="Loading..." />
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '2rem', minHeight: "500px",
+                alignItems: "center" }}>
+                <CircularProgress />
             </div>
         );
     }
@@ -269,6 +266,7 @@ const ProductDetails = ({ productId }) => {
                                         key={i}
                                         selected={i < starsSelected}
                                         onClick={() => setStarsSelected(i + 1)}
+
                                     />
                                 ))}
                             </div>

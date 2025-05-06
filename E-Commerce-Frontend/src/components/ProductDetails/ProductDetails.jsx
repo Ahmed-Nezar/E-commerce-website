@@ -10,7 +10,6 @@ import {
     Input,
 } from "reactstrap";
 import InnerImageZoom from "react-inner-image-zoom";
-// import ReactImageMagnify from "react-image-magnify";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,6 +18,7 @@ import { ENV } from "../../App.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import "react-inner-image-zoom/lib/styles.min.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Loader from "../Loader/Loader.jsx";
 
 const Star = ({ selected = false, onClick = f => f }) => (
     <div
@@ -54,7 +54,7 @@ const mockReviews = [
     },
 ];
 
-const ProductDetails = ({ productId }) => {
+const ProductDetails = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
@@ -67,21 +67,24 @@ const ProductDetails = ({ productId }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (id) {
-            // fetch the product by ID
-            axios
-                .get(
-                    `${ENV.VITE_BACKEND_URL}/api/products/getById/${id}`
-                )
-                .then(({ data }) => {
+        const loadProduct = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products/${id}`);
+                const data = await response.json();
+                
+                if (response.ok) {
                     setProduct(data.data);
-                })
-                .catch(err => {
-                    console.error("Failed to load product:", err);
-                    toast.error("Could not load product data.");
-                })
-                .finally(() => setLoading(false));
-        }
+                }
+            } catch (error) {
+                console.error('Error fetching product:', error);
+                toast.error("Could not load product data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadProduct();
     }, [id]);
 
     const addToCart = () => {
@@ -93,21 +96,13 @@ const ProductDetails = ({ productId }) => {
 
     const submitFeedback = e => {
         e.preventDefault();
-        // replace with your real feedback POST endpoint if you have one
         console.log({ firstname, lastname, starsSelected, review });
         setModalOpen(false);
         toast.success("Feedback submitted (demo)");
     };
 
     if (loading) {
-        return (
-            <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ height: 480 }}
-            >
-                <img src="/images/preloader.gif" alt="Loading..." />
-            </div>
-        );
+        return <Loader />;
     }
 
     if (!product) {

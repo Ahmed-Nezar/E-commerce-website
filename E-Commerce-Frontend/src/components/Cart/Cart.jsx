@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -25,10 +25,12 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { Stack } from '@mui/system';
+import Loader from '../Loader/Loader.jsx';
 
 const Cart = () => {
   const [removedItemId, setRemovedItemId] = useState(null);
   const [showAddedAnimation, setShowAddedAnimation] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const theme = useTheme();
   const { 
@@ -76,6 +78,15 @@ const Cart = () => {
     navigate('/checkout');
     // TODO: Implement checkout logic with backend
   };
+
+  useEffect(() => {
+    // Simulate loading state for cart data initialization
+    setTimeout(() => setLoading(false), 800);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Fade in timeout={800}>

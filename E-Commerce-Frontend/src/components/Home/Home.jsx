@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  Box, Container, Typography, Grid,IconButton, Paper,
-  Fade,
+  Box, Container, Typography, Grid, IconButton, Paper, Fade,
 } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -12,18 +11,20 @@ import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
 import ProductCard from "../ProductCard/ProductCard.jsx";
 import { useNavigate } from 'react-router-dom';
-import {FiMonitor} from "react-icons/fi";
-import {BsDeviceHdd, BsGpuCard, BsMotherboard, BsMouse2} from "react-icons/bs";
-import {GiComputerFan} from "react-icons/gi";
-import {LiaHeadsetSolid} from "react-icons/lia";
-import {FaRegKeyboard} from "react-icons/fa";
-import {MdOutlinePower} from "react-icons/md";
-import {LuPcCase} from "react-icons/lu";
+import { FiMonitor } from "react-icons/fi";
+import { BsDeviceHdd, BsGpuCard, BsMotherboard, BsMouse2 } from "react-icons/bs";
+import { GiComputerFan } from "react-icons/gi";
+import { LiaHeadsetSolid } from "react-icons/lia";
+import { FaRegKeyboard } from "react-icons/fa";
+import { MdOutlinePower } from "react-icons/md";
+import { LuPcCase } from "react-icons/lu";
+import Loader from '../Loader/Loader.jsx';
 
 const Home = () => {
   const { addToCart } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const carouselItems = [
     {
@@ -186,6 +187,11 @@ const Home = () => {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    // Simulate loading state for data fetching
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
   const handlePrevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + carouselItems.length) % carouselItems.length);
   };
@@ -215,6 +221,10 @@ const Home = () => {
       }
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Fade in timeout={1000}>

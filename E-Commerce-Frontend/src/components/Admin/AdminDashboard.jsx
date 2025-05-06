@@ -20,7 +20,6 @@ import {
   TextField,
   MenuItem,
   Alert,
-  CircularProgress,
   Tabs,
   Tab,
   Rating,
@@ -29,6 +28,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { ENV } from '../../App';
+import Loader from '../Loader/Loader.jsx';
 
 // TabPanel component for content
 function TabPanel({ children, value, index, ...other }) {
@@ -304,11 +304,7 @@ const AdminDashboard = () => {
   };
 
   if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <Loader />;
   }
 
   return (

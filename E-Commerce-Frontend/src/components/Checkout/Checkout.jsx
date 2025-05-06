@@ -16,6 +16,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useCart } from '../../context/CartContext';
 import { ENV } from '../../App.jsx';
+import Loader from '../Loader/Loader.jsx';
 
 // Import step components
 import ShippingInfo from '../Checkout/ShippingInfo';
@@ -47,6 +48,7 @@ const Checkout = () => {
   
   const [orderComplete, setOrderComplete] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const steps = ['Shipping Information', 'Payment Method', 'Review Order'];
 
@@ -59,6 +61,9 @@ const Checkout = () => {
     if (cartItems.length === 0) {
       navigate('/cart');
     }
+
+    // Simulate loading state for checkout data initialization
+    setTimeout(() => setLoading(false), 800);
   }, [cartItems.length, navigate]);
 
   const handleNext = () => {
@@ -254,6 +259,10 @@ const Checkout = () => {
         return 'Unknown step';
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   if (orderComplete) {
     return (

@@ -15,6 +15,7 @@ import Drawer from "../Drawer/Drawer.jsx";
 import Filter from "../Filter/Filter.jsx";
 import {ENV} from "../../App.jsx";
 import NoResultsPlaceholder from "../NoResultsPlaceholder/NoResultsPlaceholder.jsx";
+import Loader from "../Loader/Loader.jsx";
 
 const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -92,99 +93,8 @@ const fetchData = async (
 const Products = () => {
     const { addToCart } = useCart();
     const [addedItems, setAddedItems] = useState({});
-
-    const handleAddToCart = (product) => {
-        addToCart(product);
-        setAddedItems(prev => ({ ...prev, [product._id]: true }));
-        setTimeout(() => {
-            setAddedItems(prev => ({ ...prev, [product._id]: false }));
-        }, 2000);
-    };
-
-    const [products,setProducts] = useState([
-        // {
-        //     _id: '1',
-        //     name: 'Razer Basilisk V3',
-        //     price: 69.99,
-        //     image: '/images/products/Razer_Basilisk_V3.jpg',
-        //     description: 'Pro Gaming Mouse',
-        //     stock: 25,
-        //     rating: 4.7
-        // },
-        // {
-        //     _id: '2',
-        //     name: 'RTX 5060 Ti',
-        //     price: 499.99,
-        //     image: '/images/products/RTX_5060_Ti.png',
-        //     description: 'Mid-Range Gaming GPU',
-        //     stock: 3,
-        //     rating: 4.9
-        // },
-        // {
-        //     _id: '3',
-        //     name: 'Razer Kraken V4',
-        //     price: 199.99,
-        //     image: '/images/products/Razer_Kraken_V4.jpg',
-        //     description: 'Wireless Gaming Headset',
-        //     stock: 10,
-        //     rating: 4.8
-        // },
-        // {
-        //     _id: '4',
-        //     name: 'Samsung Odyssey OLED G8',
-        //     price: 1299.99,
-        //     image: '/images/products/Samsung-Odyssey-OLED-G8.jpg',
-        //     description: '34" Ultra-Wide Gaming Monitor',
-        //     stock: 12,
-        //     rating: 4.9
-        // },
-        // {
-        //     _id: '5',
-        //     name: 'Keychron Q5 HE',
-        //     price: 199.99,
-        //     image: '/images/products/Keychron_Q5_HE.png',
-        //     description: 'Hot-swappable Mechanical Keyboard',
-        //     stock: 15,
-        //     rating: 4.6
-        // },
-        // {
-        //     _id: '6',
-        //     name: 'Lian Li O11 Vision',
-        //     price: 219.99,
-        //     image: '/images/products/O11VP_000a.png',
-        //     description: 'Premium ATX PC Case',
-        //     stock: 7,
-        //     rating: 4.8
-        // },
-        // {
-        //     _id: '7',
-        //     name: 'NVIDIA Quantum X800',
-        //     price: 1499.99,
-        //     image: '/images/products/NVIDIA_Quantum-X800.jpg',
-        //     description: 'Next-gen GPU Technology',
-        //     stock: 5,
-        //     rating: 4.8
-        // },
-        // {
-        //     _id: '8',
-        //     name: 'Dark Power Pro 13 1600W',
-        //     price: 399.99,
-        //     image: '/images/products/Dark_Power_Pro_13_1600W.jpg',
-        //     description: 'Platinum Rated PSU',
-        //     stock: 8,
-        //     rating: 4.7
-        // },
-        // {
-        //     _id: '9',
-        //     name: 'ADATA SD 8.0 Express',
-        //     price: 129.99,
-        //     image: '/images/products/adata-SD-8.0-Express-UE720.jpg',
-        //     description: 'High-Speed Storage Solution',
-        //     stock: 20,
-        //     rating: 4.5
-        // }
-    ]);
-
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [brands, setBrands] = useState([]);
     const [categories, setCategories] = useState([]);
 
@@ -203,11 +113,26 @@ const Products = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    useEffect(() => {
+    const handleAddToCart = (product) => {
+        addToCart(product);
+        setAddedItems(prev => ({ ...prev, [product._id]: true }));
+        setTimeout(() => {
+            setAddedItems(prev => ({ ...prev, [product._id]: false }));
+        }, 2000);
+    };
 
-        fetchData( cn, setBrands, selectedCategories, setCategories,
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                setLoading(true);
+                await fetchData( cn, setBrands, selectedCategories, setCategories,
                    sortVal, inStockOnly, selectedBrands, fromPrice, toPrice,
                    setProducts, setCurrentPage, setTotalPages, currentPage);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadData();
     }, [selectedCategories, sortVal, inStockOnly, selectedBrands, fromPrice, toPrice, currentPage]);
 
     useEffect(() => {
@@ -215,6 +140,10 @@ const Products = () => {
             setSelectedCategories([...selectedCategories, cn])
         }
     }, [cn]);
+
+    if (loading) {
+        return <Loader />;
+    }
 
     return (
         <>
@@ -271,10 +200,9 @@ const Products = () => {
 
                         {/* Products Grid */}
                         <div className="d-grid gap-4 m-3 products-view justify-content-center">
-                            {
-                                !products.length? (
-                                    <NoResultsPlaceholder />
-                                ) :
+                            {!products.length ? (
+                                <NoResultsPlaceholder />
+                            ) : (
                                 products.map((product, index) => (
                                     <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
                                         <div className="product-card">
@@ -303,7 +231,7 @@ const Products = () => {
                                         </div>
                                     </Grid>
                                 ))
-                            }
+                            )}
                         </div>
                         <Pagination count={totalPages}
                                     page={currentPage}

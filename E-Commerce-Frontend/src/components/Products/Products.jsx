@@ -15,6 +15,8 @@ import Drawer from "../Drawer/Drawer.jsx";
 import Filter from "../Filter/Filter.jsx";
 import {ENV} from "../../App.jsx";
 import NoResultsPlaceholder from "../NoResultsPlaceholder/NoResultsPlaceholder.jsx";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -44,8 +46,9 @@ const catImgs = {
 const fetchData = async (
     cn, setBrands, selectedCategories, setCategories,
     sortVal, inStockOnly, selectedBrands, fromPrice, toPrice,
-    setProducts, setCurrentPage, setTotalPages, currentPage) => {
+    setProducts, setCurrentPage, setTotalPages, currentPage, setIsLoading) => {
     try {
+        setIsLoading(true);
         const category = cn ? cn : selectedCategories;
 
         let brandQuery = new URLSearchParams();
@@ -76,18 +79,36 @@ const fetchData = async (
         if (selectedBrands.length > 0) query.append("brand", selectedBrands.join("|"));
         if (fromPrice) query.append("minPrice", fromPrice.toString());
         if (toPrice) query.append("maxPrice", toPrice.toString());
-        query.append("limit", "12");
+        query.append("limit", "10");
         query.append("page", currentPage.toString());
 
         const productRes = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?${query.toString()}`)
             .then(res => res.json());
         setProducts(productRes.data);
-        setCurrentPage(productRes.data.length > 0 ? currentPage : 1);
+        // setCurrentPage(productRes.data.length > 0? currentPage : 1);
+        setTotalPages(productRes.totalPages);
+    } catch (error) {
+        console.error("Failed to fetch data:", error);
+    } finally {
+        setIsLoading(false);
+    }
+};
+
+const searchData = async (keyword, setProducts, currentPage=1, setCurrentPage, setTotalPages) => {
+    try {
+        const query = new URLSearchParams();
+        if (keyword) query.append("keyword", keyword);
+        query.append("page", currentPage.toString());
+
+        const productRes = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?${query.toString()}`)
+            .then(res => res.json());
+        setProducts(productRes.data);
+        setCurrentPage(1);
         setTotalPages(productRes.totalPages);
     } catch (error) {
         console.error("Failed to fetch data:", error);
     }
-};
+}
 
 const Products = () => {
     const { addToCart } = useCart();
@@ -203,26 +224,53 @@ const Products = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    useEffect(() => {
+    const [isLoading, setIsLoading] = useState(false);
 
+    const [searchInput, setSearchInput] = useState("");
+
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const keyword = searchParams.get("keyword");
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
         fetchData( cn, setBrands, selectedCategories, setCategories,
                    sortVal, inStockOnly, selectedBrands, fromPrice, toPrice,
-                   setProducts, setCurrentPage, setTotalPages, currentPage);
+                   setProducts, setCurrentPage, setTotalPages, currentPage, setIsLoading);
     }, [selectedCategories, sortVal, inStockOnly, selectedBrands, fromPrice, toPrice, currentPage]);
 
     useEffect(() => {
         if (cn && !selectedCategories.includes(cn)) {
             setSelectedCategories([...selectedCategories, cn])
         }
+        if (!cn) {
+            setSelectedCategories([]);
+        }
     }, [cn]);
+
+    useEffect(() => {
+        navigate(`?keyword=${searchInput}`);
+    }, [searchInput]);
+
+    useEffect(() => {
+        if (currentPage !== 1) {
+            setCurrentPage(1);
+        }
+    }, [sortVal, selectedCategories, inStockOnly, selectedBrands, fromPrice, toPrice]);
+
+    useEffect(() => {
+        searchData(keyword, setProducts, currentPage ,setCurrentPage, setTotalPages);
+    },[location.search]);
 
     return (
         <>
+            {/*<input type="text" value={searchInput} onInput={(e) => setSearchInput(e.target.value)}/>*/} {/* for testing */}
             <div className="w-full">
                 {/* Top Banner Image */}
-                <div className="d-grid align-content-center headerBG" style={{backgroundImage: `linear-gradient(to bottom, rgb(0 0 0 / 80%), rgb(1 63 181 / 80%)), `+
+                <div className="d-grid align-content-center headerBG" style={{backgroundImage: `linear-gradient(to bottom, rgb(0 0 0 / 50%), rgb(1 63 181 / 60%)), `+
                 `url(${catImgs[cn?.toLowerCase()]})`}}>
-                    <h1 className="text-white" style={{fontSize: "inherit"}}>{cn ? `${cn}` : "All Products"}</h1>
+                    <h1 className="text-white" style={{fontSize: "inherit", textShadow: "3px 3px 10px black"}}>{keyword ? "Search" : cn ? `${cn}` : "All Products"}</h1>
                 </div>
 
 
@@ -271,39 +319,44 @@ const Products = () => {
 
                         {/* Products Grid */}
                         <div className="d-grid gap-4 m-3 products-view justify-content-center">
-                            {
-                                !products.length? (
-                                    <NoResultsPlaceholder />
-                                ) :
+                            {isLoading ? (
+                                <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '2rem', minHeight: "500px",
+                                    alignItems: "center" }}>
+                                    <CircularProgress />
+                                </div>
+                            ) : !products.length ? (
+                                <NoResultsPlaceholder />
+                            ) : (
                                 products.map((product, index) => (
                                     <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
                                         <div className="product-card">
-                                        <motion.div
-                                            variants={itemVariants}
-                                            custom={index}
-                                            initial="hidden"
-                                            animate="visible"
-                                            whileHover={{ scale: 1.02 }}
-                                            transition={{ type: "spring", stiffness: 300 }}
-                                        >
-                                            <Tilt
-                                                tiltMaxAngleX={8}
-                                                tiltMaxAngleY={8}
-                                                scale={1}
-                                                transitionSpeed={1500}
-                                                gyroscope={true}
+                                            <motion.div
+                                                variants={itemVariants}
+                                                custom={index}
+                                                initial="hidden"
+                                                animate="visible"
+                                                whileHover={{ scale: 1.02 }}
+                                                transition={{ type: "spring", stiffness: 300 }}
                                             >
-                                                <ProductCard
-                                                    product={product}
-                                                    handleAddToCart={handleAddToCart}
-                                                    addedItems={addedItems}
-                                                />
-                                            </Tilt>
-                                        </motion.div>
+                                                <Tilt
+                                                    tiltMaxAngleX={8}
+                                                    tiltMaxAngleY={8}
+                                                    scale={1}
+                                                    transitionSpeed={1500}
+                                                    gyroscope={true}
+                                                >
+                                                    <ProductCard
+                                                        product={product}
+                                                        handleAddToCart={handleAddToCart}
+                                                        addedItems={addedItems}
+                                                    />
+                                                </Tilt>
+                                            </motion.div>
                                         </div>
                                     </Grid>
                                 ))
-                            }
+                            )}
+
                         </div>
                         <Pagination count={totalPages}
                                     page={currentPage}

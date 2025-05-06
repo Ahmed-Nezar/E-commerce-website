@@ -391,6 +391,9 @@ const AdminDashboard = () => {
         case 'review':
           url = `${ENV.VITE_BACKEND_URL}/api/reviews/delete/${id}`;
           break;
+        case 'order':
+          url = `${ENV.VITE_BACKEND_URL}/api/orders/${id}`;
+          break;
       }
 
       const response = await fetch(url, {
@@ -415,6 +418,9 @@ const AdminDashboard = () => {
           break;
         case 'review':
           await fetchReviews();
+          break;
+        case 'order':
+          await fetchOrders();
           break;
       }
 
@@ -773,6 +779,15 @@ const AdminDashboard = () => {
                         <TableCell>
                           <IconButton onClick={() => handleOpenOrderView(order)}>
                             <VisibilityIcon />
+                          </IconButton>
+                          <IconButton 
+                            onClick={() => handleOpenDeleteDialog('order', order._id, `Order #${order._id}`)}
+                            disabled={deletingId === order._id}
+                            sx={{
+                              opacity: deletingId === order._id ? 0.5 : 1,
+                            }}
+                          >
+                            <DeleteIcon />
                           </IconButton>
                         </TableCell>
                       </TableRow>

@@ -1107,10 +1107,16 @@ const AdminDashboard = () => {
           fullWidth
           sx={{
             '& .MuiDialog-paper': {
-              borderRadius: 2,
+              borderRadius: 3,
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-              background: 'rgba(255, 255, 255, 0.9)',
+              background: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(10px)',
+              overflow: 'hidden',
+              animation: 'fadeIn 0.3s ease-out',
+              '@keyframes fadeIn': {
+                from: { opacity: 0, transform: 'translateY(-20px)' },
+                to: { opacity: 1, transform: 'translateY(0)' }
+              }
             }
           }}
         >
@@ -1119,144 +1125,231 @@ const AdminDashboard = () => {
             justifyContent: 'space-between', 
             alignItems: 'center',
             borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-            mb: 2
+            mb: 2,
+            p: 3,
+            background: 'linear-gradient(45deg, #091540, #3D518C)',
+            color: 'white'
           }}>
-            <Typography variant="h6">
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
               {isEditing ? 'Edit Order' : 'Order Details'}
             </Typography>
             <Box>
               {!isEditing && (
                 <IconButton 
                   onClick={handleOpenOrderEdit}
-                  sx={{ mr: 1 }}
+                  sx={{ 
+                    mr: 1,
+                    color: 'white',
+                    '&:hover': {
+                      background: 'rgba(255, 255, 255, 0.1)'
+                    }
+                  }}
                 >
                   <EditIcon />
                 </IconButton>
               )}
-              <IconButton onClick={handleCloseOrderView}>
+              <IconButton 
+                onClick={handleCloseOrderView}
+                sx={{ 
+                  color: 'white',
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 0.1)'
+                  }
+                }}
+              >
                 <CloseIcon />
               </IconButton>
             </Box>
           </DialogTitle>
-          <DialogContent>
+          <DialogContent sx={{ px: 3, py: 2 }}>
             {viewingOrder && (
               <Box sx={{ mt: 1 }}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle2" color="text.secondary">Order ID</Typography>
-                    <Typography variant="body1" sx={{ mb: 2 }}>{viewingOrder._id}</Typography>
+                    <Paper elevation={0} sx={{ p: 3, borderRadius: 2, background: 'rgba(0, 0, 0, 0.02)' }}>
+                      <Typography variant="subtitle2" color="text.secondary" gutterBottom>Order ID</Typography>
+                      <Typography variant="body1" sx={{ mb: 3, fontWeight: 500, fontFamily: 'monospace' }}>
+                        {viewingOrder._id}
+                      </Typography>
 
-                    <Typography variant="subtitle2" color="text.secondary">Customer</Typography>
-                    <Typography variant="body1" sx={{ mb: 2 }}>{viewingOrder.user?.name}</Typography>
+                      <Typography variant="subtitle2" color="text.secondary" gutterBottom>Customer</Typography>
+                      <Typography variant="body1" sx={{ mb: 3, fontWeight: 500 }}>
+                        {viewingOrder.user?.name}
+                      </Typography>
 
-                    <Typography variant="subtitle2" color="text.secondary">Date</Typography>
-                    <Typography variant="body1" sx={{ mb: 2 }}>
-                      {new Date(viewingOrder.createdAt).toLocaleString()}
-                    </Typography>
+                      <Typography variant="subtitle2" color="text.secondary" gutterBottom>Date</Typography>
+                      <Typography variant="body1" sx={{ mb: 3, fontWeight: 500 }}>
+                        {new Date(viewingOrder.createdAt).toLocaleString()}
+                      </Typography>
 
-                    {isEditing ? (
-                      <Box sx={{ mt: 2 }}>
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={viewingOrder.isPaid}
-                              onChange={(e) => setViewingOrder(prev => ({
-                                ...prev,
-                                isPaid: e.target.checked
-                              }))}
-                            />
-                          }
-                          label="Paid"
-                        />
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={viewingOrder.isDelivered}
-                              onChange={(e) => setViewingOrder(prev => ({
-                                ...prev,
-                                isDelivered: e.target.checked
-                              }))}
-                            />
-                          }
-                          label="Delivered"
-                        />
-                      </Box>
-                    ) : (
-                      <>
-                        <Typography variant="subtitle2" color="text.secondary">Payment Status</Typography>
-                        <Typography variant="body1" sx={{ mb: 2 }}>
-                          {viewingOrder.isPaid ? 'Paid' : 'Pending'}
-                        </Typography>
+                      {isEditing ? (
+                        <Box sx={{ mt: 2 }}>
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                checked={viewingOrder.isPaid}
+                                onChange={(e) => setViewingOrder(prev => ({
+                                  ...prev,
+                                  isPaid: e.target.checked
+                                }))}
+                              />
+                            }
+                            label={
+                              <Typography sx={{ fontWeight: 500 }}>
+                                Payment Status: <span style={{ color: viewingOrder.isPaid ? '#2e7d32' : '#d32f2f' }}>
+                                  {viewingOrder.isPaid ? 'Paid' : 'Pending'}
+                                </span>
+                              </Typography>
+                            }
+                          />
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                checked={viewingOrder.isDelivered}
+                                onChange={(e) => setViewingOrder(prev => ({
+                                  ...prev,
+                                  isDelivered: e.target.checked
+                                }))}
+                              />
+                            }
+                            label={
+                              <Typography sx={{ fontWeight: 500 }}>
+                                Delivery Status: <span style={{ color: viewingOrder.isDelivered ? '#2e7d32' : '#ed6c02' }}>
+                                  {viewingOrder.isDelivered ? 'Delivered' : 'Pending'}
+                                </span>
+                              </Typography>
+                            }
+                          />
+                        </Box>
+                      ) : (
+                        <>
+                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>Payment Status</Typography>
+                          <Typography variant="body1" sx={{ 
+                            mb: 3, 
+                            fontWeight: 500,
+                            color: viewingOrder.isPaid ? '#2e7d32' : '#d32f2f'
+                          }}>
+                            {viewingOrder.isPaid ? 'Paid' : 'Pending'}
+                          </Typography>
 
-                        <Typography variant="subtitle2" color="text.secondary">Delivery Status</Typography>
-                        <Typography variant="body1" sx={{ mb: 2 }}>
-                          {viewingOrder.isDelivered ? 'Delivered' : 'Pending'}
-                        </Typography>
-                      </>
-                    )}
+                          <Typography variant="subtitle2" color="text.secondary" gutterBottom>Delivery Status</Typography>
+                          <Typography variant="body1" sx={{ 
+                            mb: 3, 
+                            fontWeight: 500,
+                            color: viewingOrder.isDelivered ? '#2e7d32' : '#ed6c02'
+                          }}>
+                            {viewingOrder.isDelivered ? 'Delivered' : 'Pending'}
+                          </Typography>
+                        </>
+                      )}
+                    </Paper>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle2" color="text.secondary">Shipping Address</Typography>
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        p: 2,
-                        mb: 2,
-                        background: 'rgba(0, 0, 0, 0.03)',
-                        borderRadius: 1
-                      }}
-                    >
-                      <Typography variant="body2">{viewingOrder.shippingAddress?.address}</Typography>
-                      <Typography variant="body2">{viewingOrder.shippingAddress?.city}</Typography>
-                      <Typography variant="body2">{viewingOrder.shippingAddress?.postalCode}</Typography>
-                      <Typography variant="body2">{viewingOrder.shippingAddress?.country}</Typography>
-                    </Paper>
+                    <Paper elevation={0} sx={{ 
+                      p: 3, 
+                      borderRadius: 2, 
+                      background: 'rgba(0, 0, 0, 0.02)',
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}>
+                      <Typography variant="subtitle2" color="text.secondary" gutterBottom>Shipping Address</Typography>
+                      <Paper elevation={0} sx={{
+                        p: 2.5,
+                        mb: 3,
+                        background: 'white',
+                        borderRadius: 2,
+                        border: '1px solid rgba(0, 0, 0, 0.1)'
+                      }}>
+                        <Typography variant="body2" sx={{ mb: 1 }}>{viewingOrder.shippingAddress?.address}</Typography>
+                        <Typography variant="body2" sx={{ mb: 1 }}>{viewingOrder.shippingAddress?.city}</Typography>
+                        <Typography variant="body2" sx={{ mb: 1 }}>{viewingOrder.shippingAddress?.postalCode}</Typography>
+                        <Typography variant="body2">{viewingOrder.shippingAddress?.country}</Typography>
+                      </Paper>
 
-                    <Typography variant="subtitle2" color="text.secondary">Payment Method</Typography>
-                    <Typography variant="body1" sx={{ mb: 2 }}>{viewingOrder.paymentMethod}</Typography>
+                      <Typography variant="subtitle2" color="text.secondary" gutterBottom>Payment Method</Typography>
+                      <Typography variant="body1" sx={{ mb: 3, fontWeight: 500 }}>{viewingOrder.paymentMethod}</Typography>
 
-                    <Typography variant="subtitle2" color="text.secondary">Order Items</Typography>
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        mt: 1,
+                      <Typography variant="subtitle2" color="text.secondary" gutterBottom>Order Items</Typography>
+                      <Paper elevation={0} sx={{
                         maxHeight: 200,
                         overflow: 'auto',
-                        background: 'rgba(0, 0, 0, 0.03)',
-                        borderRadius: 1
-                      }}
-                    >
-                      {viewingOrder.orderItems.map((item, index) => (
-                        <Box
-                          key={index}
-                          sx={{
-                            p: 2,
-                            borderBottom: index < viewingOrder.orderItems.length - 1 ? '1px solid rgba(0, 0, 0, 0.1)' : 'none',
-                          }}
-                        >
-                          <Typography variant="body2">
-                            {item.name} x {item.quantity} - ${(item.price * item.quantity).toFixed(2)}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Paper>
+                        background: 'white',
+                        borderRadius: 2,
+                        border: '1px solid rgba(0, 0, 0, 0.1)',
+                        '&::-webkit-scrollbar': {
+                          width: '8px',
+                        },
+                        '&::-webkit-scrollbar-track': {
+                          background: 'transparent',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                          background: 'rgba(0, 0, 0, 0.2)',
+                          borderRadius: '4px',
+                        },
+                      }}>
+                        {viewingOrder.orderItems.map((item, index) => (
+                          <Box
+                            key={index}
+                            sx={{
+                              p: 2,
+                              borderBottom: index < viewingOrder.orderItems.length - 1 ? '1px solid rgba(0, 0, 0, 0.1)' : 'none',
+                              transition: 'background-color 0.2s',
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.02)'
+                              }
+                            }}
+                          >
+                            <Typography variant="body2" sx={{ 
+                              display: 'flex', 
+                              justifyContent: 'space-between',
+                              alignItems: 'center'
+                            }}>
+                              <span>{item.name} × {item.quantity}</span>
+                              <span style={{ fontWeight: 600 }}>${(item.price * item.quantity).toFixed(2)}</span>
+                            </Typography>
+                          </Box>
+                        ))}
+                      </Paper>
 
-                    <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography variant="subtitle1">Total Amount</Typography>
-                      <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                        ${viewingOrder.totalPrice.toFixed(2)}
-                      </Typography>
-                    </Box>
+                      <Box sx={{ 
+                        mt: 'auto', 
+                        pt: 3,
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center'
+                      }}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>Total Amount</Typography>
+                        <Typography variant="h6" sx={{ 
+                          fontWeight: 600,
+                          background: 'linear-gradient(45deg, #091540, #3D518C)',
+                          backgroundClip: 'text',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                        }}>
+                          ${viewingOrder.totalPrice.toFixed(2)}
+                        </Typography>
+                      </Box>
+                    </Paper>
                   </Grid>
                 </Grid>
               </Box>
             )}
           </DialogContent>
           {isEditing && (
-            <DialogActions sx={{ p: 2.5, pt: 0 }}>
+            <DialogActions sx={{ 
+              p: 3, 
+              borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+              background: 'rgba(0, 0, 0, 0.02)'
+            }}>
               <Button 
                 onClick={handleCloseOrderView}
-                sx={{ color: '#666' }}
+                sx={{ 
+                  color: '#666',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.05)'
+                  }
+                }}
               >
                 Cancel
               </Button>
@@ -1265,7 +1358,9 @@ const AdminDashboard = () => {
                 variant="contained"
                 disabled={actionLoading}
                 sx={{
+                  px: 3,
                   background: 'linear-gradient(45deg, #091540, #3D518C)',
+                  opacity: actionLoading ? 0.7 : 1,
                   '&:hover': {
                     background: 'linear-gradient(45deg, #091540, #1B2CC1)',
                   }

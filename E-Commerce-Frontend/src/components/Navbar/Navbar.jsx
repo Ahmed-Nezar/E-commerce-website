@@ -168,24 +168,44 @@ const Navbar = ({reference}) => {
                                         {user.name}
                                     </Typography>
                                 </Box>
-                                <Button
-                                    variant="outlined"
-                                    onClick={handleLogout}
-                                    sx={{
-                                        color: '#3D518C',
-                                        borderColor: '#3D518C',
-                                        borderRadius: '50px',
-                                        px: 3,
-                                        fontWeight: 600,
-                                        '&:hover': {
-                                            borderColor: '#1B2CC1',
-                                            color: '#1B2CC1',
-                                            background: 'rgba(27, 44, 193, 0.04)',
-                                        }
-                                    }}
-                                >
-                                    Logout
-                                </Button>
+                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => navigate('/change-password')}
+                                        sx={{
+                                            color: '#3D518C',
+                                            borderColor: '#3D518C',
+                                            borderRadius: '50px',
+                                            px: 3,
+                                            fontWeight: 600,
+                                            '&:hover': {
+                                                borderColor: '#1B2CC1',
+                                                color: '#1B2CC1',
+                                                background: 'rgba(27, 44, 193, 0.04)',
+                                            }
+                                        }}
+                                    >
+                                        Change Password
+                                    </Button>
+                                    <Button
+                                        variant="outlined"
+                                        onClick={handleLogout}
+                                        sx={{
+                                            color: '#3D518C',
+                                            borderColor: '#3D518C',
+                                            borderRadius: '50px',
+                                            px: 3,
+                                            fontWeight: 600,
+                                            '&:hover': {
+                                                borderColor: '#1B2CC1',
+                                                color: '#1B2CC1',
+                                                background: 'rgba(27, 44, 193, 0.04)',
+                                            }
+                                        }}
+                                    >
+                                        Logout
+                                    </Button>
+                                </Box>
                             </Box>
                         ) : (
                             <>

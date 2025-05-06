@@ -6,6 +6,7 @@ import Navbar from './components/Navbar/Navbar.jsx'
 import SignIn from './components/Auth/SignIn.jsx'
 import Register from './components/Auth/Register.jsx'
 import ForgotPassword from './components/Auth/ForgotPassword.jsx'
+import ChangePassword from './components/Auth/ChangePassword.jsx'
 import Cart from './components/Cart/Cart.jsx'
 import Checkout from './components/checkout/Checkout.jsx'
 import Home from './components/Home/Home.jsx'
@@ -62,6 +63,14 @@ function App() {
                             }
                         />
                         <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                        <Route 
+                            path="/change-password" 
+                            element={
+                                <ProtectedRoute>
+                                    <ChangePassword/>
+                                </ProtectedRoute>
+                            }
+                        />
                         <Route path="/cart" element={<Cart/>}/>
                         <Route 
                             path="/checkout" 

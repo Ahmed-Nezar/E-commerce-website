@@ -52,13 +52,13 @@ exports.getProducts = async (req, res, next) => {
 
         // Pagination
         const page  = Math.max(1, parseInt(pageQ, 10)  || 1);
-        const limit = Math.max(1, parseInt(limitQ, 10) || 10);
+        const limit = Math.max(1, parseInt(limitQ, 10) || 20);
         const skip  = (page - 1) * limit;
 
         // Filter
         const filter = {};
         if (keyword)  filter.name     = { $regex: keyword, $options: 'i' };
-        if (category) filter.category = { $regex: category, $options: 'i' }; // ← added options:i
+        if (category) filter.category = { $regex: category, $options: 'i' }; 
         if (brand)    filter.brand    = { $regex: brand, $options: 'i' };
         if (stock && (stock === "true"))    filter.stock  = { $gt: 0 };
         if (minPrice || maxPrice) {

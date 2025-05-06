@@ -123,10 +123,9 @@ exports.updateUser = async (req, res) => {
     }
 };
 
-// Updated getAllUsers method to include pagination
 exports.getAllUsers = async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 20 } = req.query;
         const skip = (page - 1) * limit;
 
         const users = await User.find()
@@ -138,12 +137,9 @@ exports.getAllUsers = async (req, res) => {
 
         res.status(200).json({
             data: users,
-            pagination: {
-                total: totalUsers,
-                page: parseInt(page),
-                limit: parseInt(limit),
-                totalPages: Math.ceil(totalUsers / limit),
-            },
+            currentPage: parseInt(page),
+            totalPages: Math.ceil(totalUsers / limit),
+            totalNumberOfItems: totalUsers
         });
     } catch (err) {
         res.status(500).json({ message: 'Error fetching users', error: err.message });

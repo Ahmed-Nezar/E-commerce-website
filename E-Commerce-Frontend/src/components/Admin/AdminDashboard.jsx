@@ -33,7 +33,8 @@ import {
   Select,
   FormControl,
   Stack,
-  CircularProgress
+  CircularProgress,
+  Pagination
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -94,6 +95,11 @@ const AdminDashboard = () => {
   });
   const [viewingOrder, setViewingOrder] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [productsPagination, setProductsPagination] = useState({ page: 1, totalPages: 1, total: 0 });
+  const [usersPagination, setUsersPagination] = useState({ page: 1, totalPages: 1, total: 0 });
+  const [ordersPagination, setOrdersPagination] = useState({ page: 1, totalPages: 1, total: 0 });
+  const [couponsPagination, setCouponsPagination] = useState({ page: 1, totalPages: 1, total: 0 });
+  const [reviewsPagination, setReviewsPagination] = useState({ page: 1, totalPages: 1, total: 0 });
 
   // Fetch data based on active tab
   useEffect(() => {
@@ -103,19 +109,19 @@ const AdminDashboard = () => {
       try {
         switch (tabValue) {
           case 0: // Products
-            await fetchProducts();
+            await fetchProducts(productsPagination.page);
             break;
           case 1: // Users
-            await fetchUsers();
+            await fetchUsers(usersPagination.page);
             break;
           case 2: // Orders
-            await fetchOrders();
+            await fetchOrders(ordersPagination.page);
             break;
           case 3: // Coupons
-            await fetchCoupons();
+            await fetchCoupons(couponsPagination.page);
             break;
           case 4: // Reviews
-            await fetchReviews();
+            await fetchReviews(reviewsPagination.page);
             break;
         }
       } catch (err) {
@@ -129,44 +135,69 @@ const AdminDashboard = () => {
   }, [tabValue]);
 
   // Fetch functions for each type
-  const fetchProducts = async () => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products`, {
+  const fetchProducts = async (page = 1) => {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?page=${page}&limit=20`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
     setProducts(data.data || []);
+    setProductsPagination({ 
+      page: data.currentPage, 
+      totalPages: data.totalPages,
+      total: data.totalNumberOfItems 
+    });
   };  
   
-  const fetchUsers = async () => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/users`, {
+  const fetchUsers = async (page = 1) => {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/users?page=${page}&limit=20`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
-    setUsers(Array.isArray(data) ? data : data.data || []);
+    setUsers(data.data || []);
+    setUsersPagination({ 
+      page: data.currentPage, 
+      totalPages: data.totalPages,
+      total: data.totalNumberOfItems 
+    });
   };
 
-  const fetchOrders = async () => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders`, {
+  const fetchOrders = async (page = 1) => {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders?page=${page}&limit=20`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
     setOrders(data.data || []);
+    setOrdersPagination({ 
+      page: data.currentPage, 
+      totalPages: data.totalPages,
+      total: data.totalNumberOfItems 
+    });
   };
 
-  const fetchCoupons = async () => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/coupons`, {
+  const fetchCoupons = async (page = 1) => {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/coupons?page=${page}&limit=20`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
     setCoupons(data.data || []);
+    setCouponsPagination({ 
+      page: data.currentPage, 
+      totalPages: data.totalPages,
+      total: data.totalNumberOfItems 
+    });
   };
 
-  const fetchReviews = async () => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/reviews/all`, {
+  const fetchReviews = async (page = 1) => {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/reviews/all?page=${page}&limit=20`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
     setReviews(data.data || []);
+    setReviewsPagination({ 
+      page: data.currentPage, 
+      totalPages: data.totalPages,
+      total: data.totalNumberOfItems 
+    });
   };
 
   const handleTabChange = (event, newValue) => {
@@ -657,6 +688,15 @@ const AdminDashboard = () => {
                 Add New Product
               </Button>
 
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Showing {((productsPagination.page - 1) * 20) + 1} - {Math.min(productsPagination.page * 20, productsPagination.total)} of {productsPagination.total} items
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Page {productsPagination.page} of {productsPagination.totalPages}
+                </Typography>
+              </Box>
+
               <TableContainer>
                 <Table>
                   <TableHead>
@@ -696,6 +736,15 @@ const AdminDashboard = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+                <Pagination 
+                  count={productsPagination.totalPages}
+                  page={productsPagination.page}
+                  onChange={(event, value) => fetchProducts(value)}
+                  color="primary"
+                  shape="rounded"
+                />
+              </Box>
             </TabPanel>
 
             <TabPanel value={tabValue} index={1}>
@@ -713,6 +762,15 @@ const AdminDashboard = () => {
               >
                 Add New User
               </Button>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Showing {((usersPagination.page - 1) * 20) + 1} - {Math.min(usersPagination.page * 20, usersPagination.total)} of {usersPagination.total} items
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Page {usersPagination.page} of {usersPagination.totalPages}
+                </Typography>
+              </Box>
 
               <TableContainer>
                 <Table>
@@ -751,9 +809,27 @@ const AdminDashboard = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+                <Pagination 
+                  count={usersPagination.totalPages}
+                  page={usersPagination.page}
+                  onChange={(event, value) => fetchUsers(value)}
+                  color="primary"
+                  shape="rounded"
+                />
+              </Box>
             </TabPanel>
 
             <TabPanel value={tabValue} index={2}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Showing {((ordersPagination.page - 1) * 20) + 1} - {Math.min(ordersPagination.page * 20, ordersPagination.total)} of {ordersPagination.total} items
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Page {ordersPagination.page} of {ordersPagination.totalPages}
+                </Typography>
+              </Box>
+
               <TableContainer>
                 <Table>
                   <TableHead>
@@ -795,6 +871,15 @@ const AdminDashboard = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+                <Pagination 
+                  count={ordersPagination.totalPages}
+                  page={ordersPagination.page}
+                  onChange={(event, value) => fetchOrders(value)}
+                  color="primary"
+                  shape="rounded"
+                />
+              </Box>
             </TabPanel>
 
             <TabPanel value={tabValue} index={3}>
@@ -812,6 +897,15 @@ const AdminDashboard = () => {
               >
                 Add New Coupon
               </Button>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Showing {((couponsPagination.page - 1) * 20) + 1} - {Math.min(couponsPagination.page * 20, couponsPagination.total)} of {couponsPagination.total} items
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Page {couponsPagination.page} of {couponsPagination.totalPages}
+                </Typography>
+              </Box>
 
               <TableContainer>
                 <Table>
@@ -850,6 +944,15 @@ const AdminDashboard = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+                <Pagination 
+                  count={couponsPagination.totalPages}
+                  page={couponsPagination.page}
+                  onChange={(event, value) => fetchCoupons(value)}
+                  color="primary"
+                  shape="rounded"
+                />
+              </Box>
             </TabPanel>
 
             <TabPanel value={tabValue} index={4}>
@@ -867,6 +970,15 @@ const AdminDashboard = () => {
               >
                 Add New Review
               </Button>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Showing {((reviewsPagination.page - 1) * 20) + 1} - {Math.min(reviewsPagination.page * 20, reviewsPagination.total)} of {reviewsPagination.total} items
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Page {reviewsPagination.page} of {reviewsPagination.totalPages}
+                </Typography>
+              </Box>
 
               <TableContainer>
                 <Table>
@@ -909,6 +1021,15 @@ const AdminDashboard = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+                <Pagination 
+                  count={reviewsPagination.totalPages}
+                  page={reviewsPagination.page}
+                  onChange={(event, value) => fetchReviews(value)}
+                  color="primary"
+                  shape="rounded"
+                />
+              </Box>
             </TabPanel>
           </Box>
 

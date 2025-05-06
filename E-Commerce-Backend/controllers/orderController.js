@@ -395,11 +395,24 @@ exports.createOrder = async (req, res, next) => {
 // ==========================
 exports.getAllOrders = async (req, res, next) => {
     try {
+        const page  = Math.max(1, parseInt(req.query.page, 10)  || 1);
+        const limit = Math.max(1, parseInt(req.query.limit, 10) || 20);
+        const skip  = (page - 1) * limit;
+
+        const totalNumberOfItems = await Order.countDocuments();
         const orders = await Order.find()
             .populate('user', 'name email')
             .populate('orderItems.product', 'name price')
-            .sort({ createdAt: -1 });
-        res.status(200).json({ data: orders });
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        res.status(200).json({ 
+            data: orders,
+            currentPage: page,
+            totalPages: Math.ceil(totalNumberOfItems / limit),
+            totalNumberOfItems
+        });
     } catch (err) {
         next(err);
     }

@@ -68,7 +68,7 @@ exports.getReviews = async (req, res, next) => {
 // Get all reviews (admin only) with pagination
 exports.getAllReviews = async (req, res, next) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 20 } = req.query;
         const skip = (page - 1) * limit;
 
         const reviews = await Review.find()
@@ -82,12 +82,9 @@ exports.getAllReviews = async (req, res, next) => {
 
         res.status(200).json({
             data: reviews,
-            pagination: {
-                total: totalReviews,
-                page: parseInt(page),
-                limit: parseInt(limit),
-                totalPages: Math.ceil(totalReviews / limit),
-            },
+            currentPage: parseInt(page),
+            totalPages: Math.ceil(totalReviews / limit),
+            totalNumberOfItems: totalReviews
         });
     } catch (err) {
         next(err);

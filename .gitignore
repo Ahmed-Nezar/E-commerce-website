@@ -4,6 +4,7 @@
 /E-Commerce-Frontend/.idea/
 /E-Commerce-Backend/node_modules/
 /E-Commerce-Frontend/node_modules/
+.env
 testAuth.js
 node_modules/
 package-lock.json

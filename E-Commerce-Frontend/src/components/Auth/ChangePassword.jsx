@@ -1,13 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
+import {
   Avatar,
   Button,
   TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Grid,
   Box,
   Typography,
   Container,
@@ -16,88 +12,89 @@ import {
   Alert
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {ENV} from "../../App.jsx";
+import { ENV } from "../../App.jsx";
 
-const SignIn = () => {
+const ChangePassword = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState(() => {
-    // Check if credentials exist in localStorage
-    const savedCredentials = localStorage.getItem('rememberedCredentials');
-    if (savedCredentials) {
-      const { email, rememberMe } = JSON.parse(savedCredentials);
-      return {
-        email,
-        password: '',
-        rememberMe
-      };
-    }
-    return {
-      email: '',
-      password: '',
-      rememberMe: false
-    };
+  const [formData, setFormData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
+    setSuccess('');
+
+    // Validate passwords match
+    if (formData.newPassword !== formData.confirmPassword) {
+      setError('New passwords do not match');
+      return;
+    }
+
+    // Validate password strength
+    if (formData.newPassword.length < 8) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/auth/login`, {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/auth/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Handle remember me
-        if (formData.rememberMe) {
-          localStorage.setItem('rememberedCredentials', JSON.stringify({
-            email: formData.email,
-            rememberMe: true
-          }));
-        } else {
-          localStorage.removeItem('rememberedCredentials');
-        }
-
-        // Store token in localStorage
-        localStorage.setItem('token', data.token);
-        
-        // Force page reload to update all components
-        window.location.href = '/';
+        setSuccess('Password changed successfully!');
+        // Clear form
+        setFormData({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        });
+        // Redirect to profile page after 2 seconds
+        setTimeout(() => {
+          navigate('/profile');
+        }, 2000);
       } else {
-        setError(data.message || 'Login failed. Please check your credentials.');
+        setError(data.message || 'Failed to change password. Please try again.');
       }
     } catch (error) {
       setError('An error occurred. Please try again later.');
-      console.error('Login error:', error);
+      console.error('Change password error:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleChange = (event) => {
-    const { name, value, checked } = event.target;
+    const { name, value } = event.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'rememberMe' ? checked : value
+      [name]: value
     }));
   };
 
   return (
     <Fade in timeout={1000}>
       <Container component="main" maxWidth="md" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
-        <Paper 
+        <Paper
           elevation={24}
           sx={{
             width: '100%',
@@ -122,17 +119,6 @@ const SignIn = () => {
               WebkitMaskComposite: 'xor',
               maskComposite: 'exclude',
               animation: 'gradient 4s ease infinite',
-            },
-            '@keyframes gradient': {
-              '0%': {
-                backgroundPosition: '0% 50%'
-              },
-              '50%': {
-                backgroundPosition: '100% 50%'
-              },
-              '100%': {
-                backgroundPosition: '0% 50%'
-              }
             }
           }}
         >
@@ -180,7 +166,7 @@ const SignIn = () => {
               letterSpacing: '0.5px'
             }}
           >
-            Welcome Back
+            Change Password
           </Typography>
 
           {error && (
@@ -196,17 +182,29 @@ const SignIn = () => {
             </Alert>
           )}
 
+          {success && (
+            <Alert 
+              severity="success" 
+              sx={{ 
+                width: '100%', 
+                mb: 3,
+                borderRadius: 2
+              }}
+            >
+              {success}
+            </Alert>
+          )}
+
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%', maxWidth: '800px' }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={formData.email}
+              name="currentPassword"
+              label="Current Password"
+              type="password"
+              id="currentPassword"
+              value={formData.currentPassword}
               onChange={handleChange}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -221,12 +219,11 @@ const SignIn = () => {
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
+              name="newPassword"
+              label="New Password"
               type="password"
-              id="password"
-              autoComplete="current-password"
-              value={formData.password}
+              id="newPassword"
+              value={formData.newPassword}
               onChange={handleChange}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -237,23 +234,26 @@ const SignIn = () => {
                 },
               }}
             />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="rememberMe"
-                  color="secondary"
-                  checked={formData.rememberMe}
-                  onChange={handleChange}
-                  sx={{ 
-                    '&.Mui-checked': { 
-                      color: '#9c27b0'
-                    }
-                  }}
-                />
-              }
-              label="Remember me"
-              sx={{ mt: 1 }}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm New Password"
+              type="password"
+              id="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                  '&:hover fieldset': {
+                    borderColor: 'secondary.main',
+                  },
+                },
+              }}
             />
+            
             <Button
               type="submit"
               fullWidth
@@ -278,53 +278,8 @@ const SignIn = () => {
                 transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
               }}
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? 'Changing Password...' : 'Change Password'}
             </Button>
-            <Box sx={{ mt: 2, textAlign: 'center' }}>
-              <Link
-                component="button"
-                variant="body2"
-                onClick={() => navigate('/forgot-password')}
-                sx={{
-                  color: '#3D518C',
-                  textDecoration: 'none',
-                  mx: 1.5,
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    color: '#1B2CC1',
-                    transform: 'translateY(-2px)',
-                    display: 'inline-block'
-                  }
-                }}
-              >
-                Forgot password?
-              </Link>
-              <Typography
-                variant="body2"
-                component="span"
-                sx={{ mx: 1 }}
-              >
-                |
-              </Typography>
-              <Link
-                component="button"
-                variant="body2"
-                onClick={() => navigate('/register')}
-                sx={{
-                  color: '#3D518C',
-                  textDecoration: 'none',
-                  mx: 1.5,
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    color: '#1B2CC1',
-                    transform: 'translateY(-2px)',
-                    display: 'inline-block'
-                  }
-                }}
-              >
-                Don't have an account? Sign Up
-              </Link>
-            </Box>
           </Box>
         </Paper>
       </Container>
@@ -332,4 +287,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default ChangePassword;

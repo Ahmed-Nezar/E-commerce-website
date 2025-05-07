@@ -104,3 +104,72 @@ exports.changePassword = async (req, res) => {
         res.status(500).json({ message: 'Error changing password', error: error.message });
     }
 };
+
+// Forgot password
+exports.forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Find the user
+        const user = await User.findOne({ email });
+        if (!user) {
+            // For security reasons, don't reveal if the email exists or not
+            return res.status(200).json({ 
+                message: 'If an account exists with this email, you will receive password reset instructions.' 
+            });
+        }
+
+        // Generate a password reset token
+        const resetToken = jwt.sign(
+            { userId: user._id },
+            process.env.SECRET_KEY,
+            { expiresIn: '1h' }
+        );
+
+        // Store the reset token and its expiry in the user document
+        user.resetToken = resetToken;
+        user.resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
+        await user.save();
+
+        // In a real application, you would send an email here with the reset link
+        // For now, we'll just return the token in the response
+        res.status(200).json({
+            message: 'If an account exists with this email, you will receive password reset instructions.',
+            // Only include token in development
+            ...(process.env.NODE_ENV === 'development' && { resetToken })
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error processing password reset request', error: error.message });
+    }
+};
+
+// Reset password
+exports.resetPassword = async (req, res) => {
+    try {
+        const { resetToken, newPassword } = req.body;
+
+        // Find user with valid reset token
+        const user = await User.findOne({
+            resetToken,
+            resetTokenExpiry: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired reset token' });
+        }
+
+        // Hash new password
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(newPassword, salt);
+
+        // Clear reset token fields
+        user.resetToken = undefined;
+        user.resetTokenExpiry = undefined;
+
+        await user.save();
+
+        res.status(200).json({ message: 'Password has been reset successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error resetting password', error: error.message });
+    }
+};

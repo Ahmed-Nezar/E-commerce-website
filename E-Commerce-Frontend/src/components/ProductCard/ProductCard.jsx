@@ -26,6 +26,7 @@ const ProductCard = ({
     const [hoveredProduct, setHoveredProduct] = useState(null);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const handleAddToCartClick = async () => {
         setIsLoading(true);
@@ -79,8 +80,7 @@ const ProductCard = ({
                         top: 0,
                         left: 0,
                         width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
+                        height: '415px',
                         transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
                 />
@@ -100,36 +100,34 @@ const ProductCard = ({
                         p: 2,
                         cursor: 'pointer',
                     }}
+                    onClick={() => navigate('/productDetails/' + product._id)}
                 >
-                    <CustomModal
-                        triggerButton={
-                            <Button
-                                variant="contained"
-                                fullWidth
-                                disabled={product.stock === 0}
-                                sx={{
-                                    py: 1.5,
-                                    borderRadius: '16px',
-                                    textTransform: 'none',
-                                    fontSize: '1rem',
-                                    fontWeight: 600,
-                                    background: 'rgba(255,255,255,0.95)',
-                                    color: 'primary.main',
-                                    backdropFilter: 'blur(10px)',
-                                    '&:hover': {
-                                        background: 'rgba(255,255,255,1)',
-                                        transform: 'scale(1.02)',
-                                    },
-                                    transition: 'all 0.3s ease',
-                                }}
-                                startIcon={<VisibilityIcon />}
-                            >
-                                Quick View
-                            </Button>
-                        }
+                    <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{
+                            py: 1.5,
+                            borderRadius: '16px',
+                            textTransform: 'none',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            background: 'rgba(255,255,255,0.95)',
+                            color: 'primary.main',
+                            backdropFilter: 'blur(10px)',
+                            '&:hover': {
+                                background: 'rgba(255,255,255,1)',
+                                transform: 'scale(1.02)',
+                            },
+                            transition: 'all 0.3s ease',
+                        }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setModalOpen(true)
+                        }}
+                        startIcon={<VisibilityIcon />}
                     >
-                        <ProductDetails productId={product._id}/>
-                    </CustomModal>
+                        Quick View
+                    </Button>
                 </Box>
 
                 <Stack
@@ -212,7 +210,9 @@ const ProductCard = ({
                         cursor: 'pointer',
                     }}
                 >
-                    {product.name}
+                    {product.name.length > 24
+                        ? `${product.name.substring(0, 24)}...`
+                        : product.name}
                 </Typography>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
@@ -273,7 +273,7 @@ const ProductCard = ({
                         startIcon={<ShoppingCartIcon />}
                         onClick={(e) => {
                             e.stopPropagation();
-                            handleAddToCartClick}
+                            handleAddToCartClick()}
                         }
                         disabled={product.stock === 0 || isLoading || addedItems[product._id]}
                         sx={{
@@ -302,6 +302,9 @@ const ProductCard = ({
                     </Button>
                 </Stack>
             </CardContent>
+            <CustomModal open={modalOpen} onClose={() => setModalOpen(false)}>
+                <ProductDetails productId={product._id}/>
+            </CustomModal>
         </Card>
     );
 };

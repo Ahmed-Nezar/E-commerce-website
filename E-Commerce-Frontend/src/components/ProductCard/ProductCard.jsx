@@ -232,10 +232,12 @@ const ProductCard = ({
                         mb: 2.5,
                         color: 'text.secondary',
                         lineHeight: 1.6,
-                        minHeight: '40px',
+                        minHeight: '50px',
                     }}
                 >
-                    {product.description}
+                    {product.description.length > 70
+                        ? `${product.description.substring(0, 70)}...`
+                        : product.description}
                 </Typography>
 
                 <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>

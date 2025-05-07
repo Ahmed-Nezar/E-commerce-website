@@ -5,20 +5,18 @@ import {
     Row,
     Col,
     Button,
-    Modal,
-    ModalBody,
     Input,
 } from "reactstrap";
 import InnerImageZoom from "react-inner-image-zoom";
-import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import s from "./Product.module.scss";
 import { ENV } from "../../App.jsx";
 import { useParams, useLocation } from "react-router-dom";
 import "react-inner-image-zoom/lib/styles.min.css";
-import CircularProgress from "@mui/material/CircularProgress";
 import CustomBreadcrumbs from "../CustomBreadcrumbs/CustomBreadcrumbs.jsx";
+import Loader from "../Loader/Loader.jsx";
+import CustomModal from "../CustomModal/CustomModal.jsx";
 
 
 const Star = ({
@@ -80,6 +78,7 @@ const ProductDetails = ({ productId }) => {
         const loadProduct = async () => {
             try {
                 setLoading(true);
+                location.pathname.includes("/productDetails/") ? scroll(0,0) : {}
                 const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products/getById/${productId || id}`);
                 const data = await response.json();
 
@@ -121,9 +120,8 @@ const ProductDetails = ({ productId }) => {
     return (
         <>
             <ToastContainer />
-
             {location.pathname.includes("/productDetails/") && (
-                <div className="p-4 mx-lg-4">
+                <div className="p-4 mx-lg-4 ms-5 ps-5">
                     <CustomBreadcrumbs locations={[
                         {
                             route: 'products',
@@ -140,12 +138,6 @@ const ProductDetails = ({ productId }) => {
             )}
             <Container style={{backgroundColor: 'white', padding: '1rem 2rem', borderRadius: '1rem'}}>
                 <Row className="mb-5 mt-2 pt-2 position-relative" style={{ marginTop: 32 }}>
-                    {/*<Button variant="contained"*/}
-                    {/*        className={`${s.backBtn}`}*/}
-                    {/*        onClick={() => navigate("/products")}>*/}
-                    {/*    <ArrowBackIcon className={s.backIcon} fontSize="small" />*/}
-                    {/*    Back to Products*/}
-                    {/*</Button>*/}
                     <Col xs={12} lg={6} className="d-flex">
                         <InnerImageZoom
                             src={product.image}
@@ -248,7 +240,7 @@ const ProductDetails = ({ productId }) => {
                                 className={`mr-4 ${s.reviewImg}`}
                                 alt={`${item.firstname} avatar`}
                             />
-                            <div className="d-flex flex-column justify-content-between align-items-start">
+                            <div className="d-flex flex-column justify-content-between align-items-start w-100">
                                 <div className={`d-flex justify-content-between w-100 ${s.reviewMargin}`}>
                                     <h6 className="fw-bold mb-0">
                                         {item.firstname} {item.lastname}
@@ -269,65 +261,56 @@ const ProductDetails = ({ productId }) => {
                 </Row>
             </Container>
 
-            <Modal style={{marginTop: "120px"}} isOpen={modalOpen} toggle={() => setModalOpen(o => !o)}>
-                <div className="p-5">
-                    <Button
-                        className="border-0 fw-bold m-3 bg-danger"
-                        style={{ position: "absolute", top: 0, right: 0, padding: '10px 15px' }}
-                        onClick={() => setModalOpen(o => !o)}
-                    >
-                        ×
-                    </Button>
-                    <ModalBody>
-                        <h3 className="fw-bold mb-4">Leave Your Feedback</h3>
-                        <form onSubmit={submitFeedback}>
-                            <div className="d-flex align-items-center mb-3">
-                                <h6 className="fw-bold mr-3 mb-0">Rate:</h6>
-                                <div className={s.starContainer}>
-                                    {[1, 2, 3, 4, 5].map((n, i) => {
-                                        const reversedIndex = 4 - i; // Reverse the index for selection
-                                        return (
-                                            <Star
-                                                key={i}
-                                                selected={reversedIndex < starsSelected}
-                                                onClick={() => setStarsSelected(reversedIndex + 1)}
-                                                className={`${s.newReviewStar}`}
-                                            />
-                                        );
-                                    })}
-                                </div>
+            <CustomModal open={modalOpen} onClose={() => setModalOpen(false)} sx={{width:'40%'}}>
+                <div className="p-4">
+                    <h3 className="fw-bold mb-4">Leave Your Feedback</h3>
+                    <form onSubmit={submitFeedback}>
+                        <div className="d-flex align-items-center mb-3">
+                            <h6 className="fw-bold mr-3 mb-0">Rate:</h6>
+                            <div className={s.starContainer}>
+                                {[1, 2, 3, 4, 5].map((n, i) => {
+                                    const reversedIndex = 4 - i;
+                                    return (
+                                        <Star
+                                            key={i}
+                                            selected={reversedIndex < starsSelected}
+                                            onClick={() => setStarsSelected(reversedIndex + 1)}
+                                            className={`${s.newReviewStar}`}
+                                        />
+                                    );
+                                })}
                             </div>
-                            <div className="d-flex mb-3">
-                                <Input
-                                    type="text"
-                                    placeholder="First Name"
-                                    className="mr-2"
-                                    value={firstname}
-                                    onChange={e => setFirstName(e.target.value)}
-                                />
-                                <Input
-                                    type="text"
-                                    placeholder="Last Name"
-                                    value={lastname}
-                                    onChange={e => setLastName(e.target.value)}
-                                />
-                            </div>
+                        </div>
+                        <div className="d-flex mb-3">
                             <Input
-                                type="textarea"
-                                placeholder="Comment"
-                                style={{ height: 100 }}
-                                value={review}
-                                onChange={e => setReview(e.target.value)}
+                                type="text"
+                                placeholder="First Name"
+                                className="me-3"
+                                value={firstname}
+                                onChange={e => setFirstName(e.target.value)}
                             />
-                            <div className="text-center mt-4">
-                                <Button type="submit" color="primary" className="text-uppercase fw-bold">
-                                    Submit
-                                </Button>
-                            </div>
-                        </form>
-                    </ModalBody>
+                            <Input
+                                type="text"
+                                placeholder="Last Name"
+                                value={lastname}
+                                onChange={e => setLastName(e.target.value)}
+                            />
+                        </div>
+                        <Input
+                            type="textarea"
+                            placeholder="Comment"
+                            style={{ height: 100, maxHeight: 180, minHeight: 80 }}
+                            value={review}
+                            onChange={e => setReview(e.target.value)}
+                        />
+                        <div className="text-center mt-4">
+                            <Button type="submit" color="primary" className="text-uppercase fw-bold">
+                                Submit
+                            </Button>
+                        </div>
+                    </form>
                 </div>
-            </Modal>
+            </CustomModal>
         </>
     );
 };

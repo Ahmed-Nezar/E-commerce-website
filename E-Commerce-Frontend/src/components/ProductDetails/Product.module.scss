@@ -135,7 +135,6 @@
                   37% 38%
   );
   transition: background-color 0.2s;
-  cursor: pointer;
 }
 
 .star.selected{
@@ -143,11 +142,11 @@
 }
 
 .starContainer{
-  direction: rtl;
-  display: inline-block;
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .star.newReviewStar:hover,
-.star.newReviewStar:hover ~ .star.newReviewStar {
+.star.newReviewStar:hover ~ .star {
   background-color: #ff9900;
 }

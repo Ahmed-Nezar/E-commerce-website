@@ -243,3 +243,17 @@ exports.removeFromWishlist = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.uploadImage = async (req, res, next) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No image file uploaded' });
+        }
+
+        // Return the path relative to the frontend public directory
+        const imagePath = `/images/products-backend/${req.file.filename}`;
+        res.status(200).json({ imagePath });
+    } catch (err) {
+        next(err);
+    }
+};

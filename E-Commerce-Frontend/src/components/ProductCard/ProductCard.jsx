@@ -25,6 +25,16 @@ const ProductCard = ({
     const theme = useTheme();
     const [hoveredProduct, setHoveredProduct] = useState(null);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleAddToCartClick = async () => {
+        setIsLoading(true);
+        try {
+            await handleAddToCart(product);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <Card
@@ -263,9 +273,9 @@ const ProductCard = ({
                         startIcon={<ShoppingCartIcon />}
                         onClick={(e) => {
                             e.stopPropagation();
-                            handleAddToCart(product)}
+                            handleAddToCartClick}
                         }
-                        disabled={product.stock === 0}
+                        disabled={product.stock === 0 || isLoading || addedItems[product._id]}
                         sx={{
                             borderRadius: '12px',
                             px: 2,
@@ -276,6 +286,8 @@ const ProductCard = ({
                             boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
                             textTransform: 'none',
                             fontWeight: 600,
+                            opacity: isLoading ? 0.7 : 1,
+                            cursor: isLoading ? 'not-allowed' : 'pointer',
                             '&:hover': {
                                 background: addedItems[product._id]
                                     ? 'linear-gradient(45deg, #1b5e20, #2e7d32)'
@@ -286,7 +298,7 @@ const ProductCard = ({
                             transition: 'all 0.3s ease',
                         }}
                     >
-                        {addedItems[product._id] ? 'Added!' : 'Add to Cart'}
+                        {isLoading ? 'Adding...' : (addedItems[product._id] ? 'Added!' : 'Add to Cart')}
                     </Button>
                 </Stack>
             </CardContent>

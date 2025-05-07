@@ -10,7 +10,6 @@ import {
     Input,
 } from "reactstrap";
 import InnerImageZoom from "react-inner-image-zoom";
-// import ReactImageMagnify from "react-image-magnify";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,6 +36,7 @@ const Star = ({
         onMouseLeave={() => onHover(-1)}
     />
 );
+
 const mockReviews = [
     {
         id: 1,
@@ -77,21 +77,24 @@ const ProductDetails = ({ productId }) => {
     const location = useLocation();
 
     useEffect(() => {
-        if (productId || id) {
-            // fetch the product by ID
-            axios
-                .get(
-                    `${ENV.VITE_BACKEND_URL}/api/products/getById/${productId || id}`
-                )
-                .then(({ data }) => {
+        const loadProduct = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products/getById/${productId || id}`);
+                const data = await response.json();
+
+                if (response.ok) {
                     setProduct(data.data);
-                })
-                .catch(err => {
-                    console.error("Failed to load product:", err);
-                    toast.error("Could not load product data.");
-                })
-                .finally(() => setLoading(false));
-        }
+                }
+            } catch (error) {
+                console.error('Error fetching product:', error);
+                toast.error("Could not load product data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadProduct();
     }, [productId, id]);
 
     const addToCart = () => {
@@ -108,17 +111,13 @@ const ProductDetails = ({ productId }) => {
     };
 
     if (loading) {
-        return (
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '2rem', minHeight: "500px",
-                alignItems: "center" }}>
-                <CircularProgress />
-            </div>
-        );
+        return <Loader />;
     }
 
     if (!product) {
         return <p className="text-center text-danger">Product not found</p>;
     }
+
     return (
         <>
             <ToastContainer />
@@ -192,7 +191,6 @@ const ProductDetails = ({ productId }) => {
                                     </div>
                                 </div>
                                 <div className="d-flex flex-column align-items-center justify-content-center">
-                                    {/*<h4 className="fw-bold text-muted text-uppercase">Price</h4>*/}
                                     <h3 className="fw-bold">${product.price}</h3>
                                 </div>
                             </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -25,10 +25,14 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { Stack } from '@mui/system';
+import Loader from '../Loader/Loader.jsx';
 
 const Cart = () => {
   const [removedItemId, setRemovedItemId] = useState(null);
   const [showAddedAnimation, setShowAddedAnimation] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [updatingItem, setUpdatingItem] = useState(null);
+  const [removingItem, setRemovingItem] = useState(null);
   const navigate = useNavigate();
   const theme = useTheme();
   const { 
@@ -45,18 +49,27 @@ const Cart = () => {
     setPaymentMethod
   } = useCart();
 
-  const handleUpdateQuantity = (productId, change) => {
-    updateQuantity(productId, change);
-    setShowAddedAnimation(true);
-    setTimeout(() => setShowAddedAnimation(false), 1500);
+  const handleUpdateQuantity = async (productId, change) => {
+    setUpdatingItem(productId);
+    try {
+      await updateQuantity(productId, change);
+      setShowAddedAnimation(true);
+      setTimeout(() => setShowAddedAnimation(false), 1500);
+    } finally {
+      setUpdatingItem(null);
+    }
   };
 
-  const handleRemoveItem = (productId) => {
+  const handleRemoveItem = async (productId) => {
+    setRemovingItem(productId);
     setRemovedItemId(productId);
-    setTimeout(() => {
-      removeFromCart(productId);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300)); // Animation delay
+      await removeFromCart(productId);
+    } finally {
+      setRemovingItem(null);
       setRemovedItemId(null);
-    }, 300);
+    }
   };
 
   const handleCheckout = () => {
@@ -76,6 +89,15 @@ const Cart = () => {
     navigate('/checkout');
     // TODO: Implement checkout logic with backend
   };
+
+  useEffect(() => {
+    // Simulate loading state for cart data initialization
+    setTimeout(() => setLoading(false), 800);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Fade in timeout={800}>
@@ -286,11 +308,13 @@ const Cart = () => {
                         }}>
                           <IconButton
                             onClick={() => handleUpdateQuantity(item.product, -1)}
+                            disabled={updatingItem === item.product}
                             sx={{
                               bgcolor: 'rgba(9, 21, 64, 0.1)',
                               '&:hover': {
                                 bgcolor: 'rgba(9, 21, 64, 0.2)',
                               },
+                              opacity: updatingItem === item.product ? 0.5 : 1,
                             }}
                           >
                             <RemoveIcon />
@@ -311,23 +335,27 @@ const Cart = () => {
                           />
                           <IconButton
                             onClick={() => handleUpdateQuantity(item.product, 1)}
+                            disabled={updatingItem === item.product}
                             sx={{
                               bgcolor: 'rgba(9, 21, 64, 0.1)',
                               '&:hover': {
                                 bgcolor: 'rgba(9, 21, 64, 0.2)',
                               },
+                              opacity: updatingItem === item.product ? 0.5 : 1,
                             }}
                           >
                             <AddIcon />
                           </IconButton>
                           <IconButton
                             onClick={() => handleRemoveItem(item.product)}
+                            disabled={removingItem === item.product}
                             sx={{
                               ml: 2,
                               color: '#d32f2f',
                               '&:hover': {
                                 bgcolor: 'rgba(211, 47, 47, 0.1)',
                               },
+                              opacity: removingItem === item.product ? 0.5 : 1,
                             }}
                           >
                             <DeleteOutlineIcon />

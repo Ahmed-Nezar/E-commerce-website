@@ -42,6 +42,9 @@ app.use((req, res, next) => {
     next();
 });
 
+// Serve static files from the public directory
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
 // Middleware to serve static files from avatars directory
 app.use(
     '/avatar',

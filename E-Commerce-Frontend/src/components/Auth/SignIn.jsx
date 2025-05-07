@@ -20,6 +20,7 @@ import {ENV} from "../../App.jsx";
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -30,6 +31,7 @@ const SignIn = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
       const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/auth/   login`, {
@@ -56,6 +58,8 @@ const SignIn = () => {
     } catch (error) {
       setError('An error occurred. Please try again later.');
       console.error('Login error:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -231,6 +235,7 @@ const SignIn = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading}
               sx={{
                 mt: 4,
                 mb: 3,
@@ -241,6 +246,7 @@ const SignIn = () => {
                 textTransform: 'none',
                 background: 'linear-gradient(90deg, #091540, #3D518C)',
                 boxShadow: '0 4px 12px rgba(9, 21, 64, 0.3)',
+                opacity: loading ? 0.7 : 1,
                 '&:hover': {
                   background: 'linear-gradient(90deg, #091540, #1B2CC1)',
                   boxShadow: '0 6px 16px rgba(9, 21, 64, 0.4)',
@@ -249,7 +255,7 @@ const SignIn = () => {
                 transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
               }}
             >
-              Sign In
+              {loading ? 'Signing in...' : 'Sign In'}
             </Button>
             <Box sx={{ mt: 2, textAlign: 'center' }}>
               <Link

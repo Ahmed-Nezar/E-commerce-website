@@ -16,6 +16,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useCart } from '../../context/CartContext';
 import { ENV } from '../../App.jsx';
+import Loader from '../Loader/Loader.jsx';
 
 // Import step components
 import ShippingInfo from '../Checkout/ShippingInfo';
@@ -47,6 +48,8 @@ const Checkout = () => {
   
   const [orderComplete, setOrderComplete] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   const steps = ['Shipping Information', 'Payment Method', 'Review Order'];
 
@@ -59,6 +62,9 @@ const Checkout = () => {
     if (cartItems.length === 0) {
       navigate('/cart');
     }
+
+    // Simulate loading state for checkout data initialization
+    setTimeout(() => setLoading(false), 800);
   }, [cartItems.length, navigate]);
 
   const handleNext = () => {
@@ -147,6 +153,7 @@ const Checkout = () => {
   };
 
   const handleSubmitOrder = async () => {
+    setSubmitting(true);
     try {
       const token = localStorage.getItem('token');
       
@@ -204,6 +211,8 @@ const Checkout = () => {
     } catch (error) {
       console.error('Order submission error:', error);
       setError('An error occurred while processing your order. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -254,6 +263,10 @@ const Checkout = () => {
         return 'Unknown step';
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   if (orderComplete) {
     return (
@@ -459,6 +472,7 @@ const Checkout = () => {
             <Button
               variant="contained"
               onClick={activeStep === steps.length - 1 ? handleSubmitOrder : handleNext}
+              disabled={submitting}
               sx={{
                 borderRadius: 2,
                 px: 4,
@@ -467,6 +481,7 @@ const Checkout = () => {
                 fontWeight: 600,
                 background: 'linear-gradient(45deg, #091540, #3D518C)',
                 boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
+                opacity: submitting ? 0.7 : 1,
                 '&:hover': {
                   background: 'linear-gradient(45deg, #091540, #1B2CC1)',
                   transform: 'translateY(-2px)',
@@ -475,7 +490,9 @@ const Checkout = () => {
                 transition: 'all 0.3s ease',
               }}
             >
-              {activeStep === steps.length - 1 ? 'Place Order' : 'Continue'}
+              {submitting 
+                ? 'Processing...' 
+                : (activeStep === steps.length - 1 ? 'Place Order' : 'Continue')}
             </Button>
           </Box>
         </Paper>

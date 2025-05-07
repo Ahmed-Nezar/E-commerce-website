@@ -1,6 +1,7 @@
 // components/GenericModal.jsx
 import React, { useState } from 'react';
 import { Box, Modal } from '@mui/material';
+import {Button} from "reactstrap";
 
 const defaultStyle = {
     position: 'absolute',
@@ -40,6 +41,13 @@ const CustomModal = ({ triggerButton, children, sx }) => {
                 aria-describedby="modal-content"
             >
                 <Box sx={{ ...defaultStyle, ...sx }}>
+                    <Button
+                        className="border-0 fw-bold m-3 bg-danger"
+                        style={{ position: "absolute", top: 0, right: 0, padding: '10px 15px' }}
+                        onClick={() => handleClose()}
+                    >
+                        ×
+                    </Button>
                     {React.cloneElement(children, { onClose: handleClose })}
                 </Box>
             </Modal>

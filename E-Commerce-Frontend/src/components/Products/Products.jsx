@@ -49,6 +49,7 @@ const fetchData = async (
     setProducts, setCurrentPage, setTotalPages, currentPage, setIsLoading) => {
     try {
         setIsLoading(true);
+        scroll(0,0)
         const category = cn ? cn : selectedCategories;
 
         let brandQuery = new URLSearchParams();
@@ -114,7 +115,6 @@ const Products = () => {
     const { addToCart } = useCart();
     const [addedItems, setAddedItems] = useState({});
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [brands, setBrands] = useState([]);
     const [categories, setCategories] = useState([]);
 

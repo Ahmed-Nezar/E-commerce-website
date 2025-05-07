@@ -12,7 +12,7 @@ const Footer = () => {
         background: 'linear-gradient(135deg, #091540 0%, #2C3E7B 100%)',
         color: 'white',
         py: 6,
-        mt: 8,
+        mt: 12,
         position: 'relative',
         '&::before': {
           content: '""',

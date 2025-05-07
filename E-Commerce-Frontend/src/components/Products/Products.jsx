@@ -79,7 +79,7 @@ const fetchData = async (
         if (selectedBrands.length > 0) query.append("brand", selectedBrands.join("|"));
         if (fromPrice) query.append("minPrice", fromPrice.toString());
         if (toPrice) query.append("maxPrice", toPrice.toString());
-        query.append("limit", "10");
+        query.append("limit", "12");
         query.append("page", currentPage.toString());
 
         const productRes = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?${query.toString()}`)

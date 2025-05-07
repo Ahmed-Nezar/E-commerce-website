@@ -16,18 +16,27 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import s from "./Product.module.scss";
 import { ENV } from "../../App.jsx";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import "react-inner-image-zoom/lib/styles.min.css";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CircularProgress from "@mui/material/CircularProgress";
+import CustomBreadcrumbs from "../CustomBreadcrumbs/CustomBreadcrumbs.jsx";
 
-const Star = ({ selected = false, onClick = f => f }) => (
+
+const Star = ({
+                  selected = false,
+                  onClick = f => f,
+                  index,
+                  onHover = f => f,
+                  className = "",
+              }) => (
     <div
-        className={`${s.star}${selected ? ` ${s.selected}` : ""}`}
+        className={`${s.star}${selected ? ` ${s.selected}` : ""} ${className}`}
+        data-index={index}
         onClick={onClick}
+        onMouseEnter={() => onHover(index)}
+        onMouseLeave={() => onHover(-1)}
     />
 );
-
 const mockReviews = [
     {
         id: 1,
@@ -65,7 +74,7 @@ const ProductDetails = ({ productId }) => {
     const [lastname, setLastName] = useState("");
     const [review, setReview] = useState("");
     const { id } = useParams();
-    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         if (productId || id) {
@@ -110,66 +119,81 @@ const ProductDetails = ({ productId }) => {
     if (!product) {
         return <p className="text-center text-danger">Product not found</p>;
     }
-
     return (
         <>
             <ToastContainer />
-            <Container>
-                <Row className="mb-5 mt-5 pt-5 position-relative" style={{ marginTop: 32 }}>
-                    <Button variant="contained"
-                            className={`${s.backBtn}`}
-                            onClick={() => navigate("/products")}>
-                        <ArrowBackIcon className={s.backIcon} fontSize="small" />
-                        Back to Products
-                    </Button>
+
+            {location.pathname.includes("/productDetails/") && (
+                <div className="p-4 mx-lg-4">
+                    <CustomBreadcrumbs locations={[
+                        {
+                            route: 'products',
+                            title: 'Products',
+                            onClick: () => {
+                                setSelectedCategories([]);
+                            },
+                        },{
+                            route: `products/${product.category}`,
+                            title: product.category,
+                        },
+                    ]} />
+                </div>
+            )}
+            <Container style={{backgroundColor: 'white', padding: '1rem 2rem', borderRadius: '1rem'}}>
+                <Row className="mb-5 mt-2 pt-2 position-relative" style={{ marginTop: 32 }}>
+                    {/*<Button variant="contained"*/}
+                    {/*        className={`${s.backBtn}`}*/}
+                    {/*        onClick={() => navigate("/products")}>*/}
+                    {/*    <ArrowBackIcon className={s.backIcon} fontSize="small" />*/}
+                    {/*    Back to Products*/}
+                    {/*</Button>*/}
                     <Col xs={12} lg={6} className="d-flex">
                         <InnerImageZoom
                             src={product.image}
                             zoomSrc={product.image}
                             zoomType="hover"
-                            zoomScale={1.5}
-                            className="product-image-zoom"
-
+                            zoomScale={1.8}
+                            className={`${s.productImageZoom} ${s.liz}`}
                         />
                     </Col>
 
                     <Col xs={12} lg={6} className="d-flex flex-column justify-content-around">
                         <div className={`${s.dataContainer}`}>
                             <h6 className={`text-muted ${s.detailCategory}`}>
-                                {product.category}
+                                {product.category} > {product.brand}
                             </h6>
                             <h4 className="fw-bold">{product.name}</h4>
                             <div className="d-flex align-items-center">
                                 {[1,2,3,4,5].map((n,i) => (
                                     <Star key={i} selected={i < Math.round(product.rating)} />
                                 ))}
-                                <p className="text-primary ml-3 mb-0 ms-2">
+                                <p className="text-primary ml-3 mb-0 ms-2" >
                                     {product.numReviews} reviews
                                 </p>
                             </div>
                             <p>{product.description}</p>
-                            <div className="d-flex justify-content-evenly">
+                            <div className="d-flex justify-content-between">
                                 <div className="d-flex flex-column mr-5 align-items-center">
                                     <h6 className="fw-bold text-muted text-uppercase">Quantity</h6>
                                     <div className="d-flex align-items-center w-100 justify-content-between">
                                         <Button
-                                            className={`bg-transparent border-0 p-1 fw-bold mr-3 ${s.quantityBtn}`}
+                                            className={`border-0 p-1 fw-bold mr-3 ${s.quantityBtn}`}
                                             onClick={() => quantity > 1 && setQuantity(q => q - 1)}
                                         >
                                             −
                                         </Button>
                                         <p className="fw-bold mb-0">{quantity}</p>
                                         <Button
-                                            className={`bg-transparent border-0 p-1 fw-bold ml-3 ${s.quantityBtn}`}
+                                            className={`border-0 p-1 fw-bold ml-3 ${s.quantityBtn}`}
                                             onClick={() => setQuantity(q => q + 1)}
                                         >
                                             +
                                         </Button>
                                     </div>
                                 </div>
-                                <div className="d-flex flex-column align-items-center">
-                                    <h6 className="fw-bold text-muted text-uppercase">Price</h6>
-                                    <h6 className="fw-bold">${product.price}</h6>
+                                <div className="d-flex flex-column align-items-center justify-content-center">
+                                    {/*<h4 className="fw-bold text-muted text-uppercase">Price</h4>*/}
+                                    <h3 className="fw-bold">${product.price}</h3>
                                 </div>
                             </div>
                             <p className="mt-2">
@@ -235,7 +259,7 @@ const ProductDetails = ({ productId }) => {
                                         {new Date(item.date).toLocaleDateString()}
                                     </p>
                                 </div>
-                                <div className={s.starRating}>
+                                <div className="d-flex">
                                     {[1,2,3,4,5].map((_, i) => (
                                         <Star key={i} selected={i < item.rating} />
                                     ))}
@@ -250,8 +274,8 @@ const ProductDetails = ({ productId }) => {
             <Modal style={{marginTop: "120px"}} isOpen={modalOpen} toggle={() => setModalOpen(o => !o)}>
                 <div className="p-5">
                     <Button
-                        className="border-0 bg-transparent"
-                        style={{ position: "absolute", top: 0, right: 0, padding: 15 }}
+                        className="border-0 fw-bold m-3 bg-danger"
+                        style={{ position: "absolute", top: 0, right: 0, padding: '10px 15px' }}
                         onClick={() => setModalOpen(o => !o)}
                     >
                         ×
@@ -261,14 +285,19 @@ const ProductDetails = ({ productId }) => {
                         <form onSubmit={submitFeedback}>
                             <div className="d-flex align-items-center mb-3">
                                 <h6 className="fw-bold mr-3 mb-0">Rate:</h6>
-                                {[1,2,3,4,5].map((n,i) => (
-                                    <Star
-                                        key={i}
-                                        selected={i < starsSelected}
-                                        onClick={() => setStarsSelected(i + 1)}
-
-                                    />
-                                ))}
+                                <div className={s.starContainer}>
+                                    {[1, 2, 3, 4, 5].map((n, i) => {
+                                        const reversedIndex = 4 - i; // Reverse the index for selection
+                                        return (
+                                            <Star
+                                                key={i}
+                                                selected={reversedIndex < starsSelected}
+                                                onClick={() => setStarsSelected(reversedIndex + 1)}
+                                                className={`${s.newReviewStar}`}
+                                            />
+                                        );
+                                    })}
+                                </div>
                             </div>
                             <div className="d-flex mb-3">
                                 <Input

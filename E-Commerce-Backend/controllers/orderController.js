@@ -5,6 +5,21 @@ const ObjectId = mongoose.Types.ObjectId;
 
 // —————— Helper: aggregate the unpaid cart and populate products ——————
 async function aggregateCart(userId) {
+    // 1) Ensure there is an unpaid cart document for this user
+    await Order.updateOne(
+        { user: userId, isPaid: false },
+        {
+            $setOnInsert: {
+                orderItems: [],
+                shippingAddress: {},
+                paymentMethod: '',
+                totalPrice: 0,
+                isPaid: false
+            }
+        },
+        { upsert: true }
+    );
+
     const [cart] = await Order.aggregate([
         {$match: {user: new ObjectId(userId), isPaid: false}},
         // unwind items (if any), lookup each product, then regroup
@@ -48,28 +63,13 @@ async function aggregateCart(userId) {
         }
     ]);
 
-    return cart || null;
+    return cart;
 }
 
 // GET /api/orders/cart
 exports.getCart = async (req, res, next) => {
     try {
         let cart = await aggregateCart(req.user._id);
-
-        // If no cart exists yet, return an empty shell
-        if (!cart) {
-            return res.status(200).json({
-                data: {
-                    user: req.user._id,
-                    orderItems: [],
-                    shippingAddress: {},
-                    paymentMethod: '',
-                    totalPrice: 0,
-                    isPaid: false
-                }
-            });
-        }
-
         res.status(200).json(cart);
     } catch (err) {
         next(err);

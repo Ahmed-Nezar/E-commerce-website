@@ -37,7 +37,7 @@ const Star = ({
     />
 );
 
-const loadProduct = async (setLoading, location, setProduct, productId, id) => {
+const loadProduct = async (setLoading, location, setProduct, productId, id, showMessage) => {
     try {
         setLoading(true);
         location.pathname.includes("/productDetails/") ? scroll(0,0) : {}
@@ -47,17 +47,17 @@ const loadProduct = async (setLoading, location, setProduct, productId, id) => {
         if (!data.error) {
             setProduct(data.data);
         } else {
-            toast.error(data.error);
+            showMessage(data.error, true)
         }
     } catch (error) {
         console.error('Error fetching product:', error);
-        toast.error("Could not load product data.");
+        showMessage("Could not load product data.", true)
     } finally {
         setLoading(false);
     }
 };
 
-const loadReviews = async (setLoading2, location, setReviews, productId, id) => {
+const loadReviews = async (setLoading2, location, setReviews, productId, id, showMessage) => {
     try {
         setLoading2(true);
         location.pathname.includes("/productDetails/") ? scroll(0,0) : {}
@@ -67,17 +67,18 @@ const loadReviews = async (setLoading2, location, setReviews, productId, id) => 
         if (!data.error) {
             setReviews(data.data);
         } else {
-            toast.error(data.error);
+            showMessage(data.error, true);
         }
     } catch (error) {
         console.error('Error fetching product:', error);
-        toast.error("Could not load product data.");
+        showMessage("Could not load product data.", true);
     } finally {
         setLoading2(false);
     }
 };
 
-const createReview = async (setLoading2, location, setReviews, setModalOpen, productId, id, starsSelected, comment) => {
+const createReview = async (setLoading2, location, setReviews, setModalOpen, productId, id,
+                            starsSelected, comment, showMessage) => {
     try {
         setLoading2(true);
         location.pathname.includes("/productDetails/") ? scroll(0,0) : {}
@@ -97,13 +98,13 @@ const createReview = async (setLoading2, location, setReviews, setModalOpen, pro
 
         if (!data.error) {
             setReviews(prev => [...prev, data.data]);
-            toast.success("Feedback submitted (demo)");
+            showMessage("Feedback submitted", false);
         } else {
-            toast.error(data.error);
+            showMessage(data.error, true);
         }
     } catch (error) {
         console.error('Error fetching product:', error);
-        toast.error("Could not load product data.");
+        showMessage("Could not load product data.", true);
     } finally {
         setLoading2(false);
         setModalOpen(false);
@@ -120,7 +121,7 @@ const ProductDetails = ({ productId }) => {
     const [comment, setComment] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [reviews, setReviews] = useState([]);
-    const { addToCart, user } = useCart();
+    const { addToCart, user, showMessage } = useCart();
     const [addedItems, setAddedItems] = useState({});
     const { id } = useParams();
     const location = useLocation();
@@ -129,8 +130,8 @@ const ProductDetails = ({ productId }) => {
     useEffect(() => {
         if (productId || id) {
             const fetchData = async () => {
-                await loadProduct(setLoading, location, setProduct, productId, id);
-                await loadReviews(setLoading2, location, setReviews, productId, id);
+                await loadProduct(setLoading, location, setProduct, productId, id, showMessage);
+                await loadReviews(setLoading2, location, setReviews, productId, id, showMessage);
             }
             fetchData();
         }
@@ -144,7 +145,7 @@ const ProductDetails = ({ productId }) => {
             setTimeout(() => {
                 setAddedItems(prev => ({ ...prev, [product._id]: false }));
             }, 2000);
-            toast.success("Item added to cart");
+            showMessage("Item added to cart", false);
         } finally {
             setIsLoading(false);
         }
@@ -152,7 +153,7 @@ const ProductDetails = ({ productId }) => {
 
     const submitFeedback = e => {
         e.preventDefault();
-        createReview(setLoading2, location, setReviews, setModalOpen, productId, id, starsSelected, comment);
+        createReview(setLoading2, location, setReviews, setModalOpen, productId, id, starsSelected, comment, showMessage);
     };
 
     if (loading) {

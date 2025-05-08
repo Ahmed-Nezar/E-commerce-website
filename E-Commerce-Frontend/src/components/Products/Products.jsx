@@ -34,7 +34,7 @@ const catImgs = {
 };
 
 const fetchData = async (
-    cn, setBrands, selectedCategories, setCategories,
+    cn, setBrands, selectedCategories, setCategories, showMessage,
     sortVal, inStockOnly, selectedBrands, fromPrice, toPrice,
     setProducts, setCurrentPage, setTotalPages, currentPage, setIsLoading) => {
     try {
@@ -80,12 +80,14 @@ const fetchData = async (
         setTotalPages(productRes.totalPages);
     } catch (error) {
         console.error("Failed to fetch data:", error);
+        showMessage("Failed to fetch data", true)
+
     } finally {
         setIsLoading(false);
     }
 };
 
-const searchData = async (keyword, setProducts, currentPage=1, setCurrentPage, setTotalPages) => {
+const searchData = async (keyword, setProducts, currentPage=1, setCurrentPage, setTotalPages, showMessage) => {
     try {
         const query = new URLSearchParams();
         if (keyword) query.append("keyword", keyword);
@@ -98,11 +100,12 @@ const searchData = async (keyword, setProducts, currentPage=1, setCurrentPage, s
         setTotalPages(productRes.totalPages);
     } catch (error) {
         console.error("Failed to fetch data:", error);
+        showMessage("Failed to fetch data", true);
     }
 }
 
 const Products = () => {
-    const { addToCart } = useCart();
+    const { addToCart, showMessage } = useCart();
     const [addedItems, setAddedItems] = useState({});
     const [products, setProducts] = useState([]);
     const [brands, setBrands] = useState([]);
@@ -142,7 +145,7 @@ const Products = () => {
     };
 
     useEffect(() => {
-        fetchData( cn, setBrands, selectedCategories, setCategories,
+        fetchData( cn, setBrands, selectedCategories, setCategories, showMessage,
                    sortVal, inStockOnly, selectedBrands, fromPrice, toPrice,
                    setProducts, setCurrentPage, setTotalPages, currentPage, setIsLoading);
     }, [selectedCategories, sortVal, inStockOnly, selectedBrands, fromPrice, toPrice, currentPage]);
@@ -164,7 +167,7 @@ const Products = () => {
     }, [sortVal, selectedCategories, inStockOnly, selectedBrands, fromPrice, toPrice]);
 
     useEffect(() => {
-        searchData(keyword, setProducts, currentPage ,setCurrentPage, setTotalPages);
+        searchData(keyword, setProducts, currentPage ,setCurrentPage, setTotalPages, showMessage);
     },[location.search]);
 
     return (
@@ -241,7 +244,6 @@ const Products = () => {
                         <Pagination count={totalPages}
                                     page={currentPage}
                                     onChange={(event, value) => {
-                                        console.log(value);
                                         setCurrentPage(value);
                                     }}
                                     showFirstButton

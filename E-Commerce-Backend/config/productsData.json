@@ -901,7 +901,7 @@
   },
   {
     "name": "SONY Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "SONY",
     "description": "SONY high-performance wired headset",
     "price": 30.98,
@@ -911,7 +911,7 @@
   },
   {
     "name": "SteelSeries Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "SteelSeries",
     "description": "SteelSeries high-performance wired headset",
     "price": 61.12,
@@ -921,7 +921,7 @@
   },
   {
     "name": "T-DAGGER Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "T-DAGGER",
     "description": "T-DAGGER high-performance wired headset",
     "price": 116.86,
@@ -931,7 +931,7 @@
   },
   {
     "name": "Team Group Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "Team Group",
     "description": "Team Group high-performance wired headset",
     "price": 111.16,
@@ -941,7 +941,7 @@
   },
   {
     "name": "TechnoZone Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "TechnoZone",
     "description": "TechnoZone high-performance wired headset",
     "price": 41.52,
@@ -951,7 +951,7 @@
   },
   {
     "name": "THERMALRIGHT Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "THERMALRIGHT",
     "description": "THERMALRIGHT high-performance wired headset",
     "price": 28.22,
@@ -961,7 +961,7 @@
   },
   {
     "name": "thermaltake Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "thermaltake",
     "description": "thermaltake high-performance wired headset",
     "price": 63.44,
@@ -971,7 +971,7 @@
   },
   {
     "name": "Toshiba Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "Toshiba",
     "description": "Toshiba high-performance wired headset",
     "price": 99.3,
@@ -981,7 +981,7 @@
   },
   {
     "name": "TOTO LINK Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "TOTO LINK",
     "description": "TOTO LINK high-performance wired headset",
     "price": 43.23,
@@ -991,7 +991,7 @@
   },
   {
     "name": "TP-LINK Wired Headset",
-    "category": "Headsetss",
+    "category": "Headsets",
     "brand": "TP-LINK",
     "description": "TP-LINK high-performance wired headset",
     "price": 92.36,
@@ -1275,7 +1275,7 @@
     "brand": "LG",
     "description": "4K 144Hz gaming monitor",
     "price": 799.99,
-    "image": "/images/products-backend/LG_UltraGear.jpg",
+    "image": "/images/products-backend/LG_UltraGear.jpeg",
     "stock": 6,
     "rating": 4.6
   },

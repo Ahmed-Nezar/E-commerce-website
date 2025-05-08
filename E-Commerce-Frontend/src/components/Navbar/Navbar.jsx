@@ -22,9 +22,10 @@ import { toast } from 'react-toastify';
 import SearchBar from "../SearchBar/SearchBar.jsx";
 
 const Navbar = ({reference}) => {
+    const [refreshToken, setRefreshToken] = useState(true);
     const navigate = useNavigate();
-    const { cartCount, user, setUser } = useCart();
     const location = useLocation();
+    const { cartCount, user, setUser, showMessage } = useCart();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -35,21 +36,19 @@ const Navbar = ({reference}) => {
                 //check token expiration
                 const currentTime = Date.now() / 1000;
                 if (payload.exp < currentTime) {
-                    setUser(null);
                     handleLogout();
-                    toast.error("Session Expired, Please Login Again")
+                    showMessage("Session Expired, Please Login Again", true);
                     return;
                 }
-                setUser(payload);
+                !user && setUser(payload);
             } catch (error) {
-                toast.error();
-                handleLogout("Session Expired, Please Login Again");
+                handleLogout();
+                showMessage("Session Expired, Please Login Again");
             }
         } else if (user) {
-            setUser(null);
-            navigate('/');
+            handleLogout();
         }
-    }, [location.pathname]);
+    }, [location.pathname, refreshToken]);
 
     const handleLogout = () => {
         localStorage.removeItem('token');

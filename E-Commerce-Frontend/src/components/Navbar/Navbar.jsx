@@ -1,4 +1,14 @@
-import { AppBar, Toolbar, Typography, Button, Box, Container, Badge, IconButton, Avatar } from '@mui/material';
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Button,
+    Box,
+    Container,
+    Badge,
+    IconButton,
+    Avatar
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
@@ -9,6 +19,7 @@ import { useLocation } from 'react-router-dom';
 import "./Navbar.css";
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
+import SearchBar from "../SearchBar/SearchBar.jsx";
 
 const Navbar = ({reference}) => {
     const navigate = useNavigate();
@@ -87,6 +98,7 @@ const Navbar = ({reference}) => {
                         <ShoppingBagIcon sx={{ color: '#3D518C' }} />
                         E-Commerce
                     </Typography>
+                    <SearchBar/>
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                         {user?.isAdmin && (
                             <IconButton

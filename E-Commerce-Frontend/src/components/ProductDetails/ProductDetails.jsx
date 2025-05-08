@@ -196,7 +196,7 @@ const ProductDetails = ({ productId }) => {
                     <Col xs={12} lg={6} className="d-flex flex-column justify-content-around">
                         <div className={`${s.dataContainer}`}>
                             <h6 className={`text-muted ${s.detailCategory}`}>
-                                {product.category} > {product.brand}
+                                {product.category} &gt; {product.brand}
                             </h6>
                             <h4 className="fw-bold">{product.name}</h4>
                             <div className="d-flex align-items-center">

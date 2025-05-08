@@ -17,6 +17,7 @@ export const ENV = import.meta.env;
 import Products from "./components/Products/Products.jsx";
 import ProductDetails from "./components/ProductDetails/ProductDetails.jsx";
 import {ToastContainer} from "react-toastify";
+import {SearchProvider} from "./context/SearchContext.jsx";
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -41,63 +42,65 @@ function App() {
     }, []);
 
     return (
-        <CartProvider>
-            <ToastContainer />
-            <Router>
-                <Navbar reference={navbarRef}/>
-                <div className="position-relative" style={{ top: offsetTop }}>
-                    <Routes>
-                        <Route path="/" element={<Home/>}/>
-                        <Route 
-                            path="/signin" 
-                            element={
-                                <PublicRoute>
-                                    <SignIn/>
-                                </PublicRoute>
-                            }
-                        />
-                        <Route 
-                            path="/register" 
-                            element={
-                                <PublicRoute>
-                                    <Register/>
-                                </PublicRoute>
-                            }
-                        />
-                        <Route path="/forgot-password" element={<ForgotPassword/>}/>
-                        <Route 
-                            path="/change-password" 
-                            element={
-                                <ProtectedRoute>
-                                    <ChangePassword/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route path="/cart" element={<Cart/>}/>
-                        <Route 
-                            path="/checkout" 
-                            element={
-                                <ProtectedRoute>
-                                    <Checkout/>
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route path="/products" element={<Products/>}/>
-                        <Route path="/products/:cn" element={<Products/>}/>
-                        <Route path="/productDetails/:id" element={<ProductDetails />}/>
-                        <Route 
-                            path="/admin" 
-                            element={
-                                <AdminRoute>
-                                    <AdminDashboard/>
-                                </AdminRoute>
-                            }
-                        />
-                    </Routes>
-                </div>
-                <Footer/>
-            </Router>
-        </CartProvider>
+        <SearchProvider>
+            <CartProvider>
+                <ToastContainer />
+                <Router>
+                    <Navbar reference={navbarRef}/>
+                    <div className="position-relative" style={{ top: offsetTop }}>
+                        <Routes>
+                            <Route path="/" element={<Home/>}/>
+                            <Route
+                                path="/signin"
+                                element={
+                                    <PublicRoute>
+                                        <SignIn/>
+                                    </PublicRoute>
+                                }
+                            />
+                            <Route
+                                path="/register"
+                                element={
+                                    <PublicRoute>
+                                        <Register/>
+                                    </PublicRoute>
+                                }
+                            />
+                            <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                            <Route
+                                path="/change-password"
+                                element={
+                                    <ProtectedRoute>
+                                        <ChangePassword/>
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route path="/cart" element={<Cart/>}/>
+                            <Route
+                                path="/checkout"
+                                element={
+                                    <ProtectedRoute>
+                                        <Checkout/>
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route path="/products" element={<Products/>}/>
+                            <Route path="/products/:cn" element={<Products/>}/>
+                            <Route path="/productDetails/:id" element={<ProductDetails />}/>
+                            <Route
+                                path="/admin"
+                                element={
+                                    <AdminRoute>
+                                        <AdminDashboard/>
+                                    </AdminRoute>
+                                }
+                            />
+                        </Routes>
+                    </div>
+                    <Footer/>
+                </Router>
+            </CartProvider>
+        </SearchProvider>
     )
 }
 

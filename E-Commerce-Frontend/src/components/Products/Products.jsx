@@ -18,6 +18,7 @@ import {ENV} from "../../App.jsx";
 import NoResultsPlaceholder from "../NoResultsPlaceholder/NoResultsPlaceholder.jsx";
 import Loader from "../Loader/Loader.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
+import {useSearch} from "../../context/SearchContext.jsx";
 
 const catImgs = {
     "gpus": "/images/products/RTX_4090.jpg",
@@ -124,7 +125,7 @@ const Products = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const [searchInput, setSearchInput] = useState("");
+    const { searchInput, setSearchInput } = useSearch();
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -168,7 +169,6 @@ const Products = () => {
 
     return (
         <>
-            {/*<input type="text" value={searchInput} onInput={(e) => setSearchInput(e.target.value)}/>*/} {/* for testing */}
             <div className="w-full">
                 {/* Top Banner Image */}
                 <div className="d-grid align-content-center headerBG" style={{backgroundImage: `linear-gradient(to bottom, rgb(0 0 0 / 50%), rgb(1 63 181 / 60%)), `+

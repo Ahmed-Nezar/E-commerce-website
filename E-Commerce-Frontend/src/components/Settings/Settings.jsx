@@ -22,11 +22,11 @@ import {
 } from '@mui/icons-material';
 
 const navItems = [
-  { label: 'Profile',        to: '/settings/profile',   icon: <PersonIcon /> },
+  { label: 'Profile',        to: '/me/profile',   icon: <PersonIcon /> },
   { label: 'Payment Methods',to: '/settings/payments',  icon: <PaymentIcon /> },
   { label: 'Orders',         to: '/settings/orders',    icon: <OrdersIcon /> },
   { label: 'Wishlist',       to: '/settings/wishlist',  icon: <WishlistIcon /> },
-  { label: 'Logout',         to: '/logout',             icon: <LogoutIcon /> },
+  { label: 'Logout',         to: '/me/logout',             icon: <LogoutIcon /> },
 ];
 
 export default function SettingsLayout() {
@@ -53,32 +53,32 @@ export default function SettingsLayout() {
         </Toolbar>
         <Divider sx={{ borderColor: alpha(theme.palette.text.primary, 0.6) }} />
         <List>
-          {navItems.map(({ label, to, icon }) => (
-            <ListItemButton
-              key={to}
-              component={NavLink}
-              to={to}
-              exact
-              activeClassName="active"
-              sx={{
-                color: 'inherit',
-                '&.active': {
-                  backgroundColor: alpha(theme.palette.text.primary, 0.1),
-                },
-                '&:hover': {
-                  backgroundColor: alpha(theme.palette.text.primary, 0.05),
-                },
-              }}
-            >
-              <ListItemIcon sx={{ color: 'inherit' }}>
-                {icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={label}
-                primaryTypographyProps={{ color: 'inherit' }}
-              />
-            </ListItemButton>
-          ))}
+            {navItems.map(({ label, to, icon }) => {
+                const isActive = location.pathname === to;
+                return (
+                    <ListItemButton
+                        key={to}
+                        component={NavLink}
+                        to={to}
+                        selected={isActive}
+                        sx={{
+                            color: 'inherit',
+                            '&.Mui-selected': {
+                                backgroundColor: alpha(theme.palette.text.primary, 0.1),
+                            },
+                            '&:hover': {
+                                backgroundColor: alpha(theme.palette.text.primary, 0.05),
+                            },
+                        }}
+                    >
+                        <ListItemIcon sx={{ color: 'inherit' }}>{icon}</ListItemIcon>
+                        <ListItemText
+                            primary={label}
+                            primaryTypographyProps={{ color: 'inherit' }}
+                        />
+                    </ListItemButton>
+                );
+            })}
         </List>
       </Box>
 

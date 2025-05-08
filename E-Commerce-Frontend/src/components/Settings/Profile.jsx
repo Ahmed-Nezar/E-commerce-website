@@ -22,6 +22,9 @@ import {
   Save as SaveIcon,
   Cancel as CancelIcon
 } from '@mui/icons-material';
+import {useCart} from "../../context/CartContext.jsx";
+import {toast} from "react-toastify";
+import {ENV} from "../../App.jsx";
 
 export default function Profile() {
   const initialUser = {
@@ -32,7 +35,7 @@ export default function Profile() {
     role: 'Admin'
   };
 
-  const [user, setUser] = useState(initialUser);
+  const {user, setUser} = useCart();
   const [editMode, setEditMode] = useState(false);
 
   const handleChange = (e) => {
@@ -40,9 +43,29 @@ export default function Profile() {
     setUser((u) => ({ ...u, [name]: value }));
   };
 
-  const handleSave = () => {
-    console.log('Saved:', user);
-    setEditMode(false);
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${ENV.VITE_BACKEND_URL}/api/users/me`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(localUser),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Error updating profile');
+      }
+
+      setUser(data.user);
+      setEditMode(false);
+      toast.success('Profile updated successfully');
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const handleCancel = () => {

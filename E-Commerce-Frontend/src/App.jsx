@@ -18,6 +18,9 @@ import Products from "./components/Products/Products.jsx";
 import ProductDetails from "./components/ProductDetails/ProductDetails.jsx";
 import {ToastContainer} from "react-toastify";
 import {SearchProvider} from "./context/SearchContext.jsx";
+import Settings from "./components/Settings/Settings.jsx";
+import Profile from "./components/Settings/Profile.jsx";
+import Logout from "./components/Settings/Logout.jsx";
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -95,6 +98,10 @@ function App() {
                                     </AdminRoute>
                                 }
                             />
+                            <Route path="/me" element={<Settings/>}>
+                                <Route path="profile" element={<Profile/>} />
+                                <Route path="logout" element={<Logout/>}/>
+                            </Route>
                         </Routes>
                     </div>
                     <Footer/>

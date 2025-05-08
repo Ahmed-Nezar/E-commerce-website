@@ -55,6 +55,16 @@ export const CartProvider = ({ children }) => {
         .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (!user) {
+        setCartItems([]);
+        setShippingAddress({});
+        setPaymentMethod('');
+    } else {
+      refreshCart();
+    }
+  }, [user])
+
   // Helper to guard all mutations
   const ensureAuth = () => {
     if (!user) {

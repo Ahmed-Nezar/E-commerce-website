@@ -3,11 +3,8 @@
 import {useEffect, useState} from "react";
 import CustomBreadcrumbs from "../CustomBreadcrumbs/CustomBreadcrumbs.jsx";
 import ProductsGrid from "../ProductsGrid/ProductsGrid.jsx";
-import ProductCard from "../ProductCard/ProductCard.jsx";
 import SelectComp from "../SelectComp/SelectComp.jsx";
-import { Grid,  Pagination} from "@mui/material";
-import Tilt from 'react-parallax-tilt';
-import {motion} from 'framer-motion';
+import {Button, Pagination} from "@mui/material";
 import "../Products/Products.css";
 import * as React from "react";
 import { useParams } from "react-router-dom";
@@ -15,15 +12,14 @@ import { useCart } from '../../context/CartContext';
 import Drawer from "../Drawer/Drawer.jsx";
 import Filter from "../Filter/Filter.jsx";
 import {ENV} from "../../App.jsx";
-import NoResultsPlaceholder from "../NoResultsPlaceholder/NoResultsPlaceholder.jsx";
-import Loader from "../Loader/Loader.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import {useSearch} from "../../context/SearchContext.jsx";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 const catImgs = {
     "gpus": "/images/products/RTX_4090.jpg",
     "cpus": "/images/products/Intel-Core-i9.jpg",
-    "rams": "/images/products/adata-SD-8.0-Express-UE720.jpg", // closest match since no dedicated RAM image
+    "rams": "/images/products/adata-SD-8.0-Express-UE720.jpg",
     "storages": "/images/products/adata-SD-8.0-Express-UE720.jpg",
     "psus": "/images/products/Dark_Power_Pro_13_1600W.jpg",
     "cases": "/images/products/O11VP_000a.png",
@@ -125,7 +121,7 @@ const Products = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const { searchInput, setSearchInput } = useSearch();
+    const { searchInput } = useSearch();
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -196,7 +192,16 @@ const Products = () => {
                 {/* Filters and Products Grid */}
                 <div className="d-grid mx-5 gap-6 body">
                     {/* Filters Sidebar */}
-                    <Drawer>
+                    <Drawer triggerButton={
+                            <Button variant="contained"  className="col-lg-12 col-lg-8 mt-4">
+                                <FilterAltIcon />
+                                Filter
+                            </Button>
+                        }
+                        anchor={"left"}
+                        breakpoint={705}
+                        defaultView={true}
+                    >
                         <Filter
                             fromPrice={fromPrice}
                             toPrice={toPrice}

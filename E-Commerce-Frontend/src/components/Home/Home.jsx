@@ -25,7 +25,7 @@ import ProductsGrid from "../ProductsGrid/ProductsGrid.jsx";
 const fetchNewReleases = async (setNewReleases, setLoading) => {
   setLoading(true);
   const query = new URLSearchParams();
-  query.append("limit", "6");
+  query.append("limit", "8");
   query.append("page", "1");
   query.append("sortQuery", "date");
 
@@ -108,18 +108,6 @@ const Home = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100
       }
     }
   };

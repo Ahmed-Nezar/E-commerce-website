@@ -8,11 +8,11 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import "./Navbar.css";
 import { jwtDecode } from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 const Navbar = ({reference}) => {
     const navigate = useNavigate();
-    const { cartCount } = useCart();
-    const [user, setUser] = useState(null);
+    const { cartCount, user, setUser } = useCart();
     const location = useLocation();
 
     useEffect(() => {
@@ -26,11 +26,13 @@ const Navbar = ({reference}) => {
                 if (payload.exp < currentTime) {
                     setUser(null);
                     handleLogout();
+                    toast.error("Session Expired, Please Login Again")
                     return;
                 }
                 setUser(payload);
             } catch (error) {
-                handleLogout();
+                toast.error();
+                handleLogout("Session Expired, Please Login Again");
             }
         } else if (user) {
             setUser(null);
@@ -42,7 +44,6 @@ const Navbar = ({reference}) => {
         localStorage.removeItem('token');
         setUser(null);
         navigate('/');
-        window.location.reload(); // Force reload to clear all states
     };
 
     return (

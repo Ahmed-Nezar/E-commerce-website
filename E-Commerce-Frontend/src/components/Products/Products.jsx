@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from "react";
 import CustomBreadcrumbs from "../CustomBreadcrumbs/CustomBreadcrumbs.jsx";
+import ProductsGrid from "../ProductsGrid/ProductsGrid.jsx";
 import ProductCard from "../ProductCard/ProductCard.jsx";
 import SelectComp from "../SelectComp/SelectComp.jsx";
 import { Grid,  Pagination} from "@mui/material";
@@ -17,18 +18,6 @@ import {ENV} from "../../App.jsx";
 import NoResultsPlaceholder from "../NoResultsPlaceholder/NoResultsPlaceholder.jsx";
 import Loader from "../Loader/Loader.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
-
-const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-        y: 0,
-        opacity: 1,
-        transition: {
-            type: "spring",
-            stiffness: 100
-        }
-    }
-};
 
 const catImgs = {
     "gpus": "/images/products/RTX_4090.jpg",
@@ -128,7 +117,7 @@ const Products = () => {
     const [inStockOnly, setInStockOnly] = useState(true);
 
     const [selectedBrands, setSelectedBrands] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState(cn? [cn] : []);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -158,17 +147,14 @@ const Products = () => {
     }, [selectedCategories, sortVal, inStockOnly, selectedBrands, fromPrice, toPrice, currentPage]);
 
     useEffect(() => {
-        if (cn && !selectedCategories.includes(cn)) {
-            setSelectedCategories([...selectedCategories, cn])
-        }
-        if (!cn) {
-            setSelectedCategories([]);
-        }
-    }, [cn]);
-
-    useEffect(() => {
         navigate(`?keyword=${searchInput}`);
     }, [searchInput]);
+
+    useEffect(() => {
+        if (!cn) {
+            setSelectedCategories([])
+        }
+    }, [cn])
 
     useEffect(() => {
         if (currentPage !== 1) {
@@ -201,7 +187,7 @@ const Products = () => {
                                 setSelectedCategories([]);
                             },
                         },...(cn ? [{
-                            route: `products/${cn}`,
+                            route: `products/${cn}?keyword=`,
                             title: cn,
                         }] : []),
                     ]} />
@@ -230,54 +216,34 @@ const Products = () => {
                     {/* Products Section */}
                     <div className="col-lg-12 col-lg-8 mt-4">
                         {/* Sort Control */}
-                        <div className="d-flex mb-5 mx-4 justify-content-end sort">
+                        <div className="d-flex mb-5 mx-4 justify-content-end sort align-items-center">
                             <SelectComp sortVal={sortVal} setSortVal={setSortVal}/>
+                            {sortVal && (
+                            <button
+                                onClick={() => setSortVal('')}
+                                className={"text-danger fs-3 px-2 py-0 h-75"}
+                                style={{
+                                    border: 'none',
+                                    background: 'transparent',
+                                    cursor: 'pointer',
+                                    fontSize: '18px',
+                                }}
+                                title="Clear sort"
+                            >
+                                ×
+                            </button>
+                        )}
                         </div>
 
                         {/* Products Grid */}
-                        <div className="d-grid gap-4 m-3 products-view justify-content-center">
-                            {isLoading ? (
-                                <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '2rem', minHeight: "500px",
-                                    alignItems: "center" }}>
-                                    <Loader />
-                                </div>
-                            ) : !products.length ? (
-                                <NoResultsPlaceholder />
-                            ) : (
-                                products.map((product, index) => (
-                                    <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
-                                        <div className="product-card">
-                                            <motion.div
-                                                variants={itemVariants}
-                                                custom={index}
-                                                initial="hidden"
-                                                animate="visible"
-                                                whileHover={{ scale: 1.02 }}
-                                                transition={{ type: "spring", stiffness: 300 }}
-                                            >
-                                                <Tilt
-                                                    tiltMaxAngleX={8}
-                                                    tiltMaxAngleY={8}
-                                                    scale={1}
-                                                    transitionSpeed={1500}
-                                                    gyroscope={true}
-                                                >
-                                                    <ProductCard
-                                                        product={product}
-                                                        handleAddToCart={handleAddToCart}
-                                                        addedItems={addedItems}
-                                                    />
-                                                </Tilt>
-                                            </motion.div>
-                                        </div>
-                                    </Grid>
-                                ))
-                            )}
+                        <ProductsGrid isLoading={isLoading} products={products} handleAddToCart={handleAddToCart} addedItems={addedItems}/>
 
-                        </div>
                         <Pagination count={totalPages}
                                     page={currentPage}
-                                    onChange={(event, value) => setCurrentPage(value)}
+                                    onChange={(event, value) => {
+                                        console.log(value);
+                                        setCurrentPage(value);
+                                    }}
                                     showFirstButton
                                     showLastButton
                                     sx={{display: 'flex', justifyContent: 'center', margin: '2rem auto'}}/>

@@ -113,6 +113,10 @@ export default function Filter({   fromPrice, toPrice, setFromPrice, setToPrice,
                                 <FormControlLabel control={<Checkbox
                                     checked={selectedCategories.includes(category)}
                                     onChange={() => setSelectedCategories(prev => {
+                                        // Check if cn is removed
+                                        if (cn && cn === category) {
+                                            return prev;
+                                        }
                                         if (prev.includes(category)) {
                                             return prev.filter((item) => item !== category);
                                         } else {

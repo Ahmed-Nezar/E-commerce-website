@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import './App.css'
 import Footer from './components/Footer/Footer.jsx'
 import Navbar from './components/Navbar/Navbar.jsx'
@@ -16,6 +16,7 @@ import { CartProvider } from './context/CartContext.jsx'
 export const ENV = import.meta.env;
 import Products from "./components/Products/Products.jsx";
 import ProductDetails from "./components/ProductDetails/ProductDetails.jsx";
+import {ToastContainer} from "react-toastify";
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -41,6 +42,7 @@ function App() {
 
     return (
         <CartProvider>
+            <ToastContainer />
             <Router>
                 <Navbar reference={navbarRef}/>
                 <div className="position-relative" style={{ top: offsetTop }}>

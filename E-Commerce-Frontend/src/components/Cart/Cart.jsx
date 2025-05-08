@@ -35,13 +35,13 @@ const Cart = () => {
   const [removingItem, setRemovingItem] = useState(null);
   const navigate = useNavigate();
   const theme = useTheme();
-  const { 
-    cartItems, 
+  const {
+    cartItems,
     addToCart,
-    removeFromCart, 
+    removeFromCart,
     updateQuantity,
-    clearCart, 
-    total, 
+    clearCart,
+    total,
     cartCount,
     shippingAddress,
     setShippingAddress,
@@ -164,8 +164,17 @@ const Cart = () => {
           </Typography>
         </Box>
 
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={8}>
+        <Grid container spacing={4} sx={{
+            flexWrap: 'nowrap !important',
+            width: '100%',
+            '@media (max-width: 500px)': {
+                flexWrap: 'wrap !important',
+            }
+        }}>
+          <Grid item xs={12} md={8} sx={{
+              flexWrap: 'nowrap !important',
+              width: '100%'
+          }}>
             <Paper
               elevation={0}
               sx={{
@@ -369,7 +378,7 @@ const Cart = () => {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4} sx={{maxWidth: '500px', width: '500px'}}>
             <Slide direction="left" in timeout={500}>
               <Paper
                 elevation={0}

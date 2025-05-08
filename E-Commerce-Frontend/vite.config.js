@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     allowedHosts: [
-      'assembled-casa-framed-proposition.trycloudflare.com'
+      'crossing-motivation-regulations-monster.trycloudflare.com'
     ]
   }
 });

@@ -210,8 +210,8 @@ const ProductCard = ({
                         cursor: 'pointer',
                     }}
                 >
-                    {product.name.length > 24
-                        ? `${product.name.substring(0, 24)}...`
+                    {product.name.length > 22
+                        ? `${product.name.substring(0, 22)}...`
                         : product.name}
                 </Typography>
 

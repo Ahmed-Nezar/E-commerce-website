@@ -19,6 +19,21 @@ import { FaRegKeyboard } from "react-icons/fa";
 import { MdOutlinePower } from "react-icons/md";
 import { LuPcCase } from "react-icons/lu";
 import Loader from '../Loader/Loader.jsx';
+import { ENV } from '../../App.jsx';
+import ProductsGrid from "../ProductsGrid/ProductsGrid.jsx";
+
+const fetchNewReleases = async (setNewReleases, setLoading) => {
+  setLoading(true);
+  const query = new URLSearchParams();
+  query.append("limit", "6");
+  query.append("page", "1");
+  query.append("sortQuery", "date");
+
+  const productRes = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?${query.toString()}`)
+      .then(res => res.json());
+  setNewReleases(productRes.data);
+  setLoading(false);
+}
 
 const Home = () => {
   const { addToCart } = useCart();
@@ -29,17 +44,17 @@ const Home = () => {
   const carouselItems = [
     {
       image: '/images/products/RTX_4090.jpg',
-      title: 'NVIDIA RTX 4090',
+      name: 'NVIDIA RTX 4090',
       description: 'Experience next-gen gaming performance'
     },
     {
       image: '/images/products/ryzen9.png',
-      title: 'AMD Ryzen 9',
+      name: 'AMD Ryzen 9',
       description: 'Ultimate processing power'
     },
     {
       image: '/images/products/Intel-Core-i9.jpg',
-      title: 'Intel Core i9',
+      name: 'Intel Core i9',
       description: 'Unleash your productivity'
     },
   ];
@@ -59,116 +74,7 @@ const Home = () => {
     { icon: <GiComputerFan style={{ fontSize: '40px' }}/>, name: 'Coolers'}
   ];
 
-  const [newReleases] = useState([
-    {
-      _id: '1',
-      name: 'Razer Basilisk V3',
-      category: 'Mice',
-      description: 'Pro Gaming Mouse with advanced features',
-      brand: 'Razer',
-      price: 69.99,
-      image: '/images/products/Razer_Basilisk_V3.jpg',
-      stock: 25,
-      rating: 4.7,
-      numReviews: 128
-    },
-    {
-      _id: '2',
-      name: 'RTX 5060 Ti',
-      category: 'GPUs',
-      description: 'Mid-Range Gaming GPU for exceptional performance',
-      brand: 'NVIDIA',
-      price: 499.99,
-      image: '/images/products/RTX_5060_Ti.png',
-      stock: 3,
-      rating: 4.9,
-      numReviews: 75
-    },
-    {
-      _id: '3',
-      name: 'Razer Kraken V4',
-      category: 'Headsets',
-      description: 'Premium Wireless Gaming Headset',
-      brand: 'Razer',
-      price: 199.99,
-      image: '/images/products/Razer_Kraken_V4.jpg',
-      stock: 10,
-      rating: 4.8,
-      numReviews: 234
-    },    
-    {
-      _id: '4',
-      name: 'Samsung Odyssey OLED G8',
-      category: 'Monitors',
-      description: '34" Ultra-Wide Gaming Monitor with OLED Technology',
-      brand: 'Samsung',
-      price: 1299.99,
-      image: '/images/products/Samsung-Odyssey-OLED-G8.jpg',
-      stock: 12,
-      rating: 4.9,
-      numReviews: 89
-    },
-    {
-      _id: '5',
-      name: 'Keychron Q5 HE',
-      category: 'Keyboards',
-      description: 'Hot-swappable Mechanical Keyboard with Premium Build',
-      brand: 'Keychron',
-      price: 199.99,
-      image: '/images/products/Keychron_Q5_HE.png',
-      stock: 15,
-      rating: 4.6,
-      numReviews: 156
-    },    
-    {
-      _id: '6',
-      name: 'Lian Li O11 Vision',
-      category: 'Cases',
-      description: 'Premium ATX PC Case with Excellent Airflow',
-      brand: 'Lian Li',
-      price: 219.99,
-      image: '/images/products/O11VP_000a.png',
-      stock: 7,
-      rating: 4.8,
-      numReviews: 92
-    },
-    {
-      _id: '7',
-      name: 'NVIDIA Quantum X800',
-      category: 'GPUs',
-      description: 'Next-gen GPU Technology for Ultimate Performance',
-      brand: 'NVIDIA',
-      price: 1499.99,
-      image: '/images/products/NVIDIA_Quantum-X800.jpg',
-      stock: 5,
-      rating: 4.8,
-      numReviews: 45
-    },
-    {
-      _id: '8',
-      name: 'Dark Power Pro 13 1600W',
-      category: 'PSUs',
-      description: 'Platinum Rated Power Supply for High-End Systems',
-      brand: 'be quiet!',
-      price: 399.99,
-      image: '/images/products/Dark_Power_Pro_13_1600W.jpg',
-      stock: 8,
-      rating: 4.7,
-      numReviews: 167
-    },
-    {
-      _id: '9',
-      name: 'ADATA SD 8.0 Express',
-      category: 'Storage',
-      description: 'High-Speed Storage Solution with Advanced Technology',
-      brand: 'ADATA',
-      price: 129.99,
-      image: '/images/products/adata-SD-8.0-Express-UE720.jpg',
-      stock: 20,
-      rating: 4.5,
-      numReviews: 203
-    }
-  ]);
+  const [newReleases, setNewReleases] = useState([]);
 
   const [addedItems, setAddedItems] = useState({});
 
@@ -184,12 +90,8 @@ const Home = () => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
     }, 5000);
+    fetchNewReleases(setNewReleases, setLoading);
     return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    // Simulate loading state for data fetching
-    setTimeout(() => setLoading(false), 1000);
   }, []);
 
   const handlePrevSlide = () => {
@@ -279,7 +181,7 @@ const Home = () => {
                     },
                   }}
                 >
-                  {item.title}
+                  {item.name}
                 </Typography>
                 <Typography
                   variant="h5"
@@ -574,38 +476,8 @@ const Home = () => {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <Grid container spacing={6} justifyContent="center" alignItems="center" sx={{ 
-                display: 'flex',
-                flexWrap: 'wrap',
-                margin: '0 auto'
-              }}>
-                {newReleases.map((product, index) => (
-                  <Grid sx={{maxWidth: "300px"}} item key={product._id} xs={12} sm={6} md={4} lg={3}>
-                    <motion.div 
-                      variants={itemVariants}
-                      custom={index}
-                      initial="hidden"
-                      animate="visible"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <Tilt
-                        tiltMaxAngleX={8}
-                        tiltMaxAngleY={8}
-                        scale={1}
-                        transitionSpeed={1500}
-                        gyroscope={true}
-                      >
-                        <ProductCard
-                            product={product}
-                            handleAddToCart={handleAddToCart}
-                            addedItems={addedItems}
-                        />
-                      </Tilt>
-                    </motion.div>
-                  </Grid>
-                ))}
-              </Grid>
+              <ProductsGrid isLoading={loading} products={newReleases} handleAddToCart={handleAddToCart} addedItems={addedItems}/>
+
             </motion.div>
           </Container>
         </Box>

@@ -82,6 +82,11 @@ exports.addToCart = async (req, res, next) => {
         const { productId, quantity = 1 } = req.body;
         const userId = req.user._id;
 
+        // 1) Validate productId early
+        if (!ObjectId.isValid(productId)) {
+            return res.status(400).json({ error: 'Invalid product ID' });
+        }
+
         const prod = await Product.findById(productId, 'price');
         if (!prod) return res.status(404).json({ error: 'Product not found' });
 
@@ -160,6 +165,11 @@ exports.updateCartItem = async (req, res, next) => {
         const { quantity }  = req.body;
         const userId = req.user._id;
 
+        // 1) Validate productId early
+        if (!ObjectId.isValid(productId)) {
+            return res.status(400).json({ error: 'Invalid product ID' });
+        }
+
         // Recalculate totalPrice delta: fetch old qty and price
         const [{ oldItem }] = await Order.aggregate([
             { $match: { user: new ObjectId(userId), isPaid: false } },
@@ -212,6 +222,11 @@ exports.removeCartItem = async (req, res, next) => {
     try {
         const { productId } = req.params;
         const userId = req.user._id;
+
+        // 1) Validate productId early
+        if (!ObjectId.isValid(productId)) {
+            return res.status(400).json({ error: 'Invalid product ID' });
+        }
 
         // Find the item price*qty to decrement totalPrice
         const [{ oldItem }] = await Order.aggregate([

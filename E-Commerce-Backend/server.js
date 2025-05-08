@@ -60,7 +60,7 @@ app.use(
     app.use('/api/users', verifyToken("user"), userRoutes);
     app.use('/api/products', productRoutes);
     app.use('/api/orders', verifyToken("user"), orderRoutes);
-    app.use('/api/reviews', verifyToken("user"), reviewRoutes);
+    app.use('/api/reviews', reviewRoutes);
     app.use('/api/coupons', couponRoutes);
 
 // Error Handlers

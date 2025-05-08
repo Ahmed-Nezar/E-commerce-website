@@ -72,9 +72,7 @@ const SignIn = () => {
 
         // Store token in localStorage
         localStorage.setItem('token', data.token);
-        
-        // Force page reload to update all components
-        window.location.href = '/';
+        navigate('/')
       } else {
         setError(data.message || 'Login failed. Please check your credentials.');
       }

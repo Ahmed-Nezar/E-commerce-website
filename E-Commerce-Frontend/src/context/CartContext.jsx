@@ -1,120 +1,117 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+// CartContext.jsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import { ENV } from '../App.jsx';
+import { toast } from "react-toastify"; // your backend URL
 
 const CartContext = createContext();
 
 export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  return context;
+  const ctx = useContext(CartContext);
+  if (!ctx) throw new Error('useCart must be inside CartProvider');
+  return ctx;
 };
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
-  const [shippingAddress, setShippingAddress] = useState({
-    address: '',
-    city: '',
-    postalCode: '',
-    country: ''
-  });
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [userId, setUserId] = useState(null);
+  const [cartItems, setCartItems]         = useState([]);
+  const [shippingAddress, setShippingAddress]     = useState({});
+  const [paymentMethod, setPaymentMethod]  = useState('');
+  const [user, setUser]                   = useState(null);
+  const [loading, setLoading]             = useState(true);
 
-  // Load cart data when user changes
+  // set axios auth header and load cart
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        setUserId(payload._id);
-        
-        // Load cart data for this user
-        const savedCart = localStorage.getItem(`cart_${payload._id}`);
-        if (savedCart) {
-          const { items, address, payment } = JSON.parse(savedCart);
-          setCartItems(items || []);
-          setShippingAddress(address || {
-            address: '',
-            city: '',
-            postalCode: '',
-            country: ''
-          });
-          setPaymentMethod(payment || '');
-        }
-      } catch (error) {
-        console.error('Error loading cart:', error);
-      }
-    } else {
-      // Clear cart when logged out
-      setUserId(null);
-      setCartItems([]);
-      setShippingAddress({
-        address: '',
-        city: '',
-        postalCode: '',
-        country: ''
-      });
-      setPaymentMethod('');
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
     }
+
+    // decode & set user
+    const payload = jwtDecode(token);
+    setUser(payload);
+
+    // attach header
+    axios.defaults.baseURL = `${ENV.VITE_BACKEND_URL}/api/orders`;
+    axios.defaults.headers.common.Authorization = `${token}`;
+
+    // fetch cart from API
+    axios.get('/cart')
+        .then(({ data }) => {
+          const cart = data;
+          setCartItems(cart.orderItems.map(i => ({
+            product: i.product._id,
+            quantity: i.quantity,
+            price: i.price,
+            name: i.product.name,
+            image: i.product.image
+          })));
+          setShippingAddress(cart.shippingAddress || {});
+          setPaymentMethod(cart.paymentMethod || '');
+        })
+        .catch(err => console.error('Error loading cart:', err))
+        .finally(() => setLoading(false));
   }, []);
 
-  // Save cart data whenever it changes
-  useEffect(() => {
-    if (userId) {
-      localStorage.setItem(`cart_${userId}`, JSON.stringify({
-        items: cartItems,
-        address: shippingAddress,
-        payment: paymentMethod
-      }));
+  // Helper to guard all mutations
+  const ensureAuth = () => {
+    if (!user) {
+      toast.error("Please log in to modify your cart");
+      return false;
     }
-  }, [cartItems, shippingAddress, paymentMethod, userId]);
+    return true;
+  };
 
-  const addToCart = (product) => {
-    setCartItems(prev => {
-      const existingItem = prev.find(i => i.product === product._id);
-      if (existingItem) {
-        return prev.map(i =>
-          i.product === product._id ? { ...i, quantity: i.quantity + 1 } : i
-        );
-      }
-      return [...prev, {
-        product: product._id,
-        quantity: 1,
-        price: product.price,
-        name: product.name,
-        image: product.image
-      }];
-    });
+  // helper to reload cart after any mutation
+  const refreshCart = () => {
+    if (!ensureAuth()) return Promise.resolve();
+    return axios.get('/cart')
+        .then(({ data }) => {
+          const cart = data;
+          setCartItems(cart.orderItems.map(i => ({
+            product: i.product._id,
+            quantity: i.quantity,
+            price: i.price,
+            name: i.product.name,
+            image: i.product.image
+          })));
+          setShippingAddress(cart.shippingAddress || {});
+          setPaymentMethod(cart.paymentMethod || '');
+        })
+        .catch(console.error);
+  };
+
+  const addToCart = (productId, quantity = 1) => {
+    if (!ensureAuth()) return Promise.resolve();
+    return axios.post('/cart', { productId, quantity })
+        .then(() => {
+          refreshCart();
+          toast.success("Product added to cart");
+        });
+  };
+
+  const updateQuantity = (productId, quantity) => {
+    if (!ensureAuth()) return Promise.resolve();
+    return axios.put(`/cart/${productId}`, { quantity })
+        .then(() => refreshCart());
   };
 
   const removeFromCart = (productId) => {
-    setCartItems(prev => prev.filter(item => item.product !== productId));
-  };
-
-  const updateQuantity = (productId, change) => {
-    setCartItems(prev =>
-      prev.map(item =>
-        item.product === productId
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
-      )
-    );
+    if (!ensureAuth()) return Promise.resolve();
+    return axios.delete(`/cart/${productId}`)
+        .then(() => refreshCart());
   };
 
   const clearCart = () => {
-    setCartItems([]);
-    setShippingAddress({
-      address: '',
-      city: '',
-      postalCode: '',
-      country: ''
-    });
-    setPaymentMethod('');
-    if (userId) {
-      localStorage.removeItem(`cart_${userId}`);
-    }
+    if (!ensureAuth()) return Promise.resolve();
+    // backend has no clearCart endpoint—simulate by removing each
+    return Promise.all(cartItems.map(i => removeFromCart(i.product)));
   };
+
+  const total = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const cartCount = cartItems.length;
 
   const value = {
     cartItems,
@@ -124,11 +121,16 @@ export const CartProvider = ({ children }) => {
     clearCart,
     total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
     cartCount: cartItems.length,
+    user, setUser,
     shippingAddress,
     setShippingAddress,
     paymentMethod,
     setPaymentMethod
   };
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+      <CartContext.Provider value={value}>
+        {children}
+      </CartContext.Provider>
+  );
 };

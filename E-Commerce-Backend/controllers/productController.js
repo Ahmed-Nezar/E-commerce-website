@@ -72,11 +72,17 @@ exports.getProducts = async (req, res, next) => {
         if (sortQuery === 'lowToHigh' || sortQuery === 'highToLow') {
             sort.price = sortQuery === 'lowToHigh' ? 1 : -1;
         }
-        if (sortQuery === 'nameAsc' || sortQuery === 'nameDesc') {
+        else if (sortQuery === 'nameAsc' || sortQuery === 'nameDesc') {
             sort.name = sortQuery === 'nameAsc' ? 1 : -1;
         }
-        if (sortQuery === 'ratingLow' || sortQuery === 'ratingHigh') {
+        else if (sortQuery === 'ratingLow' || sortQuery === 'ratingHigh') {
             sort.rating = sortQuery === 'ratingLow' ? 1 : -1;
+        }
+        else if (sortQuery === "date") {
+            sort.createdAt = -1;
+        }
+        else {
+            sort.name = 1
         }
 
         // Count

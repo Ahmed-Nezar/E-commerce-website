@@ -1,4 +1,6 @@
 .quantityBtn {
+  border: #1976D2 1px solid  !important;
+  min-width: auto !important;
   &:hover,
   &:focus {
     color: theme-color("primary") !important;
@@ -104,8 +106,7 @@
 .productImageZoom {
   > div > img{
     width: 100% !important;
-    height: auto !important;
-    object-fit: contain;
+    height: 415px !important;
     display: block;
     border-radius: 1rem;
   }

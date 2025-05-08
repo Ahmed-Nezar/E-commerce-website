@@ -20,11 +20,19 @@ import "./Navbar.css";
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
 import SearchBar from "../SearchBar/SearchBar.jsx";
+import {RiLogoutBoxLine, RiMenuLine} from "react-icons/ri";
+import { IoSettingsOutline } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
+import Drawer from "../Drawer/Drawer.jsx";
+import { useMediaQuery } from '@mui/material';
 
 const Navbar = ({reference}) => {
     const navigate = useNavigate();
     const { cartCount, user, setUser } = useCart();
     const location = useLocation();
+    const isDesktop = useMediaQuery('(min-width:850px)');
+    const isMobile = useMediaQuery('(max-width:600px)');
+    const [menuOpen, setmenuOpen] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -57,6 +65,97 @@ const Navbar = ({reference}) => {
         navigate('/');
     };
 
+    const userProfileBox = (
+        <>
+        {user ?
+            (
+                <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    background: 'linear-gradient(90deg, #091540, #3D518C)',
+                    padding: '4px',
+                    paddingRight: '16px',
+                    borderRadius: '50px',
+                    boxShadow: '0 4px 12px rgba(9, 21, 64, 0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 6px 16px rgba(9, 21, 64, 0.3)',
+                        background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                    }
+                }}
+                >
+                    <Avatar
+                        src={user.profilePic}
+                        alt={user.name}
+                        sx={{
+                            width: 40,
+                            height: 40,
+                            border: '2px solid #fff'
+                        }}
+                    />
+                    <Typography
+                        sx={{
+                            color: '#fff',
+                            fontWeight: 600,
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                            maxWidth: "80px",
+                        }}
+                    >
+                        {user.name}
+                    </Typography>
+                </Box>
+            ): (<></>)}
+        </>
+    );
+
+    const drawerContent = (
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {user ? (
+                <>
+                    {userProfileBox}
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'flex-start' }}>
+                        {user?.isAdmin && (
+                            <Button startIcon={<DashboardIcon />} onClick={() => {
+                                navigate('/admin')
+                                setmenuOpen(false)
+                            }} style={{color:'#3D518C', width:'100%', justifyContent:'left'}}>
+                                Admin
+                            </Button>
+                        )}
+                        <Button startIcon={<IoSettingsOutline />} onClick={() => {
+                            navigate('/me')
+                            scroll(0,0)
+                            setmenuOpen(false)
+                        }} style={{color:'#3D518C', width:'100%', justifyContent:'left'}}>
+                            Settings
+                        </Button>
+                        <Button startIcon={<RiLogoutBoxLine />} onClick={() => {
+                            handleLogout()
+                            setmenuOpen(false)
+                        }} style={{color:'#3D518C', width:'100%', justifyContent:'left'}}>
+                            Logout
+                        </Button>
+                    </Box>
+                </>
+            ) : (
+                <>
+                    <Button onClick={() => {
+                        navigate('/signin')
+                        setmenuOpen(false)
+                    }} style={{color:'#3D518C'}}>Sign In</Button>
+                    <Button onClick={() => {
+                        navigate('/register')
+                        setmenuOpen(false)
+                    }} style={{color:'#3D518C'}}>Register</Button>
+                </>
+            )}
+        </Box>
+    );
+
     return (
         <AppBar
             position="fixed"
@@ -78,7 +177,10 @@ const Navbar = ({reference}) => {
                     <Typography
                         variant="h5"
                         component="div"
-                        onClick={() => navigate('/')}
+                        onClick={() => {
+                            scroll(0,0)
+                            navigate('/')
+                        }}
                         sx={{
                             cursor: 'pointer',
                             fontWeight: 700,
@@ -98,22 +200,9 @@ const Navbar = ({reference}) => {
                         <ShoppingBagIcon sx={{ color: '#3D518C' }} />
                         E-Commerce
                     </Typography>
-                    <SearchBar/>
+                    {!isMobile ? <SearchBar/> : null }
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                        {user?.isAdmin && (
-                            <IconButton
-                                color="primary"
-                                onClick={() => navigate('/admin')}
-                                sx={{
-                                    transition: 'transform 0.2s ease',
-                                    '&:hover': {
-                                        transform: 'scale(1.1)',
-                                    }
-                                }}
-                            >
-                                <DashboardIcon sx={{ color: '#3D518C' }} />
-                            </IconButton>
-                        )}
+                        {isMobile ? <SearchBar/> : null }
                         <IconButton
                             color="primary"
                             onClick={() => navigate('/cart')}
@@ -140,138 +229,91 @@ const Navbar = ({reference}) => {
                                 <ShoppingCartIcon sx={{ color: '#3D518C' }} />
                             </Badge>
                         </IconButton>
-                        
-                        {user ? (
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                <Box sx={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    gap: 1,
-                                    background: 'linear-gradient(90deg, #091540, #3D518C)',
-                                    padding: '4px',
-                                    paddingRight: '16px',
-                                    borderRadius: '50px',
-                                    boxShadow: '0 4px 12px rgba(9, 21, 64, 0.2)',
-                                    transition: 'all 0.3s ease',
-                                    '&:hover': {
-                                        transform: 'translateY(-2px)',
-                                        boxShadow: '0 6px 16px rgba(9, 21, 64, 0.3)',
-                                        background: 'linear-gradient(90deg, #091540, #1B2CC1)',
-                                    }
-                                }}>
-                                    <Avatar
-                                        src={user.profilePic}
-                                        alt={user.name}
-                                        sx={{
-                                            width: 40,
-                                            height: 40,
-                                            border: '2px solid #fff'
-                                        }}
-                                    />
-                                    <Typography
-                                        sx={{
-                                            color: '#fff',
-                                            fontWeight: 600,
-                                            overflow: "hidden",
-                                            whiteSpace: "nowrap",
-                                            textOverflow: "ellipsis",
-                                            maxWidth: "80px",
-                                        }}
-                                    >
-                                        {user.name}
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', gap: 1 }}>
-                                    <Button
-                                        variant="outlined"
-                                        onClick={() => navigate('/change-password')}
-                                        sx={{
-                                            color: '#3D518C',
-                                            borderColor: '#3D518C',
-                                            borderRadius: '50px',
-                                            px: 3,
-                                            fontWeight: 600,
-                                            '&:hover': {
-                                                borderColor: '#1B2CC1',
-                                                color: '#1B2CC1',
-                                                background: 'rgba(27, 44, 193, 0.04)',
-                                            }
-                                        }}
-                                    >
-                                        Change Password
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        onClick={handleLogout}
-                                        sx={{
-                                            color: '#3D518C',
-                                            borderColor: '#3D518C',
-                                            borderRadius: '50px',
-                                            px: 3,
-                                            fontWeight: 600,
-                                            '&:hover': {
-                                                borderColor: '#1B2CC1',
-                                                color: '#1B2CC1',
-                                                background: 'rgba(27, 44, 193, 0.04)',
-                                            }
-                                        }}
-                                    >
-                                        Logout
-                                    </Button>
-                                </Box>
-                            </Box>
-                        ) : (
+
+                        {isDesktop && (
                             <>
-                                <Button
-                                    variant="text"
-                                    onClick={() => navigate('/signin')}
-                                    sx={{
-                                        color: '#3D518C',
-                                        fontWeight: 600,
-                                        position: 'relative',
-                                        overflow: 'hidden',
-                                        '&::after': {
-                                            content: '""',
-                                            position: 'absolute',
-                                            bottom: 0,
-                                            left: 0,
-                                            width: '100%',
-                                            height: '2px',
-                                            backgroundColor: '#3D518C',
-                                            transform: 'scaleX(0)',
-                                            transformOrigin: 'right',
-                                            transition: 'transform 0.3s ease',
-                                        },
-                                        '&:hover::after': {
-                                            transform: 'scaleX(1)',
-                                            transformOrigin: 'left',
-                                        },
-                                    }}
-                                >
-                                    Sign In
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    onClick={() => navigate('/register')}
-                                    sx={{
-                                        background: 'linear-gradient(90deg, #091540, #3D518C)',
-                                        borderRadius: '50px',
-                                        px: 3,
-                                        fontWeight: 600,
-                                        textTransform: 'none',
-                                        boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
-                                        '&:hover': {
-                                            background: 'linear-gradient(90deg, #091540, #1B2CC1)',
-                                            transform: 'translateY(-2px)',
-                                            boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
-                                        },
-                                        transition: 'all 0.3s ease',
-                                    }}
-                                >
-                                    Register
-                                </Button>
+                                {user?.isAdmin && (
+                                    <IconButton
+                                        color="primary"
+                                        onClick={() => navigate('/admin')}
+                                        sx={{
+                                            transition: 'transform 0.2s ease',
+                                            '&:hover': {
+                                                transform: 'scale(1.1)',
+                                            }
+                                        }}
+                                    >
+                                        <DashboardIcon sx={{ color: '#3D518C' }} />
+                                    </IconButton>
+                                )}
+                                {user ? (
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }} onClick={() => setmenuOpen(true)}>
+                                        {userProfileBox}
+                                    </Box>
+                                ) : (
+                                    <>
+                                        <Button
+                                            variant="text"
+                                            onClick={() => navigate('/signin')}
+                                            sx={{
+                                                color: '#3D518C',
+                                                fontWeight: 600,
+                                                position: 'relative',
+                                                overflow: 'hidden',
+                                                '&::after': {
+                                                    content: '""',
+                                                    position: 'absolute',
+                                                    bottom: 0,
+                                                    left: 0,
+                                                    width: '100%',
+                                                    height: '2px',
+                                                    backgroundColor: '#3D518C',
+                                                    transform: 'scaleX(0)',
+                                                    transformOrigin: 'right',
+                                                    transition: 'transform 0.3s ease',
+                                                },
+                                                '&:hover::after': {
+                                                    transform: 'scaleX(1)',
+                                                    transformOrigin: 'left',
+                                                },
+                                            }}
+                                        >
+                                            Sign In
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            onClick={() => navigate('/register')}
+                                            sx={{
+                                                background: 'linear-gradient(90deg, #091540, #3D518C)',
+                                                borderRadius: '50px',
+                                                px: 3,
+                                                fontWeight: 600,
+                                                textTransform: 'none',
+                                                boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
+                                                '&:hover': {
+                                                    background: 'linear-gradient(90deg, #091540, #1B2CC1)',
+                                                    transform: 'translateY(-2px)',
+                                                    boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
+                                                },
+                                                transition: 'all 0.3s ease',
+                                            }}
+                                        >
+                                            Register
+                                        </Button>
+                                    </>
+                                )}
                             </>
                         )}
+                        <Drawer
+                            triggerButton={<RiMenuLine size={24}  color='#3D518C'/>}
+                            anchor="right"
+                            breakpoint={850}
+                            defaultView={false}
+                            menuOpen={menuOpen}
+                            setMenuOpen={setmenuOpen}
+                        >
+                            {drawerContent}
+                        </Drawer>
                     </Box>
                 </Toolbar>
             </Container>

@@ -1,8 +1,23 @@
-import {styled} from "@mui/material/styles";
-import {alpha, Box, IconButton, InputBase, useMediaQuery} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import {
+    alpha,
+    Box,
+    IconButton,
+    InputBase,
+    useMediaQuery,
+    Paper,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Typography,
+    ClickAwayListener
+} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import {useState} from "react";
-import { useSearch } from "../../context/SearchContext"; // adjust path as needed
+import { useState, useEffect, useRef } from "react";
+import { useSearch } from "../../context/SearchContext";
+import { ENV } from "../../App.jsx";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -12,7 +27,6 @@ const Search = styled('div')(({ theme }) => ({
     '&:hover': {
         backgroundColor: alpha(theme.palette.common.black, 0.55),
     },
-    margin: '0 2rem',
     width: '100%',
     [theme.breakpoints.up('sm')]: {
         // marginLeft: theme.spacing(1),
@@ -49,56 +63,171 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const SearchBar = () => {
     const { searchInput, setSearchInput } = useSearch();
+    const [suggestions, setSuggestions] = useState([]);
     const isMobile = useMediaQuery('(max-width:600px)');
     const [showOverlaySearch, setShowOverlaySearch] = useState(false);
+    const inputRef = useRef(null);
+    const navigate = useNavigate();
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const location = useLocation();
+    const wrapperRef = useRef(null);
+
+    useEffect(() => {
+        setShowOverlaySearch(false); // Hide the overlay on route change
+    }, [location.pathname]);
+
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            if (searchInput.trim().length >= 1) {
+                fetch(`${ENV.VITE_BACKEND_URL}/api/products?keyword=${searchInput}&limit=6`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.data) {
+                            setSuggestions(data.data.map(p => ({
+                                id: p._id,
+                                name: p.name,
+                                image: p.image,
+                                price: p.price
+                            })));
+                        } else {
+                            setSuggestions([]);
+                        }
+                    });
+            } else {
+                setSuggestions([]);
+            }
+        }, 300);
+
+        return () => clearTimeout(delayDebounce);
+    }, [searchInput]);
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+                setShowSuggestions(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleSelect = (productId) => {
+        setSuggestions([]);
+        setSearchInput('');
+        navigate(`/productDetails/${productId}`);
+    };
+
+    const SearchWithSuggestions = (
+        <ClickAwayListener onClickAway={() => setShowSuggestions(false)}>
+        <Box sx={{ width: '100%', position: 'relative' }} ref={wrapperRef}>
+            <Search>
+                <SearchIconWrapper>
+                    <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                    autoFocus
+                    placeholder="Search…"
+                    inputProps={{ 'aria-label': 'search' }}
+                    value={searchInput}
+                    onInput={(e) => {
+                        setSearchInput(e.target.value)
+                        setShowSuggestions(true)
+                    }}
+                    onFocus={() => setShowSuggestions(true)}
+                />
+            </Search>
+            <Paper
+                elevation={4}
+                sx={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    right: 0,
+                    zIndex: 99,
+                    maxHeight: '200px',
+                    overflowY: 'auto',
+                    mt: 0.5,
+                }}
+            >
+                {showSuggestions && suggestions.length > 0 && (
+                    <List>
+                        {suggestions.map(suggestion => (
+                            <ListItem disablePadding key={suggestion.id}>
+                                <ListItemButton onClick={() => handleSelect(suggestion.id)}>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        width: '100%',
+                                    }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                            <img
+                                                src={suggestion.image}
+                                                alt={suggestion.name}
+                                                style={{
+                                                    width: 50,
+                                                    height: 50,
+                                                    objectFit: 'cover',
+                                                    borderRadius: 4,
+                                                }}
+                                            />
+                                            <Typography>
+                                                {suggestion.name}
+                                            </Typography>
+                                        </Box>
+                                        <Typography
+                                            sx={{ fontWeight: 500 }}
+                                        >
+                                            ${suggestion.price}
+                                        </Typography>
+                                    </Box>
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                    )
+                }
+                {showSuggestions && searchInput.trim() && suggestions.length === 0 && (
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '100%',
+                        padding: 2,
+                    }}>
+                        No Results Found
+                    </Box>
+                )}
+            </Paper>
+        </Box>
+        </ClickAwayListener>
+    );
+
     return (
         <>
-            <Box sx={{ position: 'relative' }}>
+            <Box sx={{ position: 'relative', width: isMobile ? 'auto' : '35%' }}>
                 {!isMobile ? (
-                    // Desktop search bar
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            autoFocus
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
-                            value={searchInput}
-                            onInput={(e) => setSearchInput(e.target.value)}
-                        />
-                    </Search>
+                    SearchWithSuggestions
                 ) : (
                     // Mobile search icon
                     <>
-                        <IconButton onClick={() => setShowOverlaySearch(prev => !prev)} color="inherit">
+                        <IconButton onClick={() => setShowOverlaySearch(prev => !prev)} color="#3D518C" style={{height: '100%'}}>
                             <SearchIcon />
                         </IconButton>
                         {showOverlaySearch && (
                             <Box
                                 sx={{
                                     position: 'absolute',
-                                    top: '100%',
-                                    left: 0,
-                                    right: 0,
-                                    backgroundColor: '#fff',
+                                    top: '49px',
+                                    right: '0',
+                                    backgroundColor: 'rgba(171, 210, 250, 0.65)',
                                     boxShadow: 3,
                                     zIndex: 10,
-                                    p: 1,
+                                    width: '50vw',
+                                    borderRadius: '4px'
                                 }}
                             >
-                                <Search>
-                                    <SearchIconWrapper>
-                                        <SearchIcon />
-                                    </SearchIconWrapper>
-                                    <StyledInputBase
-                                        autoFocus
-                                        placeholder="Search…"
-                                        inputProps={{ 'aria-label': 'search' }}
-                                        value={searchInput}
-                                        onInput={(e) => setSearchInput(e.target.value)}
-                                    />
-                                </Search>
+                                {SearchWithSuggestions}
                             </Box>
                         )}
                     </>
@@ -106,7 +235,6 @@ const SearchBar = () => {
             </Box>
         </>
     )
-
 }
 
 export default SearchBar;

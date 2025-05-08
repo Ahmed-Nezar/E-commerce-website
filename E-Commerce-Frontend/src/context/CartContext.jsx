@@ -1,9 +1,10 @@
 // CartContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
-import { ENV } from '../App.jsx';
-import { toast } from "react-toastify"; // your backend URL
+import { toast } from "react-toastify";
+
+const API_ROOT = import.meta.env.VITE_BACKEND_URL; // e.g. "https://api.myshop.com"
+const CART_API  = `${API_ROOT}/api/orders/cart`;
 
 const CartContext = createContext();
 
@@ -13,105 +14,172 @@ export const useCart = () => {
   return ctx;
 };
 
+let messagesList = [];
+
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems]         = useState([]);
-  const [shippingAddress, setShippingAddress]     = useState({});
-  const [paymentMethod, setPaymentMethod]  = useState('');
-  const [user, setUser]                   = useState(null);
-  const [loading, setLoading]             = useState(true);
+  const [cartItems, setCartItems] = useState([]);
+  const [shippingAddress, setShippingAddress] = useState({});
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // set axios auth header and load cart
+  // load user from token
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setUser(null);
-      setLoading(false);
-      return;
+    const t = localStorage.getItem('token');
+    if (!t) return void setLoading(false);
+    try {
+      const p = jwtDecode(t);
+      setUser(p);
+    } catch {
+      showMessage("Invalid session, please re-login", "error");
     }
-
-    // decode & set user
-    const payload = jwtDecode(token);
-    setUser(payload);
-
-    // attach header
-    axios.defaults.baseURL = `${ENV.VITE_BACKEND_URL}/api/orders`;
-    axios.defaults.headers.common.Authorization = `${token}`;
-
-    // fetch cart from API
-    axios.get('/cart')
-        .then(({ data }) => {
-          const cart = data;
-          setCartItems(cart.orderItems.map(i => ({
-            product: i.product._id,
-            quantity: i.quantity,
-            price: i.price,
-            name: i.product.name,
-            image: i.product.image
-          })));
-          setShippingAddress(cart.shippingAddress || {});
-          setPaymentMethod(cart.paymentMethod || '');
-        })
-        .catch(err => console.error('Error loading cart:', err))
-        .finally(() => setLoading(false));
+    setLoading(false);
   }, []);
 
+  // whenever user changes, fetch or clear cart
   useEffect(() => {
     if (!user) {
-        setCartItems([]);
-        setShippingAddress({});
-        setPaymentMethod('');
+      setCartItems([]);
+      setShippingAddress({});
+      setPaymentMethod('');
     } else {
       refreshCart();
     }
-  }, [user])
+  }, [user]);
+
+  const showMessage = (msg, error) => {
+    if (msg && (error === true || error === false)) {
+      if (!messagesList.includes(msg)) {
+        messagesList.push(msg);
+        toast[error ? "error" : "success"](msg, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: {
+            userSelect: "none",
+            gap: "10px",
+            padding: "20px",
+          },
+          onClose: () => {
+            messagesList = messagesList.filter((e) => e !== msg);
+          },
+        });
+      }
+    } else if (msg && error === null) {
+      if (!messagesList.includes(msg)) {
+        messagesList.push(msg);
+        toast.info(msg, {
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: {
+            userSelect: "none",
+            gap: "10px",
+            padding: "20px",
+          },
+          onClose: () => {
+            messagesList = messagesList.filter((e) => e !== msg);
+          },
+        });
+      }
+    }
+  };
 
   // Helper to guard all mutations
   const ensureAuth = () => {
     if (!user) {
-      toast.error("Please log in to modify your cart");
+      showMessage("Please log in to modify your cart", true);
       return false;
     }
     return true;
   };
 
+  // common fetch headers
+  const authHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+      "Content-Type": "application/json",
+      "Authorization": `${token}`
+    };
+  };
+
   // helper to reload cart after any mutation
-  const refreshCart = () => {
-    if (!ensureAuth()) return Promise.resolve();
-    return axios.get('/cart')
-        .then(({ data }) => {
-          const cart = data;
-          setCartItems(cart.orderItems.map(i => ({
-            product: i.product._id,
-            quantity: i.quantity,
-            price: i.price,
-            name: i.product.name,
-            image: i.product.image
-          })));
-          setShippingAddress(cart.shippingAddress || {});
-          setPaymentMethod(cart.paymentMethod || '');
-        })
-        .catch(console.error);
+  const refreshCart = async () => {
+    if (!ensureAuth()) return;
+    try {
+      const res = await fetch(CART_API, {
+        method: "GET",
+        headers: authHeaders()
+      });
+      // backend sends res.json(cart)
+      const data = await res.json();
+      if (data.error) throw new Error(`Status ${data.error}`);
+      setCartItems((data.orderItems||[]).map(i => ({
+        product:  i.product._id,
+        quantity: i.quantity,
+        price:    i.price,
+        name:     i.product.name,
+        image:    i.product.image
+      })));
+      setShippingAddress(data.shippingAddress || {});
+      setPaymentMethod(data.paymentMethod || '');
+    } catch (err) {
+      showMessage("Could not load your cart", true);
+      console.error("refreshCart error:", err);
+    }
   };
 
-  const addToCart = (productId, quantity = 1) => {
-    if (!ensureAuth()) return Promise.resolve();
-    return axios.post('/cart', { productId, quantity })
-        .then(() => {
-          refreshCart();
-          toast.success("Product added to cart");
-        });
+  // Cart operations
+  const addToCart = async (productId, quantity=1) => {
+    if (!ensureAuth()) return;
+    try {
+      const res = await fetch(CART_API, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({ productId, quantity })
+      }).then(res => res.json());
+      if (res.error) throw new Error(`Status ${res.error}`);
+      showMessage("Product added to cart", false);
+      await refreshCart();
+    } catch (err) {
+      showMessage("Failed to add to cart", true);
+      console.error("addToCart error:", err);
+    }
   };
 
-  const updateQuantity = (productId, quantity) => {
-    if (!ensureAuth()) return Promise.resolve();
-    return axios.put(`/cart/${productId}`, { quantity })
-        .then(() => refreshCart());
+  const updateQuantity = async (productId, quantity) => {
+    if (!ensureAuth()) return;
+    try {
+      const res = await fetch(`${CART_API}/${productId}`, {
+        method: "PUT",
+        headers: authHeaders(),
+        body: JSON.stringify({ quantity })
+      });
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      await refreshCart();
+    } catch (err) {
+      showMessage("Failed to update quantity", true);
+      console.error("updateQuantity error:", err);
+    }
   };
 
-  const removeFromCart = (productId) => {
-    if (!ensureAuth()) return Promise.resolve();
-    return axios.delete(`/cart/${productId}`)
-        .then(() => refreshCart());
+  const removeFromCart = async (productId) => {
+    if (!ensureAuth()) return;
+    try {
+      const res = await fetch(`${CART_API}/${productId}`, {
+        method: "DELETE",
+        headers: authHeaders()
+      });
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      await refreshCart();
+    } catch (err) {
+      showMessage("Failed to remove item", true);
+      console.error("removeFromCart error:", err);
+    }
   };
 
   const clearCart = () => {
@@ -132,6 +200,7 @@ export const CartProvider = ({ children }) => {
     total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
     cartCount: cartItems.length,
     user, setUser,
+    showMessage,
     shippingAddress,
     setShippingAddress,
     paymentMethod,

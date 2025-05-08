@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     allowedHosts: [
-      'crossing-motivation-regulations-monster.trycloudflare.com'
+      'any'
     ]
   }
 });

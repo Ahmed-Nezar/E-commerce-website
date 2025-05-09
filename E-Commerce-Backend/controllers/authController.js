@@ -10,7 +10,7 @@ exports.register = async (req, res) => {
         // Check if the user already exists
         const userExist = await User.findOne({ email });
         if (userExist) {
-            return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({ error: 'User already exists' });
         }
 
         // Create new user document
@@ -32,11 +32,11 @@ exports.register = async (req, res) => {
 
         res.status(201).json({
             message: 'User registered successfully',
-            user: userResponse
+            data: userResponse
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error registering user', error: error.message });
+        res.status(500).json({ error: 'Error registering user', message: error.message });
     }
 };
 
@@ -48,13 +48,13 @@ exports.login = async (req, res) => {
         // Find the user by email
         let user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ error: 'User not found' });
         }
 
         // Compare passwords
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
         // delete user.password;
         user = user.toObject();
@@ -72,7 +72,7 @@ exports.login = async (req, res) => {
             token,
         });
     } catch (error) {
-        res.status(500).json({ message: 'Error logging in', error });
+        res.status(500).json({ error: 'Error logging in', message: error });
     }
 };
 
@@ -85,13 +85,13 @@ exports.changePassword = async (req, res) => {
         // Find the user
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ error: 'User not found' });
         }
 
         // Verify current password
         const isMatch = await bcrypt.compare(currentPassword, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Current password is incorrect' });
+            return res.status(401).json({ error: 'Current password is incorrect' });
         }
 
         // Hash new password and update
@@ -101,6 +101,6 @@ exports.changePassword = async (req, res) => {
 
         res.status(200).json({ message: 'Password changed successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error changing password', error: error.message });
+        res.status(500).json({ error: 'Error changing password', message: error.message });
     }
 };

@@ -107,7 +107,7 @@ const orderSchema = new mongoose.Schema({
         postalCode: String,
         country: String
     },
-    paymentMethod: { type: String, required: true },
+    paymentMethod: { type: String },
     totalPrice: { type: Number, required: true },
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },

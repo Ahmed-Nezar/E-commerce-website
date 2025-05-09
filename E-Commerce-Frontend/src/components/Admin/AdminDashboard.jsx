@@ -479,9 +479,9 @@ const AdminDashboard = () => {
         headers: {
           Authorization: localStorage.getItem('token')
         }
-      }).then(res => res.json());
+      });
 
-      if (response.error) throw new Error('Failed to delete');
+      if (!response.ok) throw new Error('Failed to delete');
 
       // Refresh data
       switch (type) {

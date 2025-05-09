@@ -390,14 +390,14 @@ exports.checkout = async (req, res, next) => {
         if (!order) {
             return res
                 .status(400)
-                .json({message: 'No open cart found'});
+                .json({error: 'No open cart found'});
         }
 
         // 2) Fail if no items
         if (!order.orderItems || order.orderItems.length === 0) {
             return res
                 .status(400)
-                .json({message: 'Cart is empty, cannot checkout'});
+                .json({error: 'Cart is empty, cannot checkout'});
         }
 
         // 3) Otherwise finalize it

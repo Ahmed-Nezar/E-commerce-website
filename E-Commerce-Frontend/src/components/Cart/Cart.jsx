@@ -460,7 +460,7 @@ const Cart = () => {
                                     </Grid>
                                     <Grid container justifyContent="space-between" sx={{mb: 2}}>
                                         <Typography color="text.secondary">Taxes</Typography>
-                                        <Typography fontWeight="500">$10.00</Typography>
+                                        <Typography fontWeight="500">14%</Typography>
                                     </Grid>
                                     <Divider sx={{my: 3}}/>
                                     <Grid container justifyContent="space-between" alignItems="center">
@@ -475,7 +475,11 @@ const Cart = () => {
                                                 WebkitTextFillColor: 'transparent',
                                             }}
                                         >
-                                            ${total.toFixed(2)}
+                                            ${
+                                                (parseFloat(total.toFixed(2)) +
+                                                parseFloat(shippingFees) +
+                                                parseFloat(total.toFixed(2) * 0.14)).toFixed(2)
+                                            }
                                         </Typography>
                                     </Grid>
                                 </Box>

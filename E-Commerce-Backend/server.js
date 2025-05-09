@@ -34,6 +34,7 @@ const corsOptions = {
     allowedHeaders: ["Content-Type", "Authorization"],
 };
 
+app.set('trust proxy', 1);
 app.use(cors(corsOptions));
 app.use(express.json()); // for JSON payloads
 

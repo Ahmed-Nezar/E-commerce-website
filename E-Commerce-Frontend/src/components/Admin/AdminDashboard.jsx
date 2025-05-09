@@ -101,42 +101,9 @@ const AdminDashboard = () => {
   const [couponsPagination, setCouponsPagination] = useState({ page: 1, totalPages: 1, total: 0 });
   const [reviewsPagination, setReviewsPagination] = useState({ page: 1, totalPages: 1, total: 0 });
 
-  // Fetch data based on active tab
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError('');
-      try {
-        switch (tabValue) {
-          case 0: // Products
-            await fetchProducts(productsPagination.page);
-            break;
-          case 1: // Users
-            await fetchUsers(usersPagination.page);
-            break;
-          case 2: // Orders
-            await fetchOrders(ordersPagination.page);
-            break;
-          case 3: // Coupons
-            await fetchCoupons(couponsPagination.page);
-            break;
-          case 4: // Reviews
-            await fetchReviews(reviewsPagination.page);
-            break;
-        }
-      } catch (err) {
-        setError('Failed to fetch data');
-        console.error('Error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [tabValue]);
-
   // Fetch functions for each type
   const fetchProducts = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -147,9 +114,9 @@ const AdminDashboard = () => {
       total: data.totalNumberOfItems 
     });
   };  
-  
+
   const fetchUsers = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/users?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/users?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -162,7 +129,7 @@ const AdminDashboard = () => {
   };
 
   const fetchOrders = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -175,7 +142,7 @@ const AdminDashboard = () => {
   };
 
   const fetchCoupons = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/coupons?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/coupons?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -188,7 +155,7 @@ const AdminDashboard = () => {
   };
 
   const fetchReviews = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/reviews/all?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/reviews/all?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -200,8 +167,69 @@ const AdminDashboard = () => {
     });
   };
 
-  const handleTabChange = (event, newValue) => {
+  // Initial load for products only
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        await fetchProducts(1);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadInitialData();
+  }, []);
+
+  const handleTabChange = async (event, newValue) => {
+    // Clear the previous tab's data
+    switch (tabValue) {
+      case 0:
+        setProducts([]);
+        setProductsPagination({ page: 1, totalPages: 1, total: 0 });
+        break;
+      case 1:
+        setUsers([]);
+        setUsersPagination({ page: 1, totalPages: 1, total: 0 });
+        break;
+      case 2:
+        setOrders([]);
+        setOrdersPagination({ page: 1, totalPages: 1, total: 0 });
+        break;
+      case 3:
+        setCoupons([]);
+        setCouponsPagination({ page: 1, totalPages: 1, total: 0 });
+        break;
+      case 4:
+        setReviews([]);
+        setReviewsPagination({ page: 1, totalPages: 1, total: 0 });
+        break;
+    }
+    
     setTabValue(newValue);
+
+    // Fetch data for the new tab
+    try {
+      switch (newValue) {
+        case 0:
+          await fetchProducts(1);
+          break;
+        case 1:
+          await fetchUsers(1);
+          break;
+        case 2:
+          await fetchOrders(1);
+          break;
+        case 3:
+          await fetchCoupons(1);
+          break;
+        case 4:
+          await fetchReviews(1);
+          break;
+      }
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const handleOpenDialog = (type, item = null) => {
@@ -247,6 +275,18 @@ const AdminDashboard = () => {
             product: '',
             user: ''
           });
+          // Fetch products and users for dropdowns when opening review dialog
+          fetch(`${ENV.VITE_BACKEND_URL}/api/products?editAddMode=true`, {
+            headers: { Authorization: localStorage.getItem('token') }
+          })
+            .then(res => res.json())
+            .then(data => setProducts(data.data || []));
+          
+          fetch(`${ENV.VITE_BACKEND_URL}/api/users?editAddMode=true`, {
+            headers: { Authorization: localStorage.getItem('token') }
+          })
+            .then(res => res.json())
+            .then(data => setUsers(data.data || []));
           break;
       }
     }
@@ -287,15 +327,13 @@ const AdminDashboard = () => {
           'Authorization': localStorage.getItem('token')
         },
         body: formData // Don't set Content-Type header - browser will set it with boundary
-      });
+      }).then(res => res.json());
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to upload image');
+      if (response.error) {
+        throw new Error('Failed to upload image');
       }
-      
-      const data = await response.json();
-      return data.imagePath;
+
+      return response.imagePath;
     } catch (error) {
       console.error('Upload error:', error);
       throw error;
@@ -345,7 +383,16 @@ const AdminDashboard = () => {
             ? `${ENV.VITE_BACKEND_URL}/api/reviews/update/${selectedItem._id}`
             : `${ENV.VITE_BACKEND_URL}/api/reviews/create`;
           method = selectedItem ? 'PUT' : 'POST';
-          body = formData;
+          // For review updates, we only need rating and comment
+          body = selectedItem ? {
+            rating: formData.rating,
+            comment: formData.comment
+          } : {
+            productId: formData.product,
+            user: formData.user,
+            rating: formData.rating,
+            comment: formData.comment
+          };
           break;
       }
 
@@ -356,9 +403,9 @@ const AdminDashboard = () => {
           Authorization: token
         },
         body: JSON.stringify(body)
-      });
+      }).then(res => res.json());
 
-      if (!response.ok) throw new Error('Failed to save');
+      if (response.error) throw new Error('Failed to save');
 
       // Refresh data
       switch (dialogType) {
@@ -497,11 +544,12 @@ const AdminDashboard = () => {
         body: JSON.stringify({
           status: viewingOrder.status,
           isPaid: viewingOrder.isPaid,
-          isDelivered: viewingOrder.isDelivered
+          isDelivered: viewingOrder.isDelivered,
+          isShipped: viewingOrder.isShipped,
         })
-      });
+      }).then(res => res.json());
 
-      if (!response.ok) throw new Error('Failed to update order');
+      if (response.error) throw new Error('Failed to update order');
 
       await fetchOrders();
       handleCloseOrderView();
@@ -849,7 +897,7 @@ const AdminDashboard = () => {
                         <TableCell>{order.user?.name}</TableCell>
                         <TableCell>${order.totalPrice}</TableCell>
                         <TableCell>
-                          {order.isDelivered ? 'Delivered' : order.isPaid ? 'Paid' : 'Pending'}
+                          {order.isDelivered ? 'Delivered' : order.isShipped ? 'Shipped' : order.isPaid ? 'Paid' : 'In Progress'}
                         </TableCell>
                         <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                         <TableCell>
@@ -1294,12 +1342,40 @@ const AdminDashboard = () => {
                       <InputLabel>Product</InputLabel>
                       <Select
                         name="product"
-                        value={formData.product || ''}
+                        value={formData.product?._id || formData.product || ''}
                         onChange={handleChange}
                         label="Product"
+                        MenuProps={{
+                          PaperProps: {
+                            style: {
+                              maxHeight: 300,
+                              overflow: 'auto'
+                            },
+                            sx: {
+                              '&::-webkit-scrollbar': {
+                                width: '8px'
+                              },
+                              '&::-webkit-scrollbar-track': {
+                                background: 'transparent'
+                              },
+                              '&::-webkit-scrollbar-thumb': {
+                                background: 'rgba(0, 0, 0, 0.2)',
+                                borderRadius: '4px'
+                              }
+                            }
+                          }
+                        }}
                       >
                         {products.map(product => (
-                          <MenuItem key={product._id} value={product._id}>
+                          <MenuItem 
+                            key={product._id} 
+                            value={product._id}
+                            sx={{
+                              '&:hover': {
+                                background: 'rgba(9, 21, 64, 0.08)'
+                              }
+                            }}
+                          >
                             {product.name}
                           </MenuItem>
                         ))}
@@ -1309,12 +1385,40 @@ const AdminDashboard = () => {
                       <InputLabel>User</InputLabel>
                       <Select
                         name="user"
-                        value={formData.user || ''}
+                        value={formData.user?._id || formData.user || ''}
                         onChange={handleChange}
                         label="User"
+                        MenuProps={{
+                          PaperProps: {
+                            style: {
+                              maxHeight: 300,
+                              overflow: 'auto'
+                            },
+                            sx: {
+                              '&::-webkit-scrollbar': {
+                                width: '8px'
+                              },
+                              '&::-webkit-scrollbar-track': {
+                                background: 'transparent'
+                              },
+                              '&::-webkit-scrollbar-thumb': {
+                                background: 'rgba(0, 0, 0, 0.2)',
+                                borderRadius: '4px'
+                              }
+                            }
+                          }
+                        }}
                       >
                         {users.map(user => (
-                          <MenuItem key={user._id} value={user._id}>
+                          <MenuItem 
+                            key={user._id} 
+                            value={user._id}
+                            sx={{
+                              '&:hover': {
+                                background: 'rgba(9, 21, 64, 0.08)'
+                              }
+                            }}
+                          >
                             {user.name}
                           </MenuItem>
                         ))}
@@ -1331,6 +1435,8 @@ const AdminDashboard = () => {
                             rating: newValue
                           }));
                         }}
+                        precision={1}
+                        size="large"
                       />
                     </Box>
                     <TextField
@@ -1342,7 +1448,15 @@ const AdminDashboard = () => {
                       rows={4}
                       value={formData.comment || ''}
                       onChange={handleChange}
+                      placeholder="Write your review comment here..."
                     />
+                    {selectedItem && (
+                      <Box sx={{ mt: 2 }}>
+                        <Typography variant="subtitle2" color="text.secondary">
+                          Created on: {new Date(selectedItem.createdAt).toLocaleDateString()}
+                        </Typography>
+                      </Box>
+                    )}
                   </>
                 )}
               </Box>
@@ -1545,6 +1659,24 @@ const AdminDashboard = () => {
                               </Typography>
                             }
                           />
+                          <FormControlLabel
+                              control={
+                                <Switch
+                                    checked={viewingOrder.isShipped}
+                                    onChange={(e) => setViewingOrder(prev => ({
+                                      ...prev,
+                                      isShipped: e.target.checked
+                                    }))}
+                                />
+                              }
+                              label={
+                                <Typography sx={{ fontWeight: 500 }}>
+                                  Shipping Status: <span style={{ color: viewingOrder.isShipped ? '#2e7d32' : '#ed6c02' }}>
+                                  {viewingOrder.isShipped ? 'Shipped' : 'Pending'}
+                                </span>
+                                </Typography>
+                              }
+                          />
                         </Box>
                       ) : (
                         <>
@@ -1561,15 +1693,15 @@ const AdminDashboard = () => {
                           <Typography variant="body1" sx={{ 
                             mb: 3, 
                             fontWeight: 500,
-                            color: viewingOrder.isDelivered ? '#2e7d32' : '#ed6c02'
+                            color: viewingOrder.isDelivered ? '#2e7d32' : viewingOrder.isShipped? '#ed6c02' : '#ed6c02'
                           }}>
-                            {viewingOrder.isDelivered ? 'Delivered' : 'Pending'}
+                            {viewingOrder.isDelivered ? 'Delivered' : viewingOrder.isShipped? 'Shipped' : 'Pending'}
                           </Typography>
                         </>
                       )}
                     </Paper>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12} md={6} className="w-100">
                     <Paper elevation={0} sx={{ 
                       p: 3, 
                       borderRadius: 2, 

@@ -10,7 +10,7 @@ const path    = require('path');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // Store in Frontend's products-backend directory with correct case
-    const uploadPath = path.join(__dirname, '../../../E-commerce-website/E-Commerce-Frontend/public/images/products-backend');
+    const uploadPath = path.join(__dirname, '../../E-Commerce-Frontend/public/images/products-backend');
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {

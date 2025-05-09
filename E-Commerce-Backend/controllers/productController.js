@@ -41,6 +41,7 @@ exports.getProducts = async (req, res, next) => {
         const {
             page:  pageQ,
             limit: limitQ,
+            editAddMode = false,
             keyword,
             category,
             brand,
@@ -88,12 +89,19 @@ exports.getProducts = async (req, res, next) => {
         // Count
         const totalNumberOfItems = await Product.countDocuments(filter);
 
-        // Fetch paginated + sorted
-        const data = await Product.find(filter)
-            .collation({ locale: 'en', strength: 1 }) // <- enables case-insensitive sorting
-            .sort(sort)
-            .skip(skip)
-            .limit(limit);
+        // build the query
+        let query = Product
+            .find(filter)
+            .collation({ locale: 'en', strength: 1 })  // case-insensitive sort
+            .sort(sort);
+
+        // only apply pagination when not in edit/add mode
+        if (!editAddMode) {
+            query = query.skip(skip).limit(limit);
+        }
+
+        // Execute the query
+        const data = await query.exec();
 
         res.json({
             currentPage:  page,

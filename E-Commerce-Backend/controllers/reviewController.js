@@ -7,75 +7,68 @@ exports.createReview = async (req, res, next) => {
         const { productId, rating, comment } = req.body;
         const userId = req.user._id;
 
-        // Validate productId
-        if (!mongoose.Types.ObjectId.isValid(productId)) {
+        // 1) Must be present & a valid ObjectId format
+        if (!productId || !mongoose.Types.ObjectId.isValid(productId)) {
             return res.status(400).json({ error: "Invalid product ID" });
         }
 
-        // Check required
-        if (!rating) {
+        // 2) Must actually exist in the products collection
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(400).json({ error: "Invalid product ID" });
+        }
+
+        // 3) Rating is required
+        if (rating == null) {
             return res.status(400).json({ error: "Rating is required" });
         }
 
-        // Validate rating
+        // 4) Rating must be a number between 1 and 5
         if (typeof rating !== "number" || rating < 1 || rating > 5) {
             return res
                 .status(400)
                 .json({ error: "Rating must be a number between 1 and 5" });
         }
 
-        // Validate comment length
+        // 5) Optional comment must be under 500 chars
         if (comment && comment.length > 500) {
             return res
                 .status(400)
                 .json({ error: "Comment must be less than 500 characters" });
         }
 
-        // Check product exists
-        const product = await Product.findById(productId);
-        if (!product) {
-            return res.status(404).json({ error: "Product not found" });
-        }
-
-        // Create & save
+        // 6) Create the review
         const review = new Review({
-            user: userId,
+            user:    userId,
             product: productId,
             rating,
-            comment,
+            comment
         });
         await review.save();
 
-        // ─── UPDATE AGGREGATE RATING ON PRODUCT ───
-        // Increment count
-        const numReviews = await Review.countDocuments({
-            product: mongoose.Types.ObjectId(productId)
-        });
-        // Recompute average
+        // 7) Update product's average rating & count
+        const numReviews = await Review.countDocuments({ product: productId });
+        product.numReviews = numReviews;
         product.rating =
-            (product.rating * (numReviews - 1) + rating) /
-            numReviews;
+            (product.rating * (numReviews - 1) + rating) / numReviews;
         await product.save();
-        // ───────────────────────────────────────────
 
-        // Populate the user’s name & profilePic
+        // 8) Populate user info for the response
         await review.populate("user", "name profilePic");
 
-        // Format to match getReviews output
+        // 9) Format exactly like getReviews
         const formatted = {
-            id: review._id.toString(),
-            name: review.user.name,
-            image: review.user.profilePic,
-            rating: review.rating,
-            date: review.createdAt.toISOString().split("T")[0], // YYYY-MM-DD
+            id:      review._id.toString(),
+            name:    review.user.name,
+            image:   review.user.profilePic,
+            rating:  review.rating,
+            date:    review.createdAt.toISOString().slice(0, 10), // "YYYY-MM-DD"
             comment: review.comment
         };
 
-        return res
-            .status(201)
-            .json({ message: "Review created", data: formatted });
+        return res.status(201).json({ message: "Review created", data: formatted });
     } catch (err) {
-        next(err);
+        return next(err);
     }
 };
 

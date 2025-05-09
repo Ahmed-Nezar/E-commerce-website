@@ -1,7 +1,6 @@
 const { default: mongoose } = require('mongoose');
 const { User } = require('../config/db');
 
-
 exports.getUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
@@ -126,13 +125,21 @@ exports.updateUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
     try {
-        const { page = 1, limit = 20 } = req.query;
+        const { page = 1, limit = 10, editAddMode = false } = req.query;
         const skip = (page - 1) * limit;
 
-        const users = await User.find()
+        let query = User.find()
             .select('-password')
-            .skip(skip)
-            .limit(parseInt(limit));
+            .populate({
+                    path: 'wishList'
+                });
+
+        if (!editAddMode) {
+            query = query.skip(skip).limit(parseInt(limit));
+        }
+
+        // Execute the query
+        const users = await query.exec();
 
         const totalUsers = await User.countDocuments();
 
@@ -151,14 +158,14 @@ exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
-      return res.status(400).json({ message:'Invalid user ID' });
+      return res.status(400).json({ error:'Invalid user ID' });
 
     const user = await User.findByIdAndDelete(id);
-    if (!user) return res.status(404).json({ message:'User not found' });
+    if (!user) return res.status(404).json({ error:'User not found' });
 
-    res.status(204).json();
+    res.status(204).json({ data: user });
   } catch (err) {
-    res.status(500).json({ message:'Error deleting user', error: err.message });
+    res.status(500).json({ error:'Error deleting user', message: err.message });
   }
 };
 

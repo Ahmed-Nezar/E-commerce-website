@@ -50,7 +50,7 @@ userSchema.pre('save', async function(next) {
         const [min, max] = this.gender === 'Male' ? [1, 50] : [51, 100];
         const rand = Math.floor(Math.random() * (max - min + 1)) + min;
         // depending on your static route, you might need “/avatar/” or omit it
-        this.profilePic = `${process.env.VITE_BACKEND_URL}/avatar}/${rand}`;
+        this.profilePic = `${process.env.VITE_BACKEND_URL}/avatar/${rand}`;
     }
 
     next();

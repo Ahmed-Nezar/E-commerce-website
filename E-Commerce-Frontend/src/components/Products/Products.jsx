@@ -162,6 +162,22 @@ const Products = () => {
     }, [cn])
 
     useEffect(() => {
+        navigator.geolocation.getCurrentPosition(
+            async ({ coords }) => {
+                const { latitude, longitude } = coords;
+                // Call a reverse-geocoding service (e.g. Google Maps, OpenStreetMap)
+                const res = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                );
+                const data = await res.json();
+                console.log('You are in:', data.address.city || data.address.town);
+            },
+            err => console.error('Geo error:', err),
+            { enableHighAccuracy: true, timeout: 5000 }
+        );
+    }, [])
+
+    useEffect(() => {
         if (currentPage !== 1) {
             setCurrentPage(1);
         }

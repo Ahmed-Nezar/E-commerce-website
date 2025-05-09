@@ -8,10 +8,11 @@ router.get('/cart', verifyToken(), orderController.getCart);
 router.post('/cart', verifyToken(), orderController.addToCart);
 router.put('/cart/:productId', verifyToken(), orderController.updateCartItem);
 router.delete('/cart/:productId', verifyToken(), orderController.removeCartItem);
+router.get('/user-distance', verifyToken(), orderController.getUserDistance);
 
 // Order operations
 router.post('/checkout', verifyToken(), orderController.checkout);
-router.get('/history', verifyToken(), orderController.getOrderHistory);
+router.get('/history', verifyToken(), orderController.getOrderHistory)
 
 // Admin routes
 router.get('/', verifyToken('admin'), orderController.getAllOrders);

@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { Stack } from '@mui/system';
 import Loader from '../Loader/Loader.jsx';
+import {ENV} from "../../App.jsx";
 
 const Cart = () => {
     const [removedItemId, setRemovedItemId] = useState(null);
@@ -33,20 +34,18 @@ const Cart = () => {
     const [loading, setLoading] = useState(true);
     const [updatingItem, setUpdatingItem] = useState(null);
     const [removingItem, setRemovingItem] = useState(null);
+    const [shippingFees, setShippingFees] = useState(0);
     const navigate = useNavigate();
     const theme = useTheme();
     const {
         cartItems,
-        addToCart,
         removeFromCart,
         updateQuantity,
-        clearCart,
         total,
         cartCount,
         shippingAddress,
-        setShippingAddress,
         paymentMethod,
-        setPaymentMethod
+        showMessage
     } = useCart();
 
 
@@ -98,6 +97,39 @@ const Cart = () => {
     useEffect(() => {
         // Simulate loading state for cart data initialization
         setTimeout(() => setLoading(false), 800);
+        const fetchUserLocation = async () => {
+            try {
+                const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders/user-distance`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `${localStorage.getItem('token')}`
+                    }
+                });
+                const data = await response.json();
+                if (!data.error) {
+                    if (cartItems.length === 0) {
+                        setShippingFees(0);
+                        return;
+                    }
+                    const distance = data?.data?.distance.toFixed(2);
+                    if (distance) {
+                        // if distanc is less than 5km, set shipping fees to 0
+                        if (distance <= 5) {
+                            setShippingFees(0);
+                        } else {
+                            setShippingFees(((distance / 10)-1) * 5);
+                        }
+                    } else {
+                        setShippingFees(0);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user location:', error);
+                showMessage('Error calculating shipping fees', true);
+            }
+        }
+        fetchUserLocation();
     }, []);
 
     if (loading) {
@@ -423,7 +455,7 @@ const Cart = () => {
                                                 fontWeight: 500
                                             }}
                                         >
-                                            Free
+                                            {shippingFees > 0 ? `$${shippingFees.toFixed(2)}` : 'Free'}
                                         </Typography>
                                     </Grid>
                                     <Grid container justifyContent="space-between" sx={{mb: 2}}>

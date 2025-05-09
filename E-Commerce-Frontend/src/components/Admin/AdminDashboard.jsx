@@ -327,15 +327,13 @@ const AdminDashboard = () => {
           'Authorization': localStorage.getItem('token')
         },
         body: formData // Don't set Content-Type header - browser will set it with boundary
-      });
+      }).then(res => res.json());
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to upload image');
+      if (response.error) {
+        throw new Error('Failed to upload image');
       }
-      
-      const data = await response.json();
-      return data.imagePath;
+
+      return response.imagePath;
     } catch (error) {
       console.error('Upload error:', error);
       throw error;
@@ -390,7 +388,7 @@ const AdminDashboard = () => {
             rating: formData.rating,
             comment: formData.comment
           } : {
-            product: formData.product,
+            productId: formData.product,
             user: formData.user,
             rating: formData.rating,
             comment: formData.comment
@@ -405,9 +403,9 @@ const AdminDashboard = () => {
           Authorization: token
         },
         body: JSON.stringify(body)
-      });
+      }).then(res => res.json());
 
-      if (!response.ok) throw new Error('Failed to save');
+      if (response.error) throw new Error('Failed to save');
 
       // Refresh data
       switch (dialogType) {
@@ -481,9 +479,9 @@ const AdminDashboard = () => {
         headers: {
           Authorization: localStorage.getItem('token')
         }
-      });
+      }).then(res => res.json());
 
-      if (!response.ok) throw new Error('Failed to delete');
+      if (response.error) throw new Error('Failed to delete');
 
       // Refresh data
       switch (type) {
@@ -549,9 +547,9 @@ const AdminDashboard = () => {
           isDelivered: viewingOrder.isDelivered,
           isShipped: viewingOrder.isShipped,
         })
-      });
+      }).then(res => res.json());
 
-      if (!response.ok) throw new Error('Failed to update order');
+      if (response.error) throw new Error('Failed to update order');
 
       await fetchOrders();
       handleCloseOrderView();

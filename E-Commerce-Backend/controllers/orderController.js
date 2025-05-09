@@ -68,6 +68,87 @@ async function aggregateCart(userId) {
     return cart;
 }
 
+// Your fixed “reference” coordinates:
+// const REF = {
+//     latitude:  30.0507,
+//     longitude: 31.2489,
+//     city:      "Cairo",
+//     region:    "Cairo Governorate",
+//     country:   "Egypt"
+// };
+
+const REF = {
+    latitude:  31.2001,          // Alexandria latitude
+    longitude: 29.9187,          // Alexandria longitude
+    city:      "Alexandria",
+    region:    "Alexandria Governorate",
+    country:   "Egypt"
+};
+
+// Haversine formula
+function haversine(lat1, lon1, lat2, lon2) {
+    const toRad = x => (x * Math.PI) / 180;
+    const R = 6371; // Earth radius in km
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a =
+        Math.sin(dLat/2)**2 +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+        Math.sin(dLon/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+// Try ipapi.co, then on any error/timeout, fallback to ip-api.com
+async function lookupGeo(ip) {
+    const fetch = require('node-fetch');
+    // Helper: fetch with timeout
+    async function fetchWithTimeout(url, opts = {}, ms = 5000) {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), ms);
+        try {
+            const res = await fetch(url, {
+                ...opts,
+                signal: controller.signal
+            });
+            clearTimeout(id);
+            return res;
+        } catch (err) {
+            clearTimeout(id);
+            throw err;
+        }
+    }
+
+    // 1) Try ipapi.co
+    try {
+        const url = `https://ipapi.co/${ip || 'json'}/json/`;
+        const res = await fetchWithTimeout(url);
+        if (!res.ok) throw new Error(`ipapi.co ${res.status}`);
+        const data = await res.json();
+        return data;
+    } catch (err) {
+        console.warn('ipapi.co failed, falling back:', err.message);
+    }
+
+    // 2) Fallback to ip-api.com
+    try {
+        const url = `http://ip-api.com/json/${ip || ''}`;
+        const res = await fetchWithTimeout(url);
+        if (!res.ok) throw new Error(`ip-api.com ${res.status}`);
+        const d = await res.json();
+        return {
+            ip:           d.query,
+            country_name: d.country,
+            region:       d.regionName,
+            city:         d.city,
+            latitude:     d.lat,
+            longitude:    d.lon
+        };
+    } catch (err) {
+        console.error('ip-api.com also failed:', err.message);
+        throw new Error('GeoIP lookup failed');
+    }
+}
+
 // GET /api/orders/cart
 exports.getCart = async (req, res, next) => {
     try {
@@ -267,6 +348,36 @@ exports.removeCartItem = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.getUserDistance = async (req, res, next) => {
+    try {
+        // Extract real client IP (trust proxy must be set)
+        let ip = (req.headers['x-forwarded-for'] || '')
+                .split(',')[0].trim() ||
+            req.socket.remoteAddress;
+        if (ip.startsWith('::ffff:')) ip = ip.slice(7);
+        if (ip === '::1' || ip === '127.0.0.1') ip = '';  // dev fallback
+
+        // Lookup geo
+        const geo = await lookupGeo(ip);
+
+        // Parse coords
+        const userLat = parseFloat(geo.latitude);
+        const userLon = parseFloat(geo.longitude);
+
+        // Compute distance
+        const distKm = haversine(userLat, userLon, REF.latitude, REF.longitude);
+        const distMi = distKm * 0.621371;
+
+        // Return
+        return res.json({
+            data: { distance: parseFloat(distKm.toFixed(2)) }
+        });
+    } catch (err) {
+        console.error("Distance lookup failed:", err);
+        return res.status(500).json({ error: 'Could not calculate distance' });
+    }
+}
 
 // POST /api/orders/checkout
 exports.checkout = async (req, res, next) => {

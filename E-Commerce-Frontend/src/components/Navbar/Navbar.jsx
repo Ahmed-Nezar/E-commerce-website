@@ -76,6 +76,7 @@ const Navbar = ({reference}) => {
                     borderRadius: '50px',
                     boxShadow: '0 4px 12px rgba(9, 21, 64, 0.2)',
                     transition: 'all 0.3s ease',
+                    cursor: 'pointer',
                     '&:hover': {
                         transform: 'translateY(-2px)',
                         boxShadow: '0 6px 16px rgba(9, 21, 64, 0.3)',
@@ -124,7 +125,7 @@ const Navbar = ({reference}) => {
                             </Button>
                         )}
                         <Button startIcon={<IoSettingsOutline />} onClick={() => {
-                            navigate('/me')
+                            navigate('/me/profile')
                             scroll(0,0)
                             setmenuOpen(false)
                         }} style={{color:'#3D518C', width:'100%', justifyContent:'left'}}>

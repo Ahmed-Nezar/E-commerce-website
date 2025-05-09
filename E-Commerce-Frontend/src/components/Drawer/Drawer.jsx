@@ -33,7 +33,7 @@ const ResponsiveDrawer = ( {children, triggerButton, anchor, breakpoint, default
                         setDrawerOpen(false)
                         setMenuOpen(false)
                     }}>
-                        <Box sx={{ width: 280, padding: 2 }} role="presentation" style={{backgroundColor: 'rgba(171, 210, 250, 0.65)', height:'-webkit-fill-available'}}>
+                        <Box sx={{ width: 280, padding: 2 }} role="presentation" style={{backgroundColor: 'rgba(171, 210, 250, 0.65)', height:'inherit'}}>
                             {children}
                         </Box>
                     </Drawer>

@@ -46,7 +46,8 @@ export default function Filter({   fromPrice, toPrice, setFromPrice, setToPrice,
                     border: 'none',
                     borderRadius: '4px',
                     cursor: 'pointer',
-                    width: '-webkit-fill-available'
+                    width: '-webkit-fill-available',
+                    width: '-moz-available',
                 }}
                 className="clearBtn"
             >

@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Avatar,
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Container,
-  Paper,
-  Fade,
-  Alert
+    Avatar,
+    Button,
+    TextField,
+    Box,
+    Typography,
+    Container,
+    Paper,
+    Fade,
+    Alert, IconButton
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { ENV } from "../../App.jsx";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ChangePassword = () => {
   const navigate = useNavigate();
@@ -93,7 +94,7 @@ const ChangePassword = () => {
 
   return (
     <Fade in timeout={1000}>
-      <Container component="main" maxWidth="md" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+      <Container component="main" maxWidth="md" sx={{ minHeight: '85vh', display: 'flex', alignItems: 'center' }}>
         <Paper
           elevation={24}
           sx={{
@@ -122,6 +123,24 @@ const ChangePassword = () => {
             }
           }}
         >
+            <IconButton
+                onClick={() => navigate('/me/profile')}
+                sx={{
+                    position: 'absolute',
+                    top: 20,
+                    left: 20,
+                    color: '#091540',
+                    zIndex: 1,
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    '&:hover': {
+                        background: 'rgba(255, 255, 255, 1)',
+                    },
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                    cursor: 'pointer',
+                }}
+            >
+                <ArrowBackIcon />
+            </IconButton>
           <Box
             sx={{
               position: 'absolute',

@@ -335,25 +335,25 @@ const ProductDetails = ({ productId }) => {
                             reviews.map(item => (
                                 <Col sm={12} className="d-flex mt-4 gap-3" key={item.id}>
                                     <img
-                                        src={item.image}
+                                        src={item?.image}
                                         className={`mr-4 ${s.reviewImg}`}
-                                        alt={`${item.name} avatar`}
+                                        alt={`${item?.name} avatar`}
                                     />
                                     <div className="d-flex flex-column justify-content-between align-items-start w-100">
                                         <div className={`d-flex justify-content-between w-100 ${s.reviewMargin}`}>
                                             <h6 className="fw-bold mb-0">
-                                                {item.name}
+                                                {item?.name}
                                             </h6>
                                             <p className="text-muted mb-0">
-                                                {new Date(item.date).toLocaleDateString()}
+                                                {new Date(item?.date).toLocaleDateString()}
                                             </p>
                                         </div>
                                         <div className="d-flex">
                                             {[1,2,3,4,5].map((_, i) => (
-                                                <Star key={i} selected={i < item.rating} />
+                                                <Star key={i} selected={i < item?.rating} />
                                             ))}
                                         </div>
-                                        <p className="mb-0">{item.comment}</p>
+                                        <p className="mb-0">{item?.comment}</p>
                                     </div>
                                 </Col>
                             ))

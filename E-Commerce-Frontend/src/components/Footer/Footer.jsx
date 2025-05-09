@@ -14,7 +14,7 @@ const Footer = () => {
                 background: 'linear-gradient(135deg, #091540 0%, #2C3E7B 100%)',
                 color: 'white',
                 py: 6,
-                mt: location.pathname.replaceAll("/", "") === "" ? 0 : 12,
+                mt: location.pathname.replaceAll("/", "") === "" || location.pathname.includes("/me") ? 0 : 12,
                 position: 'relative',
                 '&::before': {
                     content: '""',

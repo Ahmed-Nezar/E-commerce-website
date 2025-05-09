@@ -15,7 +15,7 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem, useMediaQuery
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -24,12 +24,14 @@ import {
 } from '@mui/icons-material';
 import {useCart} from "../../context/CartContext.jsx";
 import {ENV} from "../../App.jsx";
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
   const {user, setUser, showMessage} = useCart();
   const [editMode, setEditMode] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
-
+  const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 600px)');
   useEffect(() => {
     if (user) {
       setEditedUser(user);
@@ -84,17 +86,18 @@ export default function Profile() {
       <Box
           sx={{
             width: '100%',
-            height: '100%',
-            px: 4,
-            pt: 4,
+            minHeight: '100%',
+            px: { xs: 2, sm: 4 },
+            pt: { xs: 2, sm: 4 },
             pb: 0,
             background: 'linear-gradient(to right, #7AA1ED, #A1C4FD)',
           }}
       >
         <Card
             sx={{
+              maxWidth: 700,
               width: '100%',
-              minHeight: 200,
+              mx: 'auto',
               boxShadow: 3,
               borderRadius: 2,
             }}
@@ -104,45 +107,60 @@ export default function Profile() {
                 <Avatar
                     src={editedUser?.profilePic}
                     alt={editedUser?.name}
-                    sx={{width: 90, height: 90}}
+                    sx={{
+                      width: { xs: 56, sm: 90 },     // smaller avatar on xs
+                      height: { xs: 56, sm: 90 },
+                    }}
                 />
               }
-              title={<Typography variant="h4">{editMode ? 'Edit Profile' : 'Profile'}</Typography>}
-              subheader={<Typography variant="subtitle1"
-                                     color="text.secondary">{editedUser?.isAdmin ? "Admin" : "User"}</Typography>}
+              title={
+                <Typography variant="h5" sx={{ fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
+                  {editMode ? 'Edit Profile' : 'Profile'}
+                </Typography>
+              }
+              subheader={
+                <Typography variant="subtitle2" color="text.secondary">
+                  {editedUser?.isAdmin ? 'Admin' : 'User'}
+                </Typography>
+              }
               action={
                   !editMode && (
                       <IconButton onClick={() => setEditMode(true)}>
-                        <EditIcon/>
+                        <EditIcon fontSize={isMobile ? 'small' : 'medium'} />
                       </IconButton>
                   )
               }
-              sx={{pb: 2}}
+              sx={{
+                pb: 2,
+                '& .MuiCardHeader-content': {
+                  ml: { xs: 1, sm: 2 }        // tighten spacing on xs
+                }
+              }}
           />
 
-          <CardContent sx={{pt: 0, pb: 0}}>  {/* removed mt and pb */}
-            <Grid container spacing={4}>
-              {/* Name */}
+          <CardContent sx={{ pt: 0, pb: 0 }}>
+            <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                     fullWidth
                     name="name"
                     label="Name"
-                    value={editedUser?.name}
+                    value={editedUser?.name || ''}
                     onChange={handleChange}
-                    InputProps={{readOnly: !editMode}}
+                    InputProps={{ readOnly: !editMode }}
+                    InputLabelProps={{ shrink: Boolean(editedUser?.name) }}
+                    size={isMobile ? 'small' : 'medium'}
                 />
               </Grid>
 
-              {/* Gender */}
               <Grid item xs={12} sm={6}>
                 {editMode ? (
-                    <FormControl fullWidth>
+                    <FormControl fullWidth size={isMobile ? 'small' : 'medium'}>
                       <InputLabel id="gender-label">Gender</InputLabel>
                       <Select
                           labelId="gender-label"
                           name="gender"
-                          value={editedUser?.gender}
+                          value={editedUser?.gender || ''}
                           label="Gender"
                           onChange={handleChange}
                       >
@@ -154,37 +172,56 @@ export default function Profile() {
                     <TextField
                         fullWidth
                         label="Gender"
-                        value={editedUser?.gender}
-                        InputProps={{readOnly: true}}
+                        value={editedUser?.gender || ''}
+                        InputProps={{ readOnly: true }}
+                        InputLabelProps={{ shrink: Boolean(editedUser?.gender) }}
+                        size={isMobile ? 'small' : 'medium'}
                     />
                 )}
               </Grid>
 
-              {/* Email */}
               <Grid item xs={12} sm={6}>
                 <TextField
                     fullWidth
                     name="email"
                     label="Email"
-                    value={editedUser?.email}
+                    value={editedUser?.email || ''}
                     onChange={handleChange}
-                    InputProps={{readOnly: !editMode}}
+                    InputProps={{ readOnly: !editMode }}
+                    InputLabelProps={{ shrink: Boolean(editedUser?.email) }}
+                    size={isMobile ? 'small' : 'medium'}
                 />
               </Grid>
             </Grid>
           </CardContent>
 
+          <CardActions sx={{ justifyContent: 'flex-end', px: { xs: 1, sm: 3 }, pb: 2 }}>
+            <Button size={isMobile ? 'small' : 'medium'} onClick={() => navigate('/me/change-password')}>
+              Change Password
+            </Button>
+          </CardActions>
+
           {editMode && (
-              <CardActions sx={{justifyContent: 'flex-end', px: 3, pb: 2}}>
-                <Button startIcon={<CancelIcon/>} onClick={handleCancel}>
+              <CardActions sx={{ justifyContent: 'flex-end', px: { xs: 1, sm: 3 }, pb: 2, gap: 1 }}>
+                <Button
+                    startIcon={<CancelIcon fontSize={isMobile ? 'small' : 'medium'} />}
+                    size={isMobile ? 'small' : 'medium'}
+                    onClick={handleCancel}
+                >
                   Cancel
                 </Button>
-                <Button variant="contained" startIcon={<SaveIcon/>} onClick={handleSave}>
+                <Button
+                    variant="contained"
+                    startIcon={<SaveIcon fontSize={isMobile ? 'small' : 'medium'} />}
+                    size={isMobile ? 'small' : 'medium'}
+                    onClick={handleSave}
+                >
                   Save
                 </Button>
               </CardActions>
           )}
         </Card>
       </Box>
+
   );
 }

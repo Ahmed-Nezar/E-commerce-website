@@ -8,11 +8,11 @@ const clientOptions = { serverApi: { version: '1', strict: false, deprecationErr
 
 async function connectDB() {
     try {
-        if (!process.env.MONGO_URI) {
-            throw new Error('MONGO_URI is not defined!');
+        if (!process.env.MONGO_URI_Local) {
+            throw new Error('MONGO_URI_Local is not defined!');
         }
         // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
-        await mongoose.connect(process.env.MONGO_URI, clientOptions);
+        await mongoose.connect(process.env.MONGO_URI_Local, clientOptions);
         await mongoose.connection.db.admin().command({ ping: 1 });
         console.log("Connected to MongoDB (Online - Cloud)");
     } catch (e) {
@@ -50,7 +50,7 @@ userSchema.pre('save', async function(next) {
         const [min, max] = this.gender === 'Male' ? [1, 50] : [51, 100];
         const rand = Math.floor(Math.random() * (max - min + 1)) + min;
         // depending on your static route, you might need “/avatar/” or omit it
-        this.profilePic = `${process.env.VITE_BACKEND_URL}/avatar}/${rand}`;
+        this.profilePic = `${process.env.VITE_BACKEND_URL}/avatar/${rand}`;
     }
 
     next();

@@ -197,6 +197,7 @@ export const CartProvider = ({ children }) => {
     removeFromCart,
     updateQuantity,
     clearCart,
+    refreshCart,
     total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
     cartCount: cartItems.length,
     user, setUser,

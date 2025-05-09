@@ -559,7 +559,7 @@ exports.getAllOrders = async (req, res, next) => {
 // ==========================
 exports.getUserOrders = async (req, res, next) => {
     try {
-        const orders = await Order.find({ user: req.user._id })
+        const orders = await Order.find({ user: req.user._id, isPaid: true })
             .populate('orderItems.product')
             .sort({ createdAt: -1 });
         res.status(200).json({ data: orders });

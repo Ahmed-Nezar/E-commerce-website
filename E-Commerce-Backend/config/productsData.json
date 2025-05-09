@@ -1225,7 +1225,7 @@
     "brand": "Samsung",
     "description": "High-speed NVMe SSD",
     "price": 149.99,
-    "image": "/images/products-backend/SSD_980_Pro_1TB.jpg",
+    "image": "/images/products-backend/SSD_980_Pro_1TB.jpeg",
     "stock": 20,
     "rating": 4.7
   },

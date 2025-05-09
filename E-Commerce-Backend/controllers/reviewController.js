@@ -46,6 +46,18 @@ exports.createReview = async (req, res, next) => {
         });
         await review.save();
 
+        // ─── UPDATE AGGREGATE RATING ON PRODUCT ───
+        // Increment count
+        const numReviews = await Review.countDocuments({
+            product: mongoose.Types.ObjectId(productId)
+        });
+        // Recompute average
+        product.rating =
+            (product.rating * (numReviews - 1) + rating) /
+            numReviews;
+        await product.save();
+        // ───────────────────────────────────────────
+
         // Populate the user’s name & profilePic
         await review.populate("user", "name profilePic");
 

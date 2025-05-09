@@ -147,6 +147,11 @@ const Products = () => {
     }, [selectedCategories, sortVal, inStockOnly, selectedBrands, fromPrice, toPrice, currentPage]);
 
     useEffect(() => {
+        if (!searchInput) {
+            fetchData( cn, setBrands, selectedCategories, setCategories, showMessage,
+                sortVal, inStockOnly, selectedBrands, fromPrice, toPrice,
+                setProducts, setCurrentPage, setTotalPages, currentPage, setIsLoading);
+        }
         navigate(`?keyword=${searchInput}`);
     }, [searchInput]);
 

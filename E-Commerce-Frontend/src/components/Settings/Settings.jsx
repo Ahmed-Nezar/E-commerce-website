@@ -152,7 +152,7 @@ export default function SettingsLayout() {
                     background: 'linear-gradient(to right, #7AA1ED, #A1C4FD)',
                 }}
             >
-                <Toolbar />
+                {/*<Toolbar />*/}
                 <Outlet />
             </Box>
         </Box>

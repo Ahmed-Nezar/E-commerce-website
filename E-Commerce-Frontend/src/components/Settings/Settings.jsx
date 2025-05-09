@@ -71,7 +71,7 @@ const DrawerHeader = styled(Toolbar)(({ theme }) => ({
 
 const navItems = [
   { label: 'Profile',        to: '/me/profile',   icon: <PersonIcon /> },
-  { label: 'Orders',         to: '/settings/orders',    icon: <OrdersIcon /> },
+  { label: 'Orders',         to: '/me/orders',    icon: <OrdersIcon /> },
   { label: 'Logout',         to: '/me/logout',             icon: <LogoutIcon /> },
 ];
 

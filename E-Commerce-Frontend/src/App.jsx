@@ -101,6 +101,7 @@ function App() {
                                 }
                             >
                                 <Route path="profile" element={<Profile/>}/>
+                                <Route path="orders" element={<Orders/>}/>
                                 <Route path="change-password" element={<ChangePassword/>}/>
                                 <Route path="logout" element={<Logout/>}/>
                             </Route>

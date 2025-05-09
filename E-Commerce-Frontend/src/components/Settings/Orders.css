@@ -1,0 +1,27 @@
+/* orders.css (or your App.css) */
+
+/* Target all MDBCardFooter instances in Orders */
+.orders-section .mdb-card-footer {
+    /* replace the flat background with a gradient */
+    background: linear-gradient(90deg, #A1C4FD 0%, #7AA1ED 100%) !important;
+    /* bump up the border-radius for a softer pill shape */
+    border-bottom-left-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+    /* give it a button-like hover cursor & transition */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  /* Lift & shadow on hover */
+  .orders-section .mdb-card-footer:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  }
+  
+  /* Tweak the “TOTAL PAID” text */
+  .orders-section .mdb-card-footer h6 {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  

@@ -21,107 +21,107 @@ const OrderReview = ({
   paypalEmail,
   error
 }) => {
-  return (
-    <Box sx={{ mt: 4 }}>
-      {error && (
-        <Alert 
-          severity="error" 
-          sx={{ 
-            mb: 3,
-            borderRadius: 2,
-            animation: 'slideIn 0.3s ease-out',
-            '@keyframes slideIn': {
-              from: { transform: 'translateY(-20px)', opacity: 0 },
-              to: { transform: 'translateY(0)', opacity: 1 },
-            },
-          }}
-        >
-          {error}
-        </Alert>
-      )}
-      
-      <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#091540' }}>
-        Order Summary
-      </Typography>
+    return (
+        <Box sx={{mt: 4}}>
+            {error && (
+                <Alert
+                    severity="error"
+                    sx={{
+                        mb: 3,
+                        borderRadius: 2,
+                        animation: 'slideIn 0.3s ease-out',
+                        '@keyframes slideIn': {
+                            from: {transform: 'translateY(-20px)', opacity: 0},
+                            to: {transform: 'translateY(0)', opacity: 1},
+                        },
+                    }}
+                >
+                    {error}
+                </Alert>
+            )}
 
-      {/* Order items */}
-      <Paper
-        elevation={0}
-        sx={{
-          p: 3,
-          mb: 4,
-          borderRadius: 3,
-          background: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-        }}
-      >
-        {cartItems.map((item) => (
-          <Box
-            key={item.id}
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mb: 2,
-              pb: 2,
-              borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-              '&:last-child': {
-                mb: 0,
-                pb: 0,
-                borderBottom: 'none',
-              },
-              transition: 'transform 0.3s ease',
-              '&:hover': {
-                transform: 'translateX(8px)',
-              },
-            }}
-          >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Box
-                sx={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 2,
-                  overflow: 'hidden',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                }}
-              >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-              </Box>
-              <Box>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#091540' }}>
-                  {item.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Qty: {item.quantity}
-                </Typography>
-              </Box>
-            </Box>
-            <Typography 
-              variant="subtitle1" 
-              sx={{ 
-                fontWeight: 600,
-                background: 'linear-gradient(45deg, #091540, #3D518C)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              ${(item.price * item.quantity).toFixed(2)}
+            <Typography variant="h6" sx={{mb: 3, fontWeight: 600, color: '#091540'}}>
+                Order Summary
             </Typography>
-          </Box>
-        ))}
-      </Paper>
+
+            {/* Order items */}
+            <Paper
+                elevation={0}
+                sx={{
+                    p: 3,
+                    mb: 4,
+                    borderRadius: 3,
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                }}
+            >
+                {cartItems.map((item) => (
+                    <Box
+                        key={item.id}
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            mb: 2,
+                            pb: 2,
+                            borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                            '&:last-child': {
+                                mb: 0,
+                                pb: 0,
+                                borderBottom: 'none',
+                            },
+                            transition: 'transform 0.3s ease',
+                            '&:hover': {
+                                transform: 'translateX(8px)',
+                            },
+                        }}
+                    >
+                        <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
+                            <Box
+                                sx={{
+                                    width: 60,
+                                    height: 60,
+                                    borderRadius: 2,
+                                    overflow: 'hidden',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                }}
+                            >
+                                <img
+                                    src={item.image}
+                                    alt={item.name}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                    }}
+                                />
+                            </Box>
+                            <Box>
+                                <Typography variant="subtitle1" sx={{fontWeight: 600, color: '#091540'}}>
+                                    {item.name}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    Qty: {item.quantity}
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Typography
+                            variant="subtitle1"
+                            sx={{
+                                fontWeight: 600,
+                                background: 'linear-gradient(45deg, #091540, #3D518C)',
+                                backgroundClip: 'text',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                            }}
+                        >
+                            ${(item.price * item.quantity).toFixed(2)}
+                        </Typography>
+                    </Box>
+                ))}
+            </Paper>
 
       {/* Order details in a grid */}
         <Box

@@ -25,7 +25,8 @@ import OrderReview from '../Checkout/OrderReview';
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { cartItems, shippingAddress, setShippingAddress, paymentMethod, setPaymentMethod, total, clearCart } = useCart();
+  const { cartItems, shippingAddress, setShippingAddress, paymentMethod,
+          showMessage, setPaymentMethod, total, refreshCart } = useCart();
   
   // Check if user is logged in (token exists)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,15 +58,17 @@ const Checkout = () => {
     // Check if token exists in localStorage
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
-    
-    // If cart is empty, redirect to cart page
-    if (cartItems.length === 0) {
-      navigate('/cart');
-    }
 
     // Simulate loading state for checkout data initialization
     setTimeout(() => setLoading(false), 800);
   }, [cartItems.length, navigate]);
+
+  useEffect(() => {
+      // If cart is empty, redirect to cart page
+      if (cartItems.length === 0) {
+          navigate('/cart');
+      }
+  }, [])
 
   const handleNext = () => {
     // Validate current step before proceeding
@@ -191,7 +194,7 @@ const Checkout = () => {
       }
 
       // Send order to backend
-      const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders`, {
+      const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders/checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -202,11 +205,12 @@ const Checkout = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (!data.error) {
         setOrderComplete(true);
-        clearCart(); // Clear cart after successful order
+        refreshCart();
+          showMessage(data.message);
       } else {
-        setError(data.message || 'Something went wrong. Please try again.');
+        setError(data.error || 'Something went wrong. Please try again.');
       }
     } catch (error) {
       console.error('Order submission error:', error);

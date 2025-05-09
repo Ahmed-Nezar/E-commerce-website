@@ -367,7 +367,7 @@ const AdminDashboard = () => {
         case 'coupon':
           url = selectedItem
             ? `${ENV.VITE_BACKEND_URL}/api/coupons/${selectedItem._id}`
-            : `${ENV.VITE_BACKEND_URL}/api/coupons/create`;
+            : `${ENV.VITE_BACKEND_URL}/api/coupons/`;
           method = selectedItem ? 'PUT' : 'POST';
           body = formData;
           break;

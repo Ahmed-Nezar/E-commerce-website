@@ -151,7 +151,9 @@ const FloatingCard = ({ cardInfo, isFlipped }) => {
               textShadow: '0 2px 4px rgba(0,0,0,0.2)'
             }}
           >
-            **** **** **** ****
+              {cardInfo.cardNumber
+                   ? cardInfo.cardNumber
+                      : '**** **** **** ****'}
           </Typography>
         </Box>
 
@@ -283,7 +285,7 @@ const PaymentMethod = ({
     expiryDate: '',
     cvv: ''
   });
-
+  const handleSelectMethod = (method) => setPaymentMethod(method);
   const validateCardNumber = (number) => {
     const cleaned = number.replace(/\s/g, '');
     // Check length and format using Luhn algorithm
@@ -315,8 +317,9 @@ const PaymentMethod = ({
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear() % 100;
     const currentMonth = currentDate.getMonth() + 1;
-    
-    if (month < 1 || month > 12) {
+
+
+      if (month < 1 || month > 12) {
       return 'Invalid month';
     }
     if (year < currentYear || (year === currentYear && month < currentMonth)) {
@@ -442,28 +445,32 @@ const PaymentMethod = ({
           onChange={(e) => setPaymentMethod(e.target.value)}
         >
           {/* Credit Card Option */}
-          <Paper
-            elevation={0}
-            sx={{
-              mb: 2,
-              p: 3,
-              borderRadius: 3,
-              border: '1px solid',
-              borderColor: paymentMethod === 'Credit Card' ? '#1B2CC1' : 'rgba(0, 0, 0, 0.1)',
-              background: paymentMethod === 'Credit Card' ? 'rgba(27, 44, 193, 0.02)' : 'transparent',
-              transition: 'all 0.3s ease',
-              transform: paymentMethod === 'Credit Card' ? 'scale(1.02)' : 'scale(1)',
-              '&:hover': { 
-                borderColor: '#1B2CC1',
-                transform: 'scale(1.02)',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
-              },
-            }}
-          >
-            <FormControlLabel
-              value="Credit Card"
-              control={<Radio />}
-              label={
+            <Paper
+                elevation={0}
+                onClick={() => handleSelectMethod('Credit Card')}
+                sx={{
+                    mb: 2,
+                    p: 3,
+                    borderRadius: 3,
+                    border: '1px solid',
+                    borderColor: paymentMethod === 'Credit Card' ? '#1B2CC1' : 'rgba(0, 0, 0, 0.1)',
+                    background: paymentMethod === 'Credit Card'
+                        ? 'rgba(27, 44, 193, 0.02)'
+                        : 'transparent',
+                    transition: 'all 0.3s ease',
+                    transform: paymentMethod === 'Credit Card' ? 'scale(1.02)' : 'scale(1)',
+                    '&:hover': {
+                        borderColor: '#1B2CC1',
+                        transform: 'scale(1.02)',
+                        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                    },
+                    cursor: 'pointer'
+                }}
+            >
+                <FormControlLabel
+                    value="Credit Card"
+                    control={<Radio checked={paymentMethod === 'Credit Card'} />}
+                    label={
                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                   <Typography sx={{ fontWeight: 500 }}>Credit Card</Typography>
                   <Box component="span" sx={{ ml: 'auto', display: 'flex', gap: 1 }}>
@@ -615,27 +622,29 @@ const PaymentMethod = ({
           </Paper>
 
           {/* PayPal Option */}
-          <Paper
+        <Paper
             elevation={0}
+            onClick={() => handleSelectMethod('PayPal')}
             sx={{
-              mb: 2,
-              p: 3,
-              borderRadius: 3,
-              border: '1px solid',
-              borderColor: paymentMethod === 'PayPal' ? '#1B2CC1' : 'rgba(0, 0, 0, 0.1)',
-              background: paymentMethod === 'PayPal' ? 'rgba(27, 44, 193, 0.02)' : 'transparent',
-              transition: 'all 0.3s ease',
-              transform: paymentMethod === 'PayPal' ? 'scale(1.02)' : 'scale(1)',
-              '&:hover': { 
-                borderColor: '#1B2CC1',
-                transform: 'scale(1.02)',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
-              },
+                mb: 2,
+                p: 3,
+                borderRadius: 3,
+                border: '1px solid',
+                borderColor: paymentMethod === 'PayPal' ? '#1B2CC1' : 'rgba(0, 0, 0, 0.1)',
+                background: paymentMethod === 'PayPal' ? 'rgba(27, 44, 193, 0.02)' : 'transparent',
+                transition: 'all 0.3s ease',
+                transform: paymentMethod === 'PayPal' ? 'scale(1.02)' : 'scale(1)',
+                '&:hover': {
+                    borderColor: '#1B2CC1',
+                    transform: 'scale(1.02)',
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                },
+                cursor: 'pointer'
             }}
-          >
+        >
             <FormControlLabel
-              value="PayPal"
-              control={<Radio />}
+                value="PayPal"
+                control={<Radio checked={paymentMethod === 'PayPal'} />}
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                   <Typography sx={{ fontWeight: 500 }}>PayPal</Typography>
@@ -679,26 +688,32 @@ const PaymentMethod = ({
           </Paper>
 
           {/* Cash On Delivery Option */}
-          <Paper
+        <Paper
             elevation={0}
+            onClick={() => handleSelectMethod('Cash On Delivery')}
             sx={{
-              p: 3,
-              borderRadius: 3,
-              border: '1px solid',
-              borderColor: paymentMethod === 'Cash On Delivery' ? '#1B2CC1' : 'rgba(0, 0, 0, 0.1)',
-              background: paymentMethod === 'Cash On Delivery' ? 'rgba(27, 44, 193, 0.02)' : 'transparent',
-              transition: 'all 0.3s ease',
-              transform: paymentMethod === 'Cash On Delivery' ? 'scale(1.02)' : 'scale(1)',
-              '&:hover': { 
-                borderColor: '#1B2CC1',
-                transform: 'scale(1.02)',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
-              },
+                p: 3,
+                borderRadius: 3,
+                border: '1px solid',
+                borderColor: paymentMethod === 'Cash On Delivery'
+                    ? '#1B2CC1'
+                    : 'rgba(0, 0, 0, 0.1)',
+                background: paymentMethod === 'Cash On Delivery'
+                    ? 'rgba(27, 44, 193, 0.02)'
+                    : 'transparent',
+                transition: 'all 0.3s ease',
+                transform: paymentMethod === 'Cash On Delivery' ? 'scale(1.02)' : 'scale(1)',
+                '&:hover': {
+                    borderColor: '#1B2CC1',
+                    transform: 'scale(1.02)',
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                },
+                cursor: 'pointer'
             }}
-          >
+        >
             <FormControlLabel
-              value="Cash On Delivery"
-              control={<Radio />}
+                value="Cash On Delivery"
+                control={<Radio checked={paymentMethod === 'Cash On Delivery'} />}
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                   <Typography sx={{ fontWeight: 500 }}>Cash On Delivery</Typography>

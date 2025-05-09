@@ -17,16 +17,19 @@ import {useSearch} from "../../context/SearchContext.jsx";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 const catImgs = {
+    "motherboards": "/images/products/motherboard.jpeg",
     "gpus": "/images/products/RTX_4090.jpg",
     "cpus": "/images/products/Intel-Core-i9.jpg",
-    "rams": "/images/products/adata-SD-8.0-Express-UE720.jpg",
-    "storages": "/images/products/adata-SD-8.0-Express-UE720.jpg",
+    "rams": "/images/products/ram.png",
+    "storages": "/images/products/ssd.jpg",
     "psus": "/images/products/Dark_Power_Pro_13_1600W.jpg",
     "cases": "/images/products/O11VP_000a.png",
     "keyboards": "/images/products/Keychron_Q5_HE.png",
     "mice": "/images/products/Razer_Basilisk_V3.jpg",
     "headsets": "/images/products/Razer_Kraken_V4.jpg",
     "monitors": "/images/products/Samsung-Odyssey-OLED-G8.jpg",
+    "coolers": "/images/products/AIO-Cooler_KV_banner_2000x720.jpg",
+    "allProducts": "/images/products/all.jpg",
 };
 
 const fetchData = async (
@@ -35,7 +38,7 @@ const fetchData = async (
     setProducts, setCurrentPage, setTotalPages, currentPage, setIsLoading) => {
     try {
         setIsLoading(true);
-        scroll(0,0)
+
         const category = cn ? cn : selectedCategories;
 
         let brandQuery = new URLSearchParams();
@@ -141,6 +144,10 @@ const Products = () => {
     };
 
     useEffect(() => {
+        scroll(0,0)
+    }, []);
+
+    useEffect(() => {
         fetchData( cn, setBrands, selectedCategories, setCategories, showMessage,
                    sortVal, inStockOnly, selectedBrands, fromPrice, toPrice,
                    setProducts, setCurrentPage, setTotalPages, currentPage, setIsLoading);
@@ -191,9 +198,14 @@ const Products = () => {
         <>
             <div className="w-full">
                 {/* Top Banner Image */}
-                <div className="d-grid align-content-center headerBG" style={{backgroundImage: `linear-gradient(to bottom, rgb(0 0 0 / 50%), rgb(1 63 181 / 60%)), `+
-                `url(${catImgs[cn?.toLowerCase()]})`}}>
-                    <h1 className="text-white" style={{fontSize: "inherit", textShadow: "3px 3px 10px black"}}>{keyword ? "Search" : cn ? `${cn}` : "All Products"}</h1>
+                <div className="d-grid align-content-center headerBG"
+                     style={{
+                         backgroundImage: `linear-gradient(to bottom, rgb(0 0 0 / 50%), rgb(1 63 181 / 60%)), ` +
+                             `url(${catImgs[cn?.toLowerCase()] || catImgs["allProducts"]})`
+                }}>
+                    <h1 className="text-white" style={{fontSize: "inherit", textShadow: "3px 3px 10px black"}}>
+                        {keyword ? "Search" : cn ? `${cn}` : "All Products"}
+                    </h1>
                 </div>
 
 

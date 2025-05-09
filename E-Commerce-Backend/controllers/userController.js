@@ -17,8 +17,9 @@ exports.getUserProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
     try {
         const { name, email, gender, password } = req.body;
+        const loggedInUser = req.user;
 
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(loggedInUser._id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

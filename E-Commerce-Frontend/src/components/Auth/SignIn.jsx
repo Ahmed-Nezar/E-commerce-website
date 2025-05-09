@@ -59,7 +59,7 @@ const SignIn = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (!data.error) {
         // Handle remember me
         if (formData.rememberMe) {
           localStorage.setItem('rememberedCredentials', JSON.stringify({
@@ -74,7 +74,7 @@ const SignIn = () => {
         localStorage.setItem('token', data.token);
         navigate('/')
       } else {
-        setError(data.message || 'Login failed. Please check your credentials.');
+        setError(data.error || 'Login failed. Please check your credentials.');
       }
     } catch (error) {
       setError('An error occurred. Please try again later.');

@@ -11,7 +11,7 @@ import {
     ListItemButton,
     ListItemText,
     Typography,
-    ClickAwayListener
+    ClickAwayListener, CircularProgress
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { useState, useEffect, useRef } from "react";
@@ -29,7 +29,6 @@ const Search = styled('div')(({ theme }) => ({
     },
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-        // marginLeft: theme.spacing(1),
         width: 'auto',
     },
 }));
@@ -66,35 +65,50 @@ const SearchBar = () => {
     const [suggestions, setSuggestions] = useState([]);
     const isMobile = useMediaQuery('(max-width:600px)');
     const [showOverlaySearch, setShowOverlaySearch] = useState(false);
-    const inputRef = useRef(null);
     const navigate = useNavigate();
     const [showSuggestions, setShowSuggestions] = useState(false);
     const location = useLocation();
     const wrapperRef = useRef(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasSearched, setHasSearched] = useState(false);
+    const isProductPage = location.pathname.includes('/products/');
 
     useEffect(() => {
         setShowOverlaySearch(false); // Hide the overlay on route change
     }, [location.pathname]);
 
     useEffect(() => {
-        const delayDebounce = setTimeout(() => {
-            if (searchInput.trim().length >= 1) {
-                fetch(`${ENV.VITE_BACKEND_URL}/api/products?keyword=${searchInput}&limit=6`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.data) {
-                            setSuggestions(data.data.map(p => ({
-                                id: p._id,
-                                name: p.name,
-                                image: p.image,
-                                price: p.price
-                            })));
-                        } else {
-                            setSuggestions([]);
-                        }
-                    });
-            } else {
+        const delayDebounce = setTimeout(async () => {
+            const query = searchInput.trim();
+
+            if (query.length < 1) {
                 setSuggestions([]);
+                setHasSearched(false);
+                return;
+            }
+
+            setIsLoading(true);
+            setHasSearched(false);
+
+            try {
+                const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?keyword=${query}&limit=6`);
+                const data = await response.json();
+                if (data.data) {
+                    setSuggestions(data.data.map(p => ({
+                        id: p._id,
+                        name: p.name,
+                        image: p.image,
+                        price: p.price
+                    })));
+                } else {
+                    setSuggestions([]);
+                }
+            } catch (error) {
+                console.error("Error fetching suggestions:", error);
+                setSuggestions([]);
+            } finally {
+                setIsLoading(false);
+                setHasSearched(true); // only set true after fetch completes
             }
         }, 300);
 
@@ -136,69 +150,81 @@ const SearchBar = () => {
                     onFocus={() => setShowSuggestions(true)}
                 />
             </Search>
-            <Paper
-                elevation={4}
-                sx={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    right: 0,
-                    zIndex: 99,
-                    maxHeight: '200px',
-                    overflowY: 'auto',
-                    mt: 0.5,
-                }}
-            >
-                {showSuggestions && suggestions.length > 0 && (
-                    <List>
-                        {suggestions.map(suggestion => (
-                            <ListItem disablePadding key={suggestion.id}>
-                                <ListItemButton onClick={() => handleSelect(suggestion.id)}>
-                                    <Box sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                    }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                            <img
-                                                src={suggestion.image}
-                                                alt={suggestion.name}
-                                                style={{
-                                                    width: 50,
-                                                    height: 50,
-                                                    objectFit: 'cover',
-                                                    borderRadius: 4,
+            {!isProductPage && (
+                <Paper
+                    elevation={4}
+                    sx={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        right: 0,
+                        zIndex: 99,
+                        maxHeight: '200px',
+                        overflowY: 'auto',
+                        mt: 0.5,
+                    }}
+                >
+                    {isLoading ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '100%',
+                                padding: 2,
+                            }}
+                        >
+                            <CircularProgress />
+                        </Box>
+                    ) : showSuggestions && searchInput.trim() && hasSearched ? (
+                        suggestions.length > 0 ? (
+                            <List>
+                                {suggestions.map((suggestion) => (
+                                    <ListItem disablePadding key={suggestion.id}>
+                                        <ListItemButton onClick={() => handleSelect(suggestion.id)}>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between',
+                                                    width: '100%',
                                                 }}
-                                            />
-                                            <Typography>
-                                                {suggestion.name}
-                                            </Typography>
-                                        </Box>
-                                        <Typography
-                                            sx={{ fontWeight: 500 }}
-                                        >
-                                            ${suggestion.price}
-                                        </Typography>
-                                    </Box>
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                    )
-                }
-                {showSuggestions && searchInput.trim() && suggestions.length === 0 && (
-                    <Box sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '100%',
-                        padding: 2,
-                    }}>
-                        No Results Found
-                    </Box>
-                )}
-            </Paper>
+                                            >
+                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                                    <img
+                                                        src={suggestion.image}
+                                                        alt={suggestion.name}
+                                                        style={{
+                                                            width: 50,
+                                                            height: 50,
+                                                            objectFit: 'cover',
+                                                            borderRadius: 4,
+                                                        }}
+                                                    />
+                                                    <Typography>{suggestion.name}</Typography>
+                                                </Box>
+                                                <Typography sx={{ fontWeight: 500 }}>${suggestion.price}</Typography>
+                                            </Box>
+                                        </ListItemButton>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        ) : (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                    padding: 2,
+                                }}
+                            >
+                                No Results Found
+                            </Box>
+                        )
+                    ) : null}
+                </Paper>
+            )}
         </Box>
         </ClickAwayListener>
     );

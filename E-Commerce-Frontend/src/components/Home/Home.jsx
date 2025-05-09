@@ -464,7 +464,8 @@ const Home = () => {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <ProductsGrid isLoading={loading} products={newReleases} handleAddToCart={handleAddToCart} addedItems={addedItems}/>
+              <ProductsGrid isLoading={loading} products={newReleases}
+                            handleAddToCart={handleAddToCart} addedItems={addedItems}/>
 
             </motion.div>
           </Container>

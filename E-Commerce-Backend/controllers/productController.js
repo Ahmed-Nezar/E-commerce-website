@@ -41,6 +41,7 @@ exports.getProducts = async (req, res, next) => {
         const {
             page:  pageQ,
             limit: limitQ,
+            editAddMode = false,
             keyword,
             category,
             brand,
@@ -89,11 +90,13 @@ exports.getProducts = async (req, res, next) => {
         const totalNumberOfItems = await Product.countDocuments(filter);
 
         // Fetch paginated + sorted
-        const data = await Product.find(filter)
+        let data = await Product.find(filter)
             .collation({ locale: 'en', strength: 1 }) // <- enables case-insensitive sorting
-            .sort(sort)
-            .skip(skip)
-            .limit(limit);
+            .sort(sort);
+
+        if (!editAddMode) {
+            data = data.skip(skip).limit(limit);
+        }
 
         res.json({
             currentPage:  page,

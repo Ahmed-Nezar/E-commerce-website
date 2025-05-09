@@ -87,8 +87,10 @@ async function seedData() {
             totalPrice: createdProducts[i % createdProducts.length].price * ((i % 3) + 1),
             isPaid: true,
             paidAt: new Date(),
+            isShipped:   i % 2 === 0,
             isDelivered: i % 2 === 0,
-            deliveredAt: i % 2 === 0 ? new Date() : undefined
+            deliveredAt: i % 2 === 0 ? new Date() : undefined,
+            shippedAt:   i % 2 !== 0 ? new Date() : undefined
         }));
         await Order.insertMany(ordersData);
 

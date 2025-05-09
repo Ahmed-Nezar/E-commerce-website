@@ -136,7 +136,7 @@ const AdminDashboard = () => {
 
   // Fetch functions for each type
   const fetchProducts = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/products?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -147,9 +147,9 @@ const AdminDashboard = () => {
       total: data.totalNumberOfItems 
     });
   };  
-  
+
   const fetchUsers = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/users?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/users?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -162,7 +162,7 @@ const AdminDashboard = () => {
   };
 
   const fetchOrders = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/orders?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -175,7 +175,7 @@ const AdminDashboard = () => {
   };
 
   const fetchCoupons = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/coupons?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/coupons?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -188,7 +188,7 @@ const AdminDashboard = () => {
   };
 
   const fetchReviews = async (page = 1) => {
-    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/reviews/all?page=${page}&limit=20`, {
+    const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/reviews/all?page=${page}&limit=10`, {
       headers: { Authorization: localStorage.getItem('token') }
     });
     const data = await response.json();
@@ -497,7 +497,8 @@ const AdminDashboard = () => {
         body: JSON.stringify({
           status: viewingOrder.status,
           isPaid: viewingOrder.isPaid,
-          isDelivered: viewingOrder.isDelivered
+          isDelivered: viewingOrder.isDelivered,
+          isShipped: viewingOrder.isShipped,
         })
       });
 
@@ -849,7 +850,7 @@ const AdminDashboard = () => {
                         <TableCell>{order.user?.name}</TableCell>
                         <TableCell>${order.totalPrice}</TableCell>
                         <TableCell>
-                          {order.isDelivered ? 'Delivered' : order.isPaid ? 'Paid' : 'Pending'}
+                          {order.isDelivered ? 'Delivered' : order.isShipped ? 'Shipped' : order.isPaid ? 'Paid' : 'In Progress'}
                         </TableCell>
                         <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                         <TableCell>
@@ -1545,6 +1546,24 @@ const AdminDashboard = () => {
                               </Typography>
                             }
                           />
+                          <FormControlLabel
+                              control={
+                                <Switch
+                                    checked={viewingOrder.isShipped}
+                                    onChange={(e) => setViewingOrder(prev => ({
+                                      ...prev,
+                                      isShipped: e.target.checked
+                                    }))}
+                                />
+                              }
+                              label={
+                                <Typography sx={{ fontWeight: 500 }}>
+                                  Shipping Status: <span style={{ color: viewingOrder.isShipped ? '#2e7d32' : '#ed6c02' }}>
+                                  {viewingOrder.isShipped ? 'Shipped' : 'Pending'}
+                                </span>
+                                </Typography>
+                              }
+                          />
                         </Box>
                       ) : (
                         <>
@@ -1563,13 +1582,13 @@ const AdminDashboard = () => {
                             fontWeight: 500,
                             color: viewingOrder.isDelivered ? '#2e7d32' : '#ed6c02'
                           }}>
-                            {viewingOrder.isDelivered ? 'Delivered' : 'Pending'}
+                            {viewingOrder.isDelivered ? 'Delivered' : viewingOrder.isShipped? 'Shipped' : 'Pending'}
                           </Typography>
                         </>
                       )}
                     </Paper>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12} md={6} className="w-100">
                     <Paper elevation={0} sx={{ 
                       p: 3, 
                       borderRadius: 2, 

@@ -1,7 +1,6 @@
 const { default: mongoose } = require('mongoose');
 const { User } = require('../config/db');
 
-
 exports.getUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
@@ -126,13 +125,15 @@ exports.updateUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
     try {
-        const { page = 1, limit = 20 } = req.query;
+        const { page = 1, limit = 10, editAddMode = false } = req.query;
         const skip = (page - 1) * limit;
 
-        const users = await User.find()
-            .select('-password')
-            .skip(skip)
-            .limit(parseInt(limit));
+        let users = await User.find()
+            .select('-password');
+
+        if (!editAddMode) {
+            users = users.skip(skip).limit(parseInt(limit));
+        }
 
         const totalUsers = await User.countDocuments();
 

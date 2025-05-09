@@ -112,7 +112,9 @@ const orderSchema = new mongoose.Schema({
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
     isDelivered: { type: Boolean, default: false },
-    deliveredAt: { type: Date }
+    isShipped: { type: Boolean, default: false },
+    deliveredAt: { type: Date },
+    shippedAt: { type: Date },
 }, { timestamps: true });
 const Order = mongoose.model('Order', orderSchema);
 

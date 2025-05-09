@@ -56,7 +56,9 @@ async function aggregateCart(userId) {
                 isPaid: {$first: '$isPaid'},
                 paidAt: {$first: '$paidAt'},
                 isDelivered: {$first: '$isDelivered'},
+                isShipped: {$first: '$isShipped'},
                 deliveredAt: {$first: '$deliveredAt'},
+                shippedAt: {$first: '$shippedAt'},
                 createdAt: {$first: '$createdAt'},
                 updatedAt: {$first: '$updatedAt'}
             }
@@ -344,7 +346,7 @@ exports.editPaidOrder = async (req, res, next) => {
     try {
         const { orderId } = req.params;
         const userId = req.user._id;
-        const { shippingAddress, isDelivered } = req.body;
+        const { shippingAddress, isDelivered, isShipped } = req.body;
 
         // Find the paid order belonging to the user
         const order = await Order.findOne({ _id: orderId, user: userId, isPaid: true });
@@ -360,6 +362,13 @@ exports.editPaidOrder = async (req, res, next) => {
             order.isDelivered = isDelivered;
             if (isDelivered) {
                 order.deliveredAt = new Date();
+            }
+        }
+
+        if (typeof isShipped === 'boolean') {
+            order.isShipped = isShipped;
+            if (isShipped) {
+                order.shippedAt = new Date();
             }
         }
 
@@ -480,7 +489,7 @@ exports.getOrderById = async (req, res, next) => {
 exports.updateOrder = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { isPaid, isDelivered, status } = req.body;
+        const { isPaid, isDelivered, isShipped, status } = req.body;
 
         const order = await Order.findById(id);
         if (!order) {
@@ -489,10 +498,12 @@ exports.updateOrder = async (req, res, next) => {
 
         if (isPaid !== undefined) order.isPaid = isPaid;
         if (isDelivered !== undefined) order.isDelivered = isDelivered;
+        if (isShipped !== undefined) order.isShipped = isShipped;
         if (status) order.status = status;
 
         if (isPaid) order.paidAt = Date.now();
         if (isDelivered) order.deliveredAt = Date.now();
+        if (isShipped) order.shippedAt = Date.now();
 
         const updatedOrder = await order.save();
         res.status(200).json({ data: updatedOrder });

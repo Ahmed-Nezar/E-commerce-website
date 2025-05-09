@@ -128,12 +128,18 @@ exports.getAllUsers = async (req, res) => {
         const { page = 1, limit = 10, editAddMode = false } = req.query;
         const skip = (page - 1) * limit;
 
-        let users = await User.find()
-            .select('-password');
+        let query = User.find()
+            .select('-password')
+            .populate({
+                    path: 'wishList'
+                });
 
         if (!editAddMode) {
-            users = users.skip(skip).limit(parseInt(limit));
+            query = query.skip(skip).limit(parseInt(limit));
         }
+
+        // Execute the query
+        const users = await query.exec();
 
         const totalUsers = await User.countDocuments();
 

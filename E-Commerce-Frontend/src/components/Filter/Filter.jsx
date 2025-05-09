@@ -70,19 +70,41 @@ export default function Filter({   fromPrice, toPrice, setFromPrice, setToPrice,
                                     variant="filled"
                                     fullWidth
                                     value={fromPrice}
-                                    onChange={(e) => setFromPrice(Number(e.target.value))}
+                                    onChange={e => {
+                                        const digitsOnly = e.target.value.replace(/\D/g, '');
+                                        const num = digitsOnly === '' ? 0 : Number(digitsOnly);
+                                        setFromPrice(num);
+                                    }}
+                                    inputProps={{
+                                        inputMode: 'numeric',
+                                        pattern: '[0-9]*',
+                                        min: 0,
+                                        style: { textAlign: 'right' }
+                                    }}
                                 />
                             </div>
+
                             <div style={{ flex: '1 1 80px', maxWidth: '140px' }}>
                                 <TextField
                                     label="To"
                                     variant="filled"
                                     fullWidth
                                     value={toPrice}
-                                    onChange={(e) => setToPrice(Number(e.target.value))}
+                                    onChange={e => {
+                                        const digitsOnly = e.target.value.replace(/\D/g, '');
+                                        const num = digitsOnly === '' ? 0 : Number(digitsOnly);
+                                        setToPrice(num);
+                                    }}
+                                    inputProps={{
+                                        inputMode: 'numeric',
+                                        pattern: '[0-9]*',
+                                        min: 0,
+                                        style: { textAlign: 'right' }
+                                    }}
                                 />
                             </div>
                         </div>
+
                     </AccordionDetails>
                 </Accordion>
                 <Accordion sx={{margin: '1px 0 !important'}}>

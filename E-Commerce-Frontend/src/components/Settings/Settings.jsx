@@ -23,9 +23,9 @@ import {
 
 const navItems = [
   { label: 'Profile',        to: '/me/profile',   icon: <PersonIcon /> },
-  { label: 'Payment Methods',to: '/settings/payments',  icon: <PaymentIcon /> },
-  { label: 'Orders',         to: '/settings/orders',    icon: <OrdersIcon /> },
-  { label: 'Wishlist',       to: '/settings/wishlist',  icon: <WishlistIcon /> },
+  { label: 'Payment Methods',to: '/me/payments',  icon: <PaymentIcon /> },
+  { label: 'Orders',         to: '/me/orders',    icon: <OrdersIcon /> },
+  { label: 'Wishlist',       to: '/me/wishlist',  icon: <WishlistIcon /> },
   { label: 'Logout',         to: '/me/logout',             icon: <LogoutIcon /> },
 ];
 

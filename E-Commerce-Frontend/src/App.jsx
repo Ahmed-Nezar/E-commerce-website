@@ -21,6 +21,9 @@ import {SearchProvider} from "./context/SearchContext.jsx";
 import Settings from "./components/Settings/Settings.jsx";
 import Profile from "./components/Settings/Profile.jsx";
 import Logout from "./components/Settings/Logout.jsx";
+import Orders from "./components/Settings/Orders.jsx";
+import { OrderProvider } from './context/OrderContext.jsx'
+
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -47,6 +50,7 @@ function App() {
     return (
         <SearchProvider>
             <CartProvider>
+                <OrderProvider>
                 <ToastContainer />
                 <Router>
                     <Navbar reference={navbarRef}/>
@@ -100,12 +104,14 @@ function App() {
                             />
                             <Route path="/me" element={<Settings/>}>
                                 <Route path="profile" element={<Profile/>} />
+                                <Route path="orders" element={<Orders/>}/>
                                 <Route path="logout" element={<Logout/>}/>
                             </Route>
                         </Routes>
                     </div>
                     <Footer/>
                 </Router>
+                </OrderProvider>
             </CartProvider>
         </SearchProvider>
     )

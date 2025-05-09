@@ -6,7 +6,6 @@ import {
 } from "@mui/material";
 import { Col, Row, Input } from "reactstrap";
 import InnerImageZoom from "react-inner-image-zoom";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import s from "./Product.module.scss";
 import { ENV } from "../../App.jsx";
@@ -137,15 +136,14 @@ const ProductDetails = ({ productId }) => {
         }
     }, [productId, id]);
 
-    const addItemToCart = (product) => {
+    const addItemToCart = (productId) => {
         setIsLoading(true);
         try {
-            addToCart(product, quantity);
+            addToCart(productId, quantity);
             setAddedItems(prev => ({ ...prev, [product._id]: true }));
             setTimeout(() => {
                 setAddedItems(prev => ({ ...prev, [product._id]: false }));
             }, 2000);
-            showMessage("Item added to cart", false);
         } finally {
             setIsLoading(false);
         }
@@ -247,7 +245,7 @@ const ProductDetails = ({ productId }) => {
                                 startIcon={<ShoppingCartIcon />}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    addItemToCart(product)}
+                                    addItemToCart(product._id)}
                                 }
                                 disabled={product.stock === 0 || isLoading || addedItems[product._id]}
                                 sx={{
@@ -271,6 +269,8 @@ const ProductDetails = ({ productId }) => {
                                         boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
                                     },
                                     transition: 'all 0.3s ease',
+                                    color: (product.stock === 0 || isLoading || addedItems[product._id])
+                                        ? '#ccc !important' : '#fff !important',
                                 }}
                             >
                                 {isLoading ? 'Adding...' : (addedItems[product._id] ? 'Added!' : 'Add to Cart')}
@@ -280,32 +280,29 @@ const ProductDetails = ({ productId }) => {
                                 className="add-to-cart-button"
                                 onClick={(e) => {
                                         e.stopPropagation();
-                                        addItemToCart(product)
+                                        addItemToCart(product._id)
                                         navigate('/cart')
                                     }
                                 }
-                                disabled={product.stock === 0 || isLoading || addedItems[product._id]}
+                                disabled={product.stock === 0}
                                 sx={{
                                     borderRadius: '12px',
                                     width: "50%",
                                     px: 2,
                                     py: 1,
-                                    background: addedItems[product._id]
-                                        ? 'linear-gradient(45deg, #2e7d32, #4caf50)'
-                                        : 'linear-gradient(45deg, #091540, #3D518C)',
+                                    background: 'linear-gradient(45deg, #091540, #3D518C)',
                                     boxShadow: '0 4px 15px rgba(9, 21, 64, 0.3)',
                                     textTransform: 'none',
                                     fontWeight: 600,
-                                    opacity: isLoading ? 0.7 : 1,
-                                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                                    opacity:  1,
+                                    cursor: 'pointer',
                                     '&:hover': {
-                                        background: addedItems[product._id]
-                                            ? 'linear-gradient(45deg, #1b5e20, #2e7d32)'
-                                            : 'linear-gradient(45deg, #091540, #1B2CC1)',
+                                        background: 'linear-gradient(45deg, #091540, #1B2CC1)',
                                         transform: 'translateY(-2px)',
                                         boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
                                     },
                                     transition: 'all 0.3s ease',
+                                    color: product.stock === 0 ? '#ccc !important' : '#fff !important',
                                 }}
                             >
                                Buy Now

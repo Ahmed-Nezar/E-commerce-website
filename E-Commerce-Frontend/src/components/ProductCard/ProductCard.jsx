@@ -296,6 +296,8 @@ const ProductCard = ({
                                 boxShadow: '0 6px 20px rgba(9, 21, 64, 0.4)',
                             },
                             transition: 'all 0.3s ease',
+                            color: (product.stock === 0 || isLoading || addedItems[product._id])
+                                ? '#ccc !important' : '#fff !important',
                         }}
                     >
                         {isLoading ? 'Adding...' : (addedItems[product._id] ? 'Added!' : 'Add to Cart')}

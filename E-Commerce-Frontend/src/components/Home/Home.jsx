@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import {
-  Box, Container, Typography, Grid, IconButton, Paper, Fade,
+  Box, Container, Typography, IconButton, Paper, Fade,
 } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import MemoryIcon from '@mui/icons-material/Memory';
 import { RiRam2Line } from "react-icons/ri";
 import { useCart } from '../../context/CartContext';
-import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
-import ProductCard from "../ProductCard/ProductCard.jsx";
 import { useNavigate } from 'react-router-dom';
 import { FiMonitor } from "react-icons/fi";
 import { BsDeviceHdd, BsGpuCard, BsMotherboard, BsMouse2 } from "react-icons/bs";
@@ -163,6 +161,7 @@ const Home = () => {
                     textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
                     mb: 2,
                     animation: 'slideIn 0.5s ease-out',
+                    fontSize: { xs: '1.9rem', sm: '2.5rem', md: '3.5rem', lg: '4rem', xl: '4.5rem' },
                     '@keyframes slideIn': {
                       from: { transform: 'translateY(50px)', opacity: 0 },
                       to: { transform: 'translateY(0)', opacity: 1 },
@@ -178,6 +177,7 @@ const Home = () => {
                     mb: 4,
                     animation: 'fadeIn 0.5s ease-out 0.3s forwards',
                     opacity: 0,
+                    fontSize: { xs: '1.2rem', sm: '1.5rem', md: '1.9rem', lg: '2.2rem', xl: '2.7rem' },
                     '@keyframes fadeIn': {
                       to: { opacity: 1 },
                     },

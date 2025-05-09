@@ -18,17 +18,16 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import "./Navbar.css";
 import { jwtDecode } from 'jwt-decode';
-import { toast } from 'react-toastify';
 import SearchBar from "../SearchBar/SearchBar.jsx";
 import {RiLogoutBoxLine, RiMenuLine} from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg";
 import Drawer from "../Drawer/Drawer.jsx";
 import { useMediaQuery } from '@mui/material';
 
 const Navbar = ({reference}) => {
+    const [refreshToken] = useState(true);
     const navigate = useNavigate();
-    const { cartCount, user, setUser } = useCart();
+    const { cartCount, user, setUser, showMessage } = useCart();
     const location = useLocation();
     const isDesktop = useMediaQuery('(min-width:850px)');
     const isMobile = useMediaQuery('(max-width:600px)');
@@ -43,21 +42,19 @@ const Navbar = ({reference}) => {
                 //check token expiration
                 const currentTime = Date.now() / 1000;
                 if (payload.exp < currentTime) {
-                    setUser(null);
                     handleLogout();
-                    toast.error("Session Expired, Please Login Again")
+                    showMessage("Session Expired, Please Login Again", true);
                     return;
                 }
-                setUser(payload);
+                !user && setUser(payload);
             } catch (error) {
-                toast.error();
-                handleLogout("Session Expired, Please Login Again");
+                handleLogout();
+                showMessage("Session Expired, Please Login Again", true);
             }
         } else if (user) {
-            setUser(null);
-            navigate('/');
+            handleLogout()
         }
-    }, [location.pathname]);
+    }, [location.pathname, refreshToken]);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -102,7 +99,7 @@ const Navbar = ({reference}) => {
                             overflow: "hidden",
                             whiteSpace: "nowrap",
                             textOverflow: "ellipsis",
-                            maxWidth: "80px",
+                            maxWidth: "100px",
                         }}
                     >
                         {user.name}

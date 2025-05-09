@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 import {
-  Container,
-  Typography,
-  Box,
-  Paper,
-  Grid,
-  Card,
-  CardContent,
-  IconButton,
-  Button,
-  Divider,
-  TextField,
-  Fade,
-  Slide,
-  Badge,
-  useTheme,
-  Zoom,
+    Container,
+    Typography,
+    Box,
+    Paper,
+    Grid,
+    Card,
+    CardContent,
+    IconButton,
+    Button,
+    Divider,
+    TextField,
+    Fade,
+    Slide,
+    Badge,
+    useTheme,
+    Zoom,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -48,6 +48,7 @@ const Cart = () => {
         paymentMethod,
         setPaymentMethod
     } = useCart();
+
 
     const handleUpdateQuantity = async (productId, newQuantity) => {
         if (newQuantity <= 0) {
@@ -171,7 +172,7 @@ const Cart = () => {
                 <Grid container spacing={4} sx={{
                     flexWrap: 'nowrap !important',
                     width: '100%',
-                    '@media (max-width: 500px)': {
+                    '@media (max-width: 925px)': {
                         flexWrap: 'wrap !important',
                     }
                 }}>
@@ -266,7 +267,7 @@ const Cart = () => {
                                                 mb: 2,
                                                 display: 'flex',
                                                 borderRadius: 3,
-                                                overflow: 'hidden',
+                                                overflow: 'scroll',
                                                 boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
                                                 transition: 'all 0.3s ease',
                                                 '&:hover': {
@@ -290,16 +291,17 @@ const Cart = () => {
                                             <CardContent sx={{
                                                 flex: 1,
                                                 display: 'flex',
+                                                flexDirection: { xs: 'column', sm: 'row' },
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center',
-                                                p: 3
+                                                p: { xs: 2, sm: 3 }
                                             }}>
-                                                <Stack spacing={1}>
-                                                    <Typography variant="h5" component="div" fontWeight="600">
+                                                <Stack spacing={1} sx={{ textAlign: { xs: 'center', sm: 'left' }}}>
+                                                    <Typography variant="h6" component="div" fontWeight="600">
                                                         {item.name}
                                                     </Typography>
                                                     <Typography
-                                                        variant="h5"
+                                                        variant="h6"
                                                         sx={{
                                                             fontWeight: '700',
                                                             background: 'linear-gradient(45deg, #091540, #3D518C)',
@@ -317,12 +319,15 @@ const Cart = () => {
                                                 <Box sx={{
                                                     display: 'flex',
                                                     alignItems: 'center',
-                                                    gap: 1
+                                                    gap: { xs: 1, sm: 2 },
+                                                    mt: { xs: 2, sm: 0 },
                                                 }}>
                                                     <IconButton
                                                         onClick={() => handleUpdateQuantity(item.product, item.quantity - 1)}
                                                         disabled={updatingItem === item.product}
                                                         sx={{
+                                                            p: { xs: 0.5, sm: 1 },
+                                                            '& svg': { fontSize: { xs: '1rem', sm: '1.25rem' }},
                                                             bgcolor: 'rgba(9, 21, 64, 0.1)',
                                                             '&:hover': {
                                                                 bgcolor: 'rgba(9, 21, 64, 0.2)',
@@ -338,7 +343,8 @@ const Cart = () => {
                                                         InputProps={{
                                                             readOnly: true,
                                                             sx: {
-                                                                width: '60px',
+                                                                width: { xs: '40px', sm: '50px' },
+                                                                height: { xs: '30px', sm: '40px' },
                                                                 textAlign: 'center',
                                                                 '& input': {
                                                                     textAlign: 'center',
@@ -350,6 +356,8 @@ const Cart = () => {
                                                         onClick={() => handleUpdateQuantity(item.product, item.quantity + 1)}
                                                         disabled={updatingItem === item.product}
                                                         sx={{
+                                                            p: { xs: 0.5, sm: 1 },
+                                                            '& svg': { fontSize: { xs: '1rem', sm: '1.25rem' }},
                                                             bgcolor: 'rgba(9, 21, 64, 0.1)',
                                                             '&:hover': {
                                                                 bgcolor: 'rgba(9, 21, 64, 0.2)',
@@ -363,7 +371,8 @@ const Cart = () => {
                                                         onClick={() => handleRemoveItem(item.product)}
                                                         disabled={removingItem === item.product}
                                                         sx={{
-                                                            ml: 2,
+                                                            p: { xs: 0.5, sm: 1 },
+                                                            '& svg': { fontSize: { xs: '1.5rem', sm: '1.75rem' }},
                                                             color: '#d32f2f',
                                                             '&:hover': {
                                                                 bgcolor: 'rgba(211, 47, 47, 0.1)',
@@ -382,7 +391,10 @@ const Cart = () => {
                         </Paper>
                     </Grid>
 
-                    <Grid item xs={12} md={4} sx={{maxWidth: '500px', width: '500px'}}>
+                    <Grid item xs={12} md={4} sx={{maxWidth: '500px', width: '500px',
+                        '@media (max-width: 925px)': {
+                            maxWidth: '100%', width: '100%',
+                        }}}>
                         <Slide direction="left" in timeout={500}>
                             <Paper
                                 elevation={0}
@@ -413,6 +425,10 @@ const Cart = () => {
                                         >
                                             Free
                                         </Typography>
+                                    </Grid>
+                                    <Grid container justifyContent="space-between" sx={{mb: 2}}>
+                                        <Typography color="text.secondary">Taxes</Typography>
+                                        <Typography fontWeight="500">$10.00</Typography>
                                     </Grid>
                                     <Divider sx={{my: 3}}/>
                                     <Grid container justifyContent="space-between" alignItems="center">

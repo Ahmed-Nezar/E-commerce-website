@@ -119,6 +119,7 @@ const Navbar = ({reference}) => {
                         {user?.isAdmin && (
                             <Button startIcon={<DashboardIcon />} onClick={() => {
                                 navigate('/admin')
+                                scroll(0,0)
                                 setmenuOpen(false)
                             }} style={{color:'#3D518C', width:'100%', justifyContent:'left'}}>
                                 Admin
@@ -252,7 +253,10 @@ const Navbar = ({reference}) => {
                                     <>
                                         <Button
                                             variant="text"
-                                            onClick={() => navigate('/signin')}
+                                            onClick={() => {
+                                                navigate('/signin')
+                                                scroll(0,0)
+                                            }}
                                             sx={{
                                                 color: '#3D518C',
                                                 fontWeight: 600,
@@ -280,7 +284,10 @@ const Navbar = ({reference}) => {
                                         </Button>
                                         <Button
                                             variant="contained"
-                                            onClick={() => navigate('/register')}
+                                            onClick={() => {
+                                                navigate('/register')
+                                                scroll(0,0)
+                                            }}
                                             sx={{
                                                 background: 'linear-gradient(90deg, #091540, #3D518C)',
                                                 borderRadius: '50px',

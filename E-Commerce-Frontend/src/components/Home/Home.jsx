@@ -334,7 +334,10 @@ const Home = () => {
                     minWidth: 180,
                     flex: '0 0 auto',
                   }}
-                  onClick={() => navigate(`/products/${category.name}`, { state : { category: category.name } })}
+                  onClick={() => {
+                      navigate(`/products/${category.name}`, { state : { category: category.name } })
+                      scroll(0,0)
+                    }}
                 >
                   <Paper
                     elevation={0}

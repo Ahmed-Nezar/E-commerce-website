@@ -268,7 +268,7 @@ const Cart = () => {
                                     </Typography>
                                     <Button
                                         variant="contained"
-                                        onClick={() => navigate('/')}
+                                        onClick={() => navigate('/products')}
                                         sx={{
                                             px: 4,
                                             py: 1.5,
@@ -299,7 +299,7 @@ const Cart = () => {
                                                 mb: 2,
                                                 display: 'flex',
                                                 borderRadius: 3,
-                                                overflow: 'scroll',
+                                                overflow: 'overlay',
                                                 boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
                                                 transition: 'all 0.3s ease',
                                                 '&:hover': {

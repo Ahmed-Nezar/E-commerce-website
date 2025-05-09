@@ -51,7 +51,7 @@ const ChangePassword = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `${token}`
         },
         body: JSON.stringify({
           currentPassword: formData.currentPassword,
@@ -61,7 +61,7 @@ const ChangePassword = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (!data.error) {
         setSuccess('Password changed successfully!');
         // Clear form
         setFormData({
@@ -71,10 +71,10 @@ const ChangePassword = () => {
         });
         // Redirect to profile page after 2 seconds
         setTimeout(() => {
-          navigate('/profile');
+          navigate('/me/profile');
         }, 2000);
       } else {
-        setError(data.message || 'Failed to change password. Please try again.');
+        setError(data.error || 'Failed to change password. Please try again.');
       }
     } catch (error) {
       setError('An error occurred. Please try again later.');

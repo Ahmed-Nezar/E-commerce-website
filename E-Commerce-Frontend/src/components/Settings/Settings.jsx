@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import {Outlet, NavLink, useNavigate} from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import {
     Box,
@@ -23,6 +23,7 @@ import {
   ChevronLeft   as ChevronLeftIcon,
   ChevronRight  as ChevronRightIcon,
 } from '@mui/icons-material';
+import {useCart} from "../../context/CartContext.jsx";
 
 const drawerWidth = 240;
 
@@ -75,10 +76,16 @@ const navItems = [
   { label: 'Logout',         to: '/me/logout',             icon: <LogoutIcon /> },
 ];
 
+const handleLogout = (setUser, navigate) => {
+    localStorage.removeItem('token');
+    setUser(null);
+    navigate('/');
+};
+
 export default function SettingsLayout() {
-    const theme   = useTheme();
+    const theme = useTheme();
     const [open, setOpen] = useState(true);
-    const isSmall  = useMediaQuery('(max-width:840px)');
+    const isSmall = useMediaQuery('(max-width:840px)');
     useEffect(() => {
         if (isSmall) {
             setOpen(false);
@@ -86,10 +93,12 @@ export default function SettingsLayout() {
             setOpen(true);
         }
     }, [isSmall]);
+    const navigate = useNavigate();
+    const { setUser } = useCart();
 
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-            <CssBaseline />
+        <Box sx={{display: 'flex', minHeight: '100vh'}}>
+            <CssBaseline/>
 
             {/* Sidebar */}
             <Sidebar component="nav" open={open}>
@@ -98,17 +107,18 @@ export default function SettingsLayout() {
                         Settings
                     </Typography>
                     <IconButton onClick={() => setOpen(o => !o)}>
-                        {open ? <ChevronLeftIcon /> : <ChevronRightIcon/>}
+                        {open ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
                 </DrawerHeader>
-                <Divider />
+                <Divider/>
 
                 <List>
-                    {navItems.map(({ label, to, icon }) => (
-                        <ListItem key={to} disablePadding sx={{ display: 'block' }}>
+                    {navItems.map(({label, to, icon}) => (
+                        <ListItem key={to} disablePadding sx={{display: 'block'}}>
                             <ListItemButton
-                                component={NavLink}
-                                to={to}
+                                component={label === 'Logout' ? 'button' : NavLink}
+                                {...(label === 'Logout' ?
+                                    {onClick: (() => handleLogout(setUser, navigate))} : {to})}
                                 sx={{
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',
@@ -134,8 +144,8 @@ export default function SettingsLayout() {
                                 </ListItemIcon>
                                 <ListItemText
                                     primary={label}
-                                    primaryTypographyProps={{ color: 'inherit' }}
-                                    sx={{ opacity: open ? 1 : 0 }}
+                                    primaryTypographyProps={{color: 'inherit'}}
+                                    sx={{opacity: open ? 1 : 0}}
                                 />
                             </ListItemButton>
                         </ListItem>
@@ -152,8 +162,8 @@ export default function SettingsLayout() {
                     background: 'linear-gradient(to right, #7AA1ED, #A1C4FD)',
                 }}
             >
-                <Toolbar />
-                <Outlet />
+                <Toolbar/>
+                <Outlet/>
             </Box>
         </Box>
     );

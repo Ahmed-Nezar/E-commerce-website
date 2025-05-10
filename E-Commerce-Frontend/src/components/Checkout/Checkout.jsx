@@ -252,7 +252,6 @@ const Checkout = () => {
         return (
           <OrderReview
             cartItems={cartItems}
-            total={total}
             shippingAddress={shippingAddress}
             guestInfo={guestInfo}
             isLoggedIn={isLoggedIn}

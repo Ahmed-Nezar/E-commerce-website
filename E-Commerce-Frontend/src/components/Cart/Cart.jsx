@@ -34,6 +34,8 @@ const Cart = () => {
     const [loading, setLoading] = useState(true);
     const [updatingItem, setUpdatingItem] = useState(null);
     const [removingItem, setRemovingItem] = useState(null);
+    const [discountInfo, setDiscountInfo] = useState(null);
+    const [couponCode, setCouponCode] = useState('');
     const navigate = useNavigate();
     const theme = useTheme();
     const {
@@ -41,6 +43,9 @@ const Cart = () => {
         removeFromCart,
         updateQuantity,
         total,
+        setTotal,
+        subTotal,
+        setSubTotal,
         cartCount,
         shippingFees,
         setShippingFees,
@@ -78,6 +83,26 @@ const Cart = () => {
         }
     };
 
+    const handleApplyCoupon = async () => {
+        try {
+            const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/coupons/apply`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({ code: couponCode, totalPrice: total }),
+            });
+            console.log(response);
+            const res = await response.json();
+            if (res.error) throw new Error(res.error || 'Invalid coupon');
+            setDiscountInfo(res.data);
+        } catch (err) {
+            setDiscountInfo(null);
+            console.log(err);
+        }
+    };
+
     const handleCheckout = () => {
         // Prepare order data based on schema
         const orderData = {
@@ -90,8 +115,13 @@ const Cart = () => {
             paymentMethod,
             totalPrice: total
         };
-
-        console.log('Processing order:', orderData);
+        // setTotal(parseFloat(subTotal.toFixed(2)) +
+        //     parseFloat(shippingFees) +
+        //     parseFloat(subTotal.toFixed(2) * 0.14) -
+        //     (discountInfo ? parseFloat(discountInfo?.discountAmount).toFixed(2) : 0))
+        setDiscount(parseFloat(discountInfo?.discountAmount).toFixed(2))
+        setShippingFees(shippingFees);
+        // setSubTotal(cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0));
         navigate('/checkout');
         // TODO: Implement checkout logic with backend
     };
@@ -132,7 +162,16 @@ const Cart = () => {
             }
         }
         fetchUserLocation();
-    }, []);
+    }, [cartItems]);
+
+    useEffect(() => {
+        setTotal(parseFloat(
+            parseFloat(subTotal.toFixed(2)) +
+            parseFloat(shippingFees) +
+            parseFloat(subTotal.toFixed(2) * 0.14) -
+            (discountInfo ? parseFloat(discountInfo?.discountAmount).toFixed(2) : 0)).toFixed(2));
+    }, [subTotal,discountInfo,shippingFees]);
+
 
     if (loading) {
         return <Loader/>;
@@ -347,7 +386,7 @@ const Cart = () => {
                                                         ${item.price.toFixed(2)}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary">
-                                                        Subtotal: ${(item.price * item.quantity).toFixed(2)}
+                                                        Subtotal: ${item.price.toFixed(2) * item.quantity}
                                                     </Typography>
                                                 </Stack>
                                                 <Box sx={{
@@ -425,10 +464,14 @@ const Cart = () => {
                         </Paper>
                     </Grid>
 
-                    <Grid item xs={12} md={4} sx={{maxWidth: '500px', width: '500px',
+                    <Grid item xs={12} md={4} sx={{
+                        maxWidth: '500px',
+                        width: '500px',
                         '@media (max-width: 925px)': {
-                            maxWidth: '100%', width: '100%',
-                        }}}>
+                            maxWidth: '100%',
+                            width: '100%',
+                        }
+                    }}>
                         <Slide direction="left" in timeout={500}>
                             <Paper
                                 elevation={0}
@@ -443,48 +486,93 @@ const Cart = () => {
                                     top: 100
                                 }}
                             >
-                                <Typography variant="h5" sx={{mb: 3, fontWeight: 600}}>Order Summary</Typography>
-                                <Box sx={{mb: 3}}>
-                                    <Grid container justifyContent="space-between" sx={{mb: 2}}>
+                                <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+                                    Order Summary
+                                </Typography>
+
+                                {/* Subtotal, Shipping, Taxes */}
+                                <Box sx={{ mb: 2 }}>
+                                    <Grid container justifyContent="space-between" sx={{ mb: 2 }}>
                                         <Typography color="text.secondary">Subtotal</Typography>
-                                        <Typography fontWeight="500">${total.toFixed(2)}</Typography>
+                                        <Typography fontWeight="500">${subTotal.toFixed(2)}</Typography>
                                     </Grid>
-                                    <Grid container justifyContent="space-between" sx={{mb: 2}}>
+                                    {discountInfo && (
+                                    <Grid container justifyContent="space-between" sx={{ mb: 2 }}>
+                                        <Typography color="text.secondary">Discount ({discountInfo.code})</Typography>
+                                        <Typography fontWeight="600" color="success.main">
+                                            -${discountInfo.discountAmount.toFixed(2)}
+                                        </Typography>
+                                    </Grid>)}
+                                    <Grid container justifyContent="space-between" sx={{ mb: 2 }}>
                                         <Typography color="text.secondary">Shipping</Typography>
-                                        <Typography
-                                            sx={{
-                                                color: '#2e7d32',
-                                                fontWeight: 500
-                                            }}
-                                        >
+                                        <Typography sx={{ color: shippingFees ? 'red': "#2e7d32", fontWeight: 500 }}>
                                             {shippingFees > 0 ? `$${shippingFees.toFixed(2)}` : 'Free'}
                                         </Typography>
                                     </Grid>
-                                    <Grid container justifyContent="space-between" sx={{mb: 2}}>
+                                    <Grid container justifyContent="space-between" sx={{ mb: 2 }}>
                                         <Typography color="text.secondary">Taxes</Typography>
                                         <Typography fontWeight="500">14%</Typography>
                                     </Grid>
-                                    <Divider sx={{my: 3}}/>
-                                    <Grid container justifyContent="space-between" alignItems="center">
-                                        <Typography variant="h6">Total</Typography>
-                                        <Typography
-                                            variant="h5"
+                                </Box>
+
+                                {/* ── NEW: Coupon Code ── */}
+                                <Grid container sx={{
+                                    display: 'flex',
+                                    flexDirection: { xs: 'column', sm: 'row' },
+                                    gap: 2,
+                                    mb: 3
+                                }}>
+                                        <TextField
+                                            label="Coupon Code"
+                                            variant="outlined"
+                                            size="small"
+                                            fullWidth
+                                            value={couponCode}
+                                            onChange={(e) => setCouponCode(e.target.value)}
+                                        />
+                                        <Button
+                                            fullWidth
+                                            variant="contained"
+                                            size="small"
+                                            onClick={handleApplyCoupon}
                                             sx={{
-                                                fontWeight: 700,
+                                                height: '100%',
+                                                borderRadius: 2,
+                                                px: 2,
+                                                whiteSpace: 'nowrap',
                                                 background: 'linear-gradient(45deg, #091540, #3D518C)',
-                                                backgroundClip: 'text',
-                                                WebkitBackgroundClip: 'text',
-                                                WebkitTextFillColor: 'transparent',
+                                                '&:hover': {
+                                                    background: 'linear-gradient(45deg, #091540, #1B2CC1)',
+                                                    transform: 'translateY(-1px)',
+                                                },
+                                                transition: 'all 0.2s',
                                             }}
                                         >
-                                            ${
-                                                (parseFloat(total.toFixed(2)) +
-                                                parseFloat(shippingFees) +
-                                                parseFloat(total.toFixed(2) * 0.14)).toFixed(2)
-                                            }
-                                        </Typography>
-                                    </Grid>
-                                </Box>
+                                            Apply
+                                        </Button>
+                                </Grid>
+
+                                <Divider sx={{ my: 3 }} />
+
+                                {/* Total */}
+                                <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
+                                    <Typography variant="h6">Total</Typography>
+                                    <Typography
+                                        variant="h5"
+                                        sx={{
+                                            fontWeight: 700,
+                                            background: 'linear-gradient(45deg, #091540, #3D518C)',
+                                            backgroundClip: 'text',
+                                            WebkitBackgroundClip: 'text',
+                                            WebkitTextFillColor: 'transparent',
+                                        }}
+                                    >
+                                        ${
+                                        total
+                                    }
+                                    </Typography>
+                                </Grid>
+
                                 <Button
                                     variant="contained"
                                     fullWidth
@@ -512,14 +600,11 @@ const Cart = () => {
                                 >
                                     Proceed to Checkout
                                 </Button>
+
                                 {cartItems.length === 0 && (
                                     <Typography
                                         variant="body2"
-                                        sx={{
-                                            mt: 2,
-                                            textAlign: 'center',
-                                            color: 'text.secondary'
-                                        }}
+                                        sx={{ mt: 2, textAlign: 'center', color: 'text.secondary' }}
                                     >
                                         Add items to your cart to checkout
                                     </Typography>
@@ -527,6 +612,7 @@ const Cart = () => {
                             </Paper>
                         </Slide>
                     </Grid>
+
                 </Grid>
             </Container>
         </Fade>

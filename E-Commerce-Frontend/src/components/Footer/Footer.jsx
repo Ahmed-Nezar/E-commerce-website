@@ -1,4 +1,5 @@
-import { Container, Grid, Typography, IconButton, Box, Link } from '@mui/material';
+import { Container, Grid, Typography, IconButton, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -84,24 +85,32 @@ const Footer = () => {
                     <Grid container>
                         <Grid item xs={12} md={4}>
                             <Typography variant="h6" sx={{mb: 2, fontWeight: 600}}>Quick Links</Typography>
-                            {['Home', 'Products', 'About Us', 'Contact'].map((text) => (
+                            {[
+                                { text: 'Home', path: '/', onClick: () => window.scrollTo(0, 0) },
+                                { text: 'Products', path: '/products' }
+                            ].map((item) => (
                                 <Link
-                                    key={text}
-                                    href="#"
-                                    underline="none"
-                                    sx={{
+                                    key={item.text}
+                                    to={item.path}
+                                    style={{
                                         color: 'white',
                                         opacity: 0.8,
                                         display: 'block',
-                                        mb: 1,
-                                        '&:hover': {
-                                            opacity: 1,
-                                            transform: 'translateX(5px)'
-                                        },
+                                        marginBottom: '8px',
+                                        textDecoration: 'none',
                                         transition: 'all 0.3s ease'
                                     }}
+                                    onClick={item.onClick}
+                                    onMouseOver={(e) => {
+                                        e.currentTarget.style.opacity = '1';
+                                        e.currentTarget.style.transform = 'translateX(5px)';
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.currentTarget.style.opacity = '0.8';
+                                        e.currentTarget.style.transform = 'translateX(0)';
+                                    }}
                                 >
-                                    {text}
+                                    {item.text}
                                 </Link>
                             ))}
                         </Grid>

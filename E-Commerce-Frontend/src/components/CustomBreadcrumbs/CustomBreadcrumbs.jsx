@@ -40,6 +40,9 @@ const CustomBreadcrumbs = ({locations}) => {
                     to = "/"
                     label="Home"
                     icon={<HomeIcon fontSize="small" />}
+                    onClick={() => {
+                        window.scrollTo(0, 0);
+                    }}
                 />
                 {
                     locations.map((location, index) => (

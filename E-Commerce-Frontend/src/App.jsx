@@ -52,79 +52,79 @@ function App() {
         <SearchProvider>
             <CartProvider>
                 <OrderProvider>
-                <ToastContainer />
-                <Router>
-                    <Navbar reference={navbarRef}/>
-                    <div className="position-relative" style={{ top: offsetTop }}>
-                        <Routes>
-                            <Route path="/" element={<Home/>}/>
-                            <Route
-                                path="/signin"
-                                element={
-                                    <PublicRoute>
-                                        <SignIn/>
-                                    </PublicRoute>
-                                }
-                            />
-                            <Route
-                                path="/register"
-                                element={
-                                    <PublicRoute>
-                                        <Register/>
-                                    </PublicRoute>
-                                }
-                            />
-                            <Route
-                                path="/forgot-password"
-                                element={
-                                    <PublicRoute>
-                                        <ForgotPassword/>
-                                    </PublicRoute>
-                                }
-                            />
-                            <Route
-                                path="/reset-password/:token"
-                                element={
-                                    <PublicRoute>
-                                        <ResetPassword/>
-                                    </PublicRoute>
-                                }
-                            />
-                            <Route path="/cart" element={<Cart/>}/>
-                            <Route
-                                path="/checkout"
-                                element={
-                                    <ProtectedRoute>
-                                        <Checkout/>
-                                    </ProtectedRoute>
-                                }
-                            />
-                            <Route path="/products" element={<Products/>}/>
-                            <Route path="/products/:cn" element={<Products/>}/>
-                            <Route path="/productDetails/:id" element={<ProductDetails />}/>
-                            <Route
-                                path="/admin"
-                                element={
-                                    <AdminRoute>
-                                        <AdminDashboard/>
-                                    </AdminRoute>
-                                }
-                            />
-                            <Route path="/me" element={
+                    <ToastContainer/>
+                    <Router>
+                        <Navbar reference={navbarRef}/>
+                        <div className="position-relative" style={{top: offsetTop}}>
+                            <Routes>
+                                <Route path="/" element={<Home/>}/>
+                                <Route
+                                    path="/signin"
+                                    element={
+                                        <PublicRoute>
+                                            <SignIn/>
+                                        </PublicRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/register"
+                                    element={
+                                        <PublicRoute>
+                                            <Register/>
+                                        </PublicRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/forgot-password"
+                                    element={
+                                        <PublicRoute>
+                                            <ForgotPassword/>
+                                        </PublicRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/reset-password/:token"
+                                    element={
+                                        <PublicRoute>
+                                            <ResetPassword/>
+                                        </PublicRoute>
+                                    }
+                                />
+                                <Route path="/cart" element={<Cart/>}/>
+                                <Route
+                                    path="/checkout"
+                                    element={
+                                        <ProtectedRoute>
+                                            <Checkout/>
+                                        </ProtectedRoute>
+                                    }
+                                />
+                                <Route path="/products" element={<Products/>}/>
+                                <Route path="/products/:cn" element={<Products/>}/>
+                                <Route path="/productDetails/:id" element={<ProductDetails/>}/>
+                                <Route
+                                    path="/admin"
+                                    element={
+                                        <AdminRoute>
+                                            <AdminDashboard/>
+                                        </AdminRoute>
+                                    }
+                                />
+                                <Route path="/me" element={
                                     <ProtectedRoute>
                                         <Settings/>
                                     </ProtectedRoute>
                                 }
-                            >
-                                <Route path="profile" element={<Profile/>}/>
-                                <Route path="orders" element={<Orders/>}/>
-                                <Route path="change-password" element={<ChangePassword/>}/>
-                                <Route path="logout" element={<Logout/>}/>
-                            </Route>
-                        </Routes>
-                    </div>
-                    <Footer/>
-                </Router>
+                                >
+                                    <Route path="profile" element={<Profile/>}/>
+                                    <Route path="orders" element={<Orders/>}/>
+                                    <Route path="change-password" element={<ChangePassword/>}/>
+                                    <Route path="logout" element={<Logout/>}/>
+                                </Route>
+                            </Routes>
+                        </div>
+                        <Footer/>
+                    </Router>
                 </OrderProvider>
             </CartProvider>
         </SearchProvider>

@@ -22,6 +22,8 @@ export const CartProvider = ({ children }) => {
   const [paymentMethod, setPaymentMethod] = useState('');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [shippingFees, setShippingFees] = useState(0);
+  const [discount, setDiscount] = useState(0);
 
   // load user from token
   useEffect(() => {
@@ -204,6 +206,9 @@ export const CartProvider = ({ children }) => {
     showMessage,
     shippingAddress,
     setShippingAddress,
+    shippingFees,
+    setShippingFees,
+    discount, setDiscount,
     paymentMethod,
     setPaymentMethod
   };

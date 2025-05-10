@@ -9,6 +9,7 @@ import {
   Divider,
   Alert
 } from '@mui/material';
+import {useCart} from "../../context/CartContext.jsx";
 
 const OrderReview = ({ 
   cartItems, 
@@ -21,6 +22,7 @@ const OrderReview = ({
   paypalEmail,
   error
 }) => {
+    const { shippingFees, discount } = useCart();
     return (
         <Box sx={{mt: 4}}>
             {error && (
@@ -224,8 +226,16 @@ const OrderReview = ({
                     <Typography fontWeight={500}>${total.toFixed(2)}</Typography>
                 </Box>
                 <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography color="text.secondary">Discount</Typography>
+                    <Typography sx={{ color: 'success.main', fontWeight: 500 }}>{discount}</Typography>
+                </Box>
+                <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
                     <Typography color="text.secondary">Shipping</Typography>
-                    <Typography sx={{ color: 'success.main', fontWeight: 500 }}>Free</Typography>
+                    <Typography sx={{ color: 'success.main', fontWeight: 500 }}>{shippingFees}</Typography>
+                </Box>
+                <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography color="text.secondary">Tax</Typography>
+                    <Typography sx={{ color: 'success.main', fontWeight: 500 }}>{(0.14 * total).toFixed(2)}</Typography>
                 </Box>
                 <Divider sx={{ my: 2 }} />
 
@@ -241,7 +251,7 @@ const OrderReview = ({
                             WebkitTextFillColor: 'transparent',
                         }}
                     >
-                        ${total.toFixed(2)}
+                        ${(total.toFixed(2) + shippingFees).toFixed(2)}
                     </Typography>
                 </Box>
             </Paper>

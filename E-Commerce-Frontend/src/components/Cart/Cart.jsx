@@ -34,7 +34,6 @@ const Cart = () => {
     const [loading, setLoading] = useState(true);
     const [updatingItem, setUpdatingItem] = useState(null);
     const [removingItem, setRemovingItem] = useState(null);
-    const [shippingFees, setShippingFees] = useState(0);
     const navigate = useNavigate();
     const theme = useTheme();
     const {
@@ -43,6 +42,9 @@ const Cart = () => {
         updateQuantity,
         total,
         cartCount,
+        shippingFees,
+        setShippingFees,
+        setDiscount,
         shippingAddress,
         paymentMethod,
         showMessage

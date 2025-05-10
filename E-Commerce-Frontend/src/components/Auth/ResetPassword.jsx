@@ -65,16 +65,16 @@ const ResetPassword = () => {
 
             const data = await response.json();
 
-            if (response.ok) {
+            if (!data.error) {
                 setStatus({
                     type: 'success',
                     message: 'Password has been reset successfully!'
                 });
                 setPassword('');
                 setConfirmPassword('');
-                // Redirect to login page after 2 seconds
+                // Redirect to signin page after 2 seconds
                 setTimeout(() => {
-                    navigate('/login');
+                    navigate('/signin');
                 }, 2000);
             } else {
                 setStatus({

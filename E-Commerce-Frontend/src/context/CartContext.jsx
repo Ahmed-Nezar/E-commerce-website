@@ -24,6 +24,8 @@ export const CartProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [shippingFees, setShippingFees] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
+  const [total, setTotal] = useState(0);
 
   // load user from token
   useEffect(() => {
@@ -129,6 +131,8 @@ export const CartProvider = ({ children }) => {
       })));
       setShippingAddress(data.shippingAddress || {});
       setPaymentMethod(data.paymentMethod || '');
+      !total && setTotal(data.orderItems.reduce((sum, i) => sum + i.price * i.quantity, 0))
+      setSubTotal(data.orderItems.reduce((sum, i) => sum + i.price * i.quantity, 0))
     } catch (err) {
       showMessage("Could not load your cart", true);
       console.error("refreshCart error:", err);
@@ -190,7 +194,7 @@ export const CartProvider = ({ children }) => {
     return Promise.all(cartItems.map(i => removeFromCart(i.product)));
   };
 
-  const total = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
   const cartCount = cartItems.length;
 
   const value = {
@@ -200,7 +204,10 @@ export const CartProvider = ({ children }) => {
     updateQuantity,
     clearCart,
     refreshCart,
-    total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    total,
+    setTotal,
+    subTotal,
+    setSubTotal,
     cartCount: cartItems.length,
     user, setUser,
     showMessage,

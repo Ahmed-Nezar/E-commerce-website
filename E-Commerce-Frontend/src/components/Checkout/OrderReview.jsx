@@ -3,17 +3,13 @@ import {
   Typography,
   Box,
   Paper,
-  Grid,
-  Card,
-  CardContent,
   Divider,
   Alert
 } from '@mui/material';
 import {useCart} from "../../context/CartContext.jsx";
 
 const OrderReview = ({ 
-  cartItems, 
-  total, 
+  cartItems,
   shippingAddress, 
   guestInfo, 
   isLoggedIn, 
@@ -22,7 +18,7 @@ const OrderReview = ({
   paypalEmail,
   error
 }) => {
-    const { shippingFees, discount } = useCart();
+    const { shippingFees, discount, total, subTotal} = useCart();
     return (
         <Box sx={{mt: 4}}>
             {error && (
@@ -223,19 +219,19 @@ const OrderReview = ({
 
                 <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
                     <Typography color="text.secondary">Subtotal</Typography>
-                    <Typography fontWeight={500}>${total.toFixed(2)}</Typography>
+                    <Typography fontWeight={500}>${subTotal.toFixed(2)}</Typography>
                 </Box>
                 <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
                     <Typography color="text.secondary">Discount</Typography>
-                    <Typography sx={{ color: 'success.main', fontWeight: 500 }}>{discount}</Typography>
+                    <Typography sx={{ color: 'success.main', fontWeight: 500 }}>-${!isNaN(discount) ? discount : 0}</Typography>
                 </Box>
                 <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
                     <Typography color="text.secondary">Shipping</Typography>
-                    <Typography sx={{ color: 'success.main', fontWeight: 500 }}>{shippingFees}</Typography>
+                    <Typography sx={{ color: 'red', fontWeight: 500 }}>+${shippingFees}</Typography>
                 </Box>
                 <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between' }}>
                     <Typography color="text.secondary">Tax</Typography>
-                    <Typography sx={{ color: 'success.main', fontWeight: 500 }}>{(0.14 * total).toFixed(2)}</Typography>
+                    <Typography sx={{ color: 'red', fontWeight: 500 }}>+{(0.14 * subTotal).toFixed(2)}</Typography>
                 </Box>
                 <Divider sx={{ my: 2 }} />
 
@@ -251,7 +247,7 @@ const OrderReview = ({
                             WebkitTextFillColor: 'transparent',
                         }}
                     >
-                        ${(total.toFixed(2) + shippingFees).toFixed(2)}
+                        ${total}
                     </Typography>
                 </Box>
             </Paper>

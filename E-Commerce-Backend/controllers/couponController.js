@@ -123,6 +123,7 @@ exports.deleteCoupon = async (req, res, next) => {
 exports.applyCoupon = async (req, res, next) => {
     try {
         const { code, totalPrice } = req.body;
+        console.log(code, totalPrice);
         if (!code || totalPrice == null) {
             return res.status(400).json({ error: 'Missing code or totalPrice' });
         }

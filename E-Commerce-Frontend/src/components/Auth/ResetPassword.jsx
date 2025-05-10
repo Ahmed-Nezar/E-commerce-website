@@ -1,62 +1,86 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Avatar,
-  Button,
-  TextField,
-  Link,
-  Grid,
-  Box,
-  Typography,
-  Container,
-  Paper,
-  Fade,
-  Alert,
+    Avatar,
+    Button,
+    TextField,
+    Box,
+    Typography,
+    Container,
+    Paper,
+    Fade,
+    Alert,
 } from '@mui/material';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import { ENV } from "../../App.jsx";
 
-const ForgotPassword = () => {
-    const [email, setEmail] = useState('');
-    const [status, setStatus] = useState({type: '', message: ''});
-    const [loading, setLoading] = useState(false);
+const ResetPassword = () => {
+    const { token } = useParams();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [status, setStatus] = useState({ type: '', message: '' });
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/forgot-password');
+        }
+    }, [token, navigate]);
+
+    const validatePassword = (password) => {
+        if (password.length < 8) {
+            return 'Password must be at least 8 characters long';
+        }
+        return '';
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setStatus({type: '', message: ''});
+        setStatus({ type: '', message: '' });
 
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !emailRegex.test(email)) {
-            setStatus({type: 'error', message: 'Please enter a valid email address'});
+        // Validate password
+        const passwordError = validatePassword(password);
+        if (passwordError) {
+            setStatus({ type: 'error', message: passwordError });
+            return;
+        }
+
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            setStatus({ type: 'error', message: 'Passwords do not match' });
             return;
         }
 
         setLoading(true);
 
         try {
-            const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/auth/forgot-password`, {
+            const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/auth/reset-password/${token}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({email}),
+                body: JSON.stringify({ password }),
             });
 
             const data = await response.json();
 
-            if (data.error) {
-                setStatus({
-                    type: 'error',
-                    message: data.error
-                });
-            } else {
+            if (!data.error) {
                 setStatus({
                     type: 'success',
-                    message: data.message
+                    message: 'Password has been reset successfully!'
                 });
-                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+                // Redirect to signin page after 2 seconds
+                setTimeout(() => {
+                    navigate('/signin');
+                }, 2000);
+            } else {
+                setStatus({
+                    type: 'error',
+                    message: data.error || 'An error occurred while resetting your password'
+                });
             }
         } catch (error) {
             setStatus({
@@ -70,12 +94,12 @@ const ForgotPassword = () => {
 
     return (
         <Fade in timeout={1000}>
-            <Container component="main" maxWidth="sm" sx={{minHeight: '100vh', display: 'flex', alignItems: 'center'}}>
+            <Container component="main" maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
                 <Paper
                     elevation={24}
                     sx={{
                         width: '100%',
-                        p: {xs: 3, md: 6},
+                        p: { xs: 3, md: 6 },
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -99,18 +123,6 @@ const ForgotPassword = () => {
                         }
                     }}
                 >
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: '200px',
-                            background: 'linear-gradient(135deg, #091540 0%, #3D518C 100%)',
-                            opacity: 0.1,
-                            borderRadius: '24px 24px 100% 100%',
-                        }}
-                    />
                     <Avatar
                         sx={{
                             m: 2,
@@ -127,8 +139,9 @@ const ForgotPassword = () => {
                             }
                         }}
                     >
-                        <LockResetIcon sx={{fontSize: 45, color: '#fff'}}/>
+                        <LockResetIcon sx={{ fontSize: 45, color: '#fff' }} />
                     </Avatar>
+
                     <Typography
                         component="h1"
                         variant="h4"
@@ -145,23 +158,12 @@ const ForgotPassword = () => {
                     >
                         Reset Password
                     </Typography>
-                    <Typography
-                        variant="body1"
-                        sx={{
-                            mb: 4,
-                            textAlign: 'center',
-                            color: 'text.secondary',
-                            maxWidth: '400px'
-                        }}
-                    >
-                        Enter your email address and we'll send you instructions to reset your password.
-                    </Typography>
 
                     {status.message && (
-                        <Alert
-                            severity={status.type}
-                            sx={{
-                                width: '100%',
+                        <Alert 
+                            severity={status.type} 
+                            sx={{ 
+                                width: '100%', 
                                 mb: 3,
                                 borderRadius: 2
                             }}
@@ -170,18 +172,17 @@ const ForgotPassword = () => {
                         </Alert>
                     )}
 
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1, width: '100%'}}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            name="password"
+                            label="New Password"
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             disabled={loading}
                             sx={{
                                 '& .MuiOutlinedInput-root': {
@@ -192,6 +193,27 @@ const ForgotPassword = () => {
                                 },
                             }}
                         />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="confirmPassword"
+                            label="Confirm New Password"
+                            type="password"
+                            id="confirmPassword"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            disabled={loading}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    borderRadius: 2,
+                                    '&:hover fieldset': {
+                                        borderColor: 'primary.main',
+                                    },
+                                },
+                            }}
+                        />
+
                         <Button
                             type="submit"
                             fullWidth
@@ -216,32 +238,8 @@ const ForgotPassword = () => {
                                 transition: 'all 0.3s ease'
                             }}
                         >
-                            {loading ? 'Sending...' : 'Send Reset Instructions'}
+                            {loading ? 'Resetting Password...' : 'Reset Password'}
                         </Button>
-                        <Grid container justifyContent="center">
-                            <Grid item>
-                                <Link
-                                    type="button"
-                                    component="button"
-                                    variant="body2"
-                                    onClick={() => navigate('/signin')}
-                                    sx={{
-                                        color: '#3D518C',
-                                        textDecoration: 'none',
-                                        border: 'none',
-                                        background: 'none',
-                                        transition: 'all 0.3s ease',
-                                        '&:hover': {
-                                            color: '#1B2CC1',
-                                            transform: 'translateX(4px)',
-                                            display: 'inline-block'
-                                        }
-                                    }}
-                                >
-                                    Back to Sign In
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </Box>
                 </Paper>
             </Container>
@@ -249,4 +247,4 @@ const ForgotPassword = () => {
     );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

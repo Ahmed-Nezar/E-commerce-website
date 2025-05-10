@@ -1004,20 +1004,6 @@ const AdminDashboard = () => {
             </TabPanel>
 
             <TabPanel value={tabValue} index={4}>
-              <Button
-                variant="contained"
-                startIcon={<ReviewsIcon />}
-                onClick={() => handleOpenDialog('review')}
-                sx={{
-                  mb: 3,
-                  background: 'linear-gradient(90deg, #091540, #3D518C)',
-                  '&:hover': {
-                    background: 'linear-gradient(90deg, #091540, #1B2CC1)',
-                  }
-                }}
-              >
-                Add New Review
-              </Button>
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="body2" color="text.secondary">

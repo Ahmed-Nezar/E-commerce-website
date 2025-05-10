@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import {jwtDecode} from "jwt-decode";
 
 const AdminRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -6,7 +7,7 @@ const AdminRoute = ({ children }) => {
 
   if (token) {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = jwtDecode(token);
       isAdmin = payload.isAdmin;
     } catch (error) {
       console.error('Error decoding token:', error);

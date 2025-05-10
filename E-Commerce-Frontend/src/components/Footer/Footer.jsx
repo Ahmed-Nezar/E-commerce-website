@@ -87,7 +87,7 @@ const Footer = () => {
                             <Typography variant="h6" sx={{mb: 2, fontWeight: 600}}>Quick Links</Typography>
                             {[
                                 { text: 'Home', path: '/', onClick: () => window.scrollTo(0, 0) },
-                                { text: 'Products', path: '/products' }
+                                { text: 'Products', path: '/products', onClick: () => window.scrollTo(0, 0) }
                             ].map((item) => (
                                 <Link
                                     key={item.text}

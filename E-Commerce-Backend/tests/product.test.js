@@ -21,7 +21,7 @@ describe('🛍️ Product & Wishlist API', () => {
 
     beforeAll(async () => {
         // 1) connect to DB
-        await mongoose.connect(process.env.MONGO_URI, {
+        await mongoose.connect(process.env.MONGO_URI_Local, {
             useNewUrlParser:    true,
             useUnifiedTopology: true
         });

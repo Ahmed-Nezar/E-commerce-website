@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
     Avatar,
     Button,
@@ -10,22 +10,23 @@ import {
     Paper,
     Fade,
     Alert,
-    IconButton
 } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LockResetIcon from '@mui/icons-material/LockReset';
 import { ENV } from "../../App.jsx";
 
-const ChangePassword = () => {
+const ResetPassword = () => {
+    const { token } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-    });
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [status, setStatus] = useState({ type: '', message: '' });
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/forgot-password');
+        }
+    }, [token, navigate]);
 
     const validatePassword = (password) => {
         if (password.length < 8) {
@@ -36,74 +37,64 @@ const ChangePassword = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setError('');
-        setSuccess('');
+        setStatus({ type: '', message: '' });
 
-        // Validate new password
-        const passwordError = validatePassword(formData.newPassword);
+        // Validate password
+        const passwordError = validatePassword(password);
         if (passwordError) {
-            setError(passwordError);
+            setStatus({ type: 'error', message: passwordError });
             return;
         }
 
-        // Validate passwords match
-        if (formData.newPassword !== formData.confirmPassword) {
-            setError('New passwords do not match');
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            setStatus({ type: 'error', message: 'Passwords do not match' });
             return;
         }
 
         setLoading(true);
 
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/auth/change-password`, {
+            const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/auth/reset-password/${token}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `${token}`
                 },
-                body: JSON.stringify({
-                    currentPassword: formData.currentPassword,
-                    newPassword: formData.newPassword
-                }),
+                body: JSON.stringify({ password }),
             });
 
             const data = await response.json();
 
-            if (!data.error) {
-                setSuccess('Password changed successfully!');
-                // Clear form
-                setFormData({
-                    currentPassword: '',
-                    newPassword: '',
-                    confirmPassword: ''
+            if (response.ok) {
+                setStatus({
+                    type: 'success',
+                    message: 'Password has been reset successfully!'
                 });
-                // Redirect to profile page after 2 seconds
+                setPassword('');
+                setConfirmPassword('');
+                // Redirect to login page after 2 seconds
                 setTimeout(() => {
-                    navigate('/me/profile');
+                    navigate('/login');
                 }, 2000);
             } else {
-                setError(data.error);
+                setStatus({
+                    type: 'error',
+                    message: data.error || 'An error occurred while resetting your password'
+                });
             }
         } catch (error) {
-            setError('An error occurred. Please try again later.');
-            console.error('Change password error:', error);
+            setStatus({
+                type: 'error',
+                message: 'An error occurred. Please try again later.'
+            });
         } finally {
             setLoading(false);
         }
     };
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
     return (
-        <Fade in timeout={800}>
-            <Container component="main" maxWidth="sm" sx={{ minHeight: '85vh', display: 'flex', alignItems: 'center' }}>
+        <Fade in timeout={1000}>
+            <Container component="main" maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
                 <Paper
                     elevation={24}
                     sx={{
@@ -132,24 +123,6 @@ const ChangePassword = () => {
                         }
                     }}
                 >
-                    <IconButton
-                        onClick={() => navigate('/me/profile')}
-                        sx={{
-                            position: 'absolute',
-                            top: 20,
-                            left: 20,
-                            color: '#091540',
-                            zIndex: 1,
-                            background: 'rgba(255, 255, 255, 0.8)',
-                            '&:hover': {
-                                background: 'rgba(255, 255, 255, 1)',
-                            },
-                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                        }}
-                    >
-                        <ArrowBackIcon />
-                    </IconButton>
-
                     <Avatar
                         sx={{
                             m: 2,
@@ -166,7 +139,7 @@ const ChangePassword = () => {
                             }
                         }}
                     >
-                        <LockOutlinedIcon sx={{ fontSize: 45, color: '#fff' }} />
+                        <LockResetIcon sx={{ fontSize: 45, color: '#fff' }} />
                     </Avatar>
 
                     <Typography
@@ -183,32 +156,19 @@ const ChangePassword = () => {
                             letterSpacing: '0.5px'
                         }}
                     >
-                        Change Password
+                        Reset Password
                     </Typography>
 
-                    {error && (
+                    {status.message && (
                         <Alert 
-                            severity="error" 
+                            severity={status.type} 
                             sx={{ 
                                 width: '100%', 
                                 mb: 3,
                                 borderRadius: 2
                             }}
                         >
-                            {error}
-                        </Alert>
-                    )}
-
-                    {success && (
-                        <Alert 
-                            severity="success" 
-                            sx={{ 
-                                width: '100%', 
-                                mb: 3,
-                                borderRadius: 2
-                            }}
-                        >
-                            {success}
+                            {status.message}
                         </Alert>
                     )}
 
@@ -217,36 +177,18 @@ const ChangePassword = () => {
                             margin="normal"
                             required
                             fullWidth
-                            name="currentPassword"
-                            label="Current Password"
-                            type="password"
-                            id="currentPassword"
-                            value={formData.currentPassword}
-                            onChange={handleChange}
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    borderRadius: 2,
-                                    '&:hover fieldset': {
-                                        borderColor: 'secondary.main',
-                                    },
-                                },
-                            }}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="newPassword"
+                            name="password"
                             label="New Password"
                             type="password"
-                            id="newPassword"
-                            value={formData.newPassword}
-                            onChange={handleChange}
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            disabled={loading}
                             sx={{
                                 '& .MuiOutlinedInput-root': {
                                     borderRadius: 2,
                                     '&:hover fieldset': {
-                                        borderColor: 'secondary.main',
+                                        borderColor: 'primary.main',
                                     },
                                 },
                             }}
@@ -259,13 +201,14 @@ const ChangePassword = () => {
                             label="Confirm New Password"
                             type="password"
                             id="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            disabled={loading}
                             sx={{
                                 '& .MuiOutlinedInput-root': {
                                     borderRadius: 2,
                                     '&:hover fieldset': {
-                                        borderColor: 'secondary.main',
+                                        borderColor: 'primary.main',
                                     },
                                 },
                             }}
@@ -295,7 +238,7 @@ const ChangePassword = () => {
                                 transition: 'all 0.3s ease'
                             }}
                         >
-                            {loading ? 'Changing Password...' : 'Change Password'}
+                            {loading ? 'Resetting Password...' : 'Reset Password'}
                         </Button>
                     </Box>
                 </Paper>
@@ -304,4 +247,4 @@ const ChangePassword = () => {
     );
 };
 
-export default ChangePassword;
+export default ResetPassword;

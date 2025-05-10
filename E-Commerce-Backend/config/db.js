@@ -35,7 +35,9 @@ const userSchema = new mongoose.Schema({
     wishList: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
-    }]
+    }],
+    resetPasswordToken: String,
+    resetPasswordExpire: Date
 }, { timestamps: true });
 
 // Hash password and set a random avatar before saving

@@ -6,6 +6,7 @@ import Navbar from './components/Navbar/Navbar.jsx'
 import SignIn from './components/Auth/SignIn.jsx'
 import Register from './components/Auth/Register.jsx'
 import ForgotPassword from './components/Auth/ForgotPassword.jsx'
+import ResetPassword from './components/Auth/ResetPassword.jsx'
 import ChangePassword from './components/Settings/ChangePassword.jsx'
 import Cart from './components/Cart/Cart.jsx'
 import Checkout from './components/checkout/Checkout.jsx'
@@ -73,7 +74,22 @@ function App() {
                                     </PublicRoute>
                                 }
                             />
-                            <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                            <Route
+                                path="/forgot-password"
+                                element={
+                                    <PublicRoute>
+                                        <ForgotPassword/>
+                                    </PublicRoute>
+                                }
+                            />
+                            <Route
+                                path="/reset-password/:token"
+                                element={
+                                    <PublicRoute>
+                                        <ResetPassword/>
+                                    </PublicRoute>
+                                }
+                            />
                             <Route path="/cart" element={<Cart/>}/>
                             <Route
                                 path="/checkout"

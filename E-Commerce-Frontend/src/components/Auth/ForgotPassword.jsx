@@ -14,33 +14,57 @@ import {
   Alert,
 } from '@mui/material';
 import LockResetIcon from '@mui/icons-material/LockReset';
+import { ENV } from "../../App.jsx";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState({ type: '', message: '' });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setStatus({ type: '', message: '' });
     
-    if (!email) {
-      setStatus({ type: 'error', message: 'Please enter your email address' });
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      setStatus({ type: 'error', message: 'Please enter a valid email address' });
       return;
     }
 
+    setLoading(true);
+
     try {
-      // TODO: Implement password reset logic
-      console.log('Reset password for:', email);
-      setStatus({ 
-        type: 'success', 
-        message: 'If an account exists with this email, you will receive password reset instructions.' 
+      const response = await fetch(`${ENV.VITE_BACKEND_URL}/api/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
       });
+
+      const data = await response.json();
+
+      if (data.error) {
+        setStatus({
+          type: 'error',
+          message: data.error
+        });
+      } else {
+        setStatus({
+          type: 'success',
+          message: data.message
+        });
+        setEmail('');
+      }
     } catch (error) {
-      setStatus({ 
-        type: 'error', 
-        message: 'An error occurred. Please try again later.' 
+      setStatus({
+        type: 'error',
+        message: 'An error occurred. Please try again later.'
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -109,7 +133,7 @@ const ForgotPassword = () => {
             component="h1"
             variant="h4"
             sx={{
-              mb: 2,
+              mb: 4,
               fontWeight: 700,
               background: 'linear-gradient(90deg, #091540, #3D518C)',
               backgroundClip: 'text',
@@ -158,6 +182,7 @@ const ForgotPassword = () => {
               autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 2,
@@ -171,6 +196,7 @@ const ForgotPassword = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading}
               sx={{
                 mt: 4,
                 mb: 3,
@@ -181,6 +207,7 @@ const ForgotPassword = () => {
                 textTransform: 'none',
                 background: 'linear-gradient(90deg, #091540, #3D518C)',
                 boxShadow: '0 4px 12px rgba(9, 21, 64, 0.3)',
+                opacity: loading ? 0.7 : 1,
                 '&:hover': {
                   background: 'linear-gradient(90deg, #091540, #1B2CC1)',
                   boxShadow: '0 6px 16px rgba(9, 21, 64, 0.4)',
@@ -189,7 +216,7 @@ const ForgotPassword = () => {
                 transition: 'all 0.3s ease'
               }}
             >
-              Send Reset Instructions
+              {loading ? 'Sending...' : 'Send Reset Instructions'}
             </Button>
             <Grid container justifyContent="center">
               <Grid item>

@@ -37,7 +37,7 @@ const Checkout = () => {
     email: '',
     phone: '',
   });
-  
+
   // Payment details state
   const [creditCardInfo, setCreditCardInfo] = useState({
     cardNumber: '',

@@ -1,0 +1,892 @@
+[
+  {
+    "name": "ASUS ROG Strix X670E-F Gaming WiFi",
+    "category": "Motherboards",
+    "brand": "ASUS",
+    "description": "ASUS high-performance gaming motherboard",
+    "price": 449.99,
+    "image": "https://m.media-amazon.com/images/I/71Dq8+22SwL._AC_SL1100_.jpg",
+    "stock": 8,
+    "rating": 4.7
+  },
+  {
+    "name": "MSI MPG B650 Edge WiFi",
+    "category": "Motherboards",
+    "brand": "MSI",
+    "description": "MSI high-performance gaming motherboard",
+    "price": 289.99,
+    "image": "https://m.media-amazon.com/images/I/71ktIaXBbjL._AC_SL1200_.jpg",
+    "stock": 12,
+    "rating": 4.5
+  },
+  {
+    "name": "Gigabyte B650 AORUS Elite AX",
+    "category": "Motherboards",
+    "brand": "Gigabyte",
+    "description": "Gigabyte high-performance gaming motherboard",
+    "price": 259.99,
+    "image": "https://m.media-amazon.com/images/I/81JFKzNyl+L._AC_SL1500_.jpg",
+    "stock": 15,
+    "rating": 4.6
+  },
+  {
+    "name": "AMD Ryzen 9 9950X3D",
+    "category": "CPUs",
+    "brand": "AMD",
+    "description": "AMD high-performance desktop processor",
+    "price": 699.99,
+    "image": "https://m.media-amazon.com/images/I/61dukbEGziL._AC_SL1500_.jpg",
+    "stock": 5,
+    "rating": 4.9
+  },
+  {
+    "name": "Intel Core i9-14900K",
+    "category": "CPUs",
+    "brand": "Intel",
+    "description": "Intel high-performance desktop processor",
+    "price": 589.99,
+    "image": "https://m.media-amazon.com/images/I/718YcMNLsGL._AC_SL1500_.jpg",
+    "stock": 10,
+    "rating": 4.8
+  },
+  {
+    "name": "Asus Rog RTX 4090 OC Edition",
+    "category": "GPUs",
+    "brand": "Asus",
+    "description": "NVIDIA high-performance graphics card",
+    "price": 1599.99,
+    "image": "https://m.media-amazon.com/images/I/811EdNEM2RL._AC_SL1500_.jpg",
+    "stock": 3,
+    "rating": 4.9
+  },
+  {
+    "name": "ASRock Radeon RX 7900 XTX",
+    "category": "GPUs",
+    "brand": "ASRock",
+    "description": "AMD high-performance graphics card",
+    "price": 999.99,
+    "image": "https://m.media-amazon.com/images/I/61o7BiIL0kL._AC_SL1200_.jpg",
+    "stock": 7,
+    "rating": 4.7
+  },
+  {
+    "name": "Corsair Vengeance RGB 32GB DDR5",
+    "category": "RAMs",
+    "brand": "Corsair",
+    "description": "Corsair high-performance ddr5 ram kit",
+    "price": 149.99,
+    "image": "https://m.media-amazon.com/images/I/61D2DDpDITL._AC_SL1500_.jpg",
+    "stock": 20,
+    "rating": 4.8
+  },
+  {
+    "name": "G.Skill Trident Z5 RGB 32GB DDR5",
+    "category": "RAMs",
+    "brand": "G.Skill",
+    "description": "G.Skill high-performance ddr5 ram kit",
+    "price": 159.99,
+    "image": "https://m.media-amazon.com/images/I/61D2DDpDITL._AC_SL1500_.jpg",
+    "stock": 18,
+    "rating": 4.7
+  },
+  {
+    "name": "Samsung 990 Pro 2TB NVMe SSD",
+    "category": "Storages",
+    "brand": "Samsung",
+    "description": "Samsung high-performance 2tb ssd",
+    "price": 179.99,
+    "image": "https://m.media-amazon.com/images/I/61S4fCwCigL._AC_SL1500_.jpg",
+    "stock": 15,
+    "rating": 4.9
+  },
+  {
+    "name": "WD Black 8TB Performance HDD",
+    "category": "Storages",
+    "brand": "WD",
+    "description": "WD high-performance 8tb hdd",
+    "price": 169.99,
+    "image": "https://m.media-amazon.com/images/I/61TmJikZkkL._AC_SL1500_.jpg",
+    "stock": 12,
+    "rating": 4.8
+  },
+  {
+    "name": "Corsair RM1000x Power Supply",
+    "category": "PSUs",
+    "brand": "Corsair",
+    "description": "Corsair high-performance 1000w power supply",
+    "price": 189.99,
+    "image": "https://m.media-amazon.com/images/I/71K5YbKrcYL._AC_SL1500_.jpg",
+    "stock": 10,
+    "rating": 4.8
+  },
+  {
+    "name": "Seasonic Focus GX-850",
+    "category": "PSUs",
+    "brand": "Seasonic",
+    "description": "Seasonic high-performance 850w power supply",
+    "price": 159.99,
+    "image": "https://m.media-amazon.com/images/I/7157nzPaKQL._AC_SL1500_.jpg",
+    "stock": 14,
+    "rating": 4.9
+  },
+  {
+    "name": "Lian Li PC-O11 Dynamic",
+    "category": "Cases",
+    "brand": "Lian Li",
+    "description": "Lian Li high-performance atx tower case",
+    "price": 149.99,
+    "image": "https://m.media-amazon.com/images/I/61GGKCt2tKL._AC_SL1500_.jpg",
+    "stock": 8,
+    "rating": 4.7
+  },
+  {
+    "name": "NZXT H7 Flow",
+    "category": "Cases",
+    "brand": "NZXT",
+    "description": "NZXT high-performance atx tower case",
+    "price": 129.99,
+    "image": "https://m.media-amazon.com/images/I/819ZQMMOfAL._AC_SL1500_.jpg",
+    "stock": 12,
+    "rating": 4.6
+  },
+  {
+    "name": "Razer BlackWidow V4 Pro",
+    "category": "Keyboards",
+    "brand": "Razer",
+    "description": "Razer high-performance mechanical keyboard",
+    "price": 229.99,
+    "image": "https://m.media-amazon.com/images/I/81L4FpeS3VL._AC_SL1500_.jpg",
+    "stock": 15,
+    "rating": 4.7
+  },
+  {
+    "name": "Logitech G Pro X Keyboard",
+    "category": "Keyboards",
+    "brand": "Logitech",
+    "description": "Logitech high-performance mechanical keyboard",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/51J3EAMLNhL._AC_.jpg",
+    "stock": 10,
+    "rating": 4.6
+  },
+  {
+    "name": "Razer Viper V2 Pro",
+    "category": "Mice",
+    "brand": "Razer",
+    "description": "Razer high-performance gaming mouse",
+    "price": 149.99,
+    "image": "https://m.media-amazon.com/images/I/51qyksHHlWL._AC_SL1500_.jpg",
+    "stock": 20,
+    "rating": 4.8
+  },
+  {
+    "name": "Logitech G Pro X Superlight",
+    "category": "Mice",
+    "brand": "Logitech",
+    "description": "Logitech high-performance gaming mouse",
+    "price": 159.99,
+    "image": "https://m.media-amazon.com/images/I/51uy8gOG-iL._AC_SL1400_.jpg",
+    "stock": 18,
+    "rating": 4.9
+  },
+  {
+    "name": "SteelSeries Arctis Nova Pro",
+    "category": "Headsets",
+    "brand": "SteelSeries",
+    "description": "SteelSeries high-performance wired headset",
+    "price": 349.99,
+    "image": "https://m.media-amazon.com/images/I/61Eqdt502lL._AC_SL1500_.jpg",
+    "stock": 7,
+    "rating": 4.8
+  },
+  {
+    "name": "ASUS ROG Swift PG32UQX",
+    "category": "Monitors",
+    "brand": "ASUS",
+    "description": "ASUS high-performance 27\" gaming monitor",
+    "price": 2999.99,
+    "image": "https://m.media-amazon.com/images/I/91ZKaOrm5xL._AC_SL1500_.jpg",
+    "stock": 3,
+    "rating": 4.9
+  },
+  {
+    "name": "NZXT Kraken Z73 RGB",
+    "category": "Coolers",
+    "brand": "NZXT",
+    "description": "NZXT high-performance liquid cpu cooler",
+    "price": 279.99,
+    "image": "https://m.media-amazon.com/images/I/51QqK4Rc03L._AC_SL1001_.jpg",
+    "stock": 9,
+    "rating": 4.7
+  },
+  {
+    "name": "ASRock B650E Steel Legend",
+    "category": "Motherboards",
+    "brand": "ASRock",
+    "description": "ASRock high-performance gaming motherboard",
+    "price": 239.99,
+    "image": "https://m.media-amazon.com/images/I/71UJCumAahL._AC_SL1500_.jpg",
+    "stock": 11,
+    "rating": 4.5
+  },
+  {
+    "name": "AMD Ryzen 7 7800X3D",
+    "category": "CPUs",
+    "brand": "AMD",
+    "description": "AMD high-performance desktop processor",
+    "price": 449.99,
+    "image": "https://m.media-amazon.com/images/I/51HqC0rU9HL._AC_SL1500_.jpg",
+    "stock": 8,
+    "rating": 4.8
+  },
+  {
+    "name": "Intel Core i7-14700K",
+    "category": "CPUs",
+    "brand": "Intel",
+    "description": "Intel high-performance desktop processor",
+    "price": 419.99,
+    "image": "https://m.media-amazon.com/images/I/51seOKbqbcL._AC_SL1015_.jpg",
+    "stock": 12,
+    "rating": 4.7
+  },
+  {
+    "name": "ZOTAC RTX 4080 Super",
+    "category": "GPUs",
+    "brand": "ZOTAC",
+    "description": "NVIDIA high-performance graphics card",
+    "price": 999.99,
+    "image": "https://m.media-amazon.com/images/I/818bt1mcn1L._AC_SL1500_.jpg",
+    "stock": 5,
+    "rating": 4.8
+  },
+  {
+    "name": "PowerColor Radeon RX 7800 XT",
+    "category": "GPUs",
+    "brand": "PowerColor",
+    "description": "AMD high-performance graphics card",
+    "price": 499.99,
+    "image": "https://m.media-amazon.com/images/I/612bL8UL2IL._AC_SL1500_.jpg",
+    "stock": 9,
+    "rating": 4.6
+  },
+  {
+    "name": "Kingston Fury Beast 32GB DDR5",
+    "category": "RAMs",
+    "brand": "Kingston",
+    "description": "Kingston high-performance ddr5 ram kit",
+    "price": 139.99,
+    "image": "https://m.media-amazon.com/images/I/717cPftxQgL._AC_SL1500_.jpg",
+    "stock": 16,
+    "rating": 4.7
+  },
+  {
+    "name": "Crucial T700 2TB NVMe SSD",
+    "category": "Storages",
+    "brand": "Crucial",
+    "description": "Crucial high-performance 2tb ssd",
+    "price": 249.99,
+    "image": "https://m.media-amazon.com/images/I/41UOk+pwd3L._AC_SL1000_.jpg",
+    "stock": 7,
+    "rating": 4.9
+  },
+  {
+    "name": "Sabrent Rocket 4 Plus 2TB",
+    "category": "Storages",
+    "brand": "Sabrent",
+    "description": "Sabrent high-performance 1tb ssd",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/71VyFwKPVFL._AC_SL1500_.jpg",
+    "stock": 10,
+    "rating": 4.8
+  },
+  {
+    "name": "EVGA SuperNOVA 1000 G6",
+    "category": "PSUs",
+    "brand": "EVGA",
+    "description": "EVGA high-performance 100w power supply",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/61Cu5QyHtnL._AC_SX355_.jpg",
+    "stock": 9,
+    "rating": 4.8
+  },
+  {
+    "name": "Fractal Design Torrent",
+    "category": "Cases",
+    "brand": "Fractal Design",
+    "description": "Fractal Design high-performance atx tower case",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/71KdiAihDxL._AC_SL1500_.jpg",
+    "stock": 6,
+    "rating": 4.8
+  },
+  {
+    "name": "Corsair iCUE 5000T RGB",
+    "category": "Cases",
+    "brand": "Corsair",
+    "description": "Corsair high-performance atx tower case",
+    "price": 349.99,
+    "image": "https://m.media-amazon.com/images/I/81GtKCrsDEL._AC_SL1500_.jpg",
+    "stock": 4,
+    "rating": 4.7
+  },
+  {
+    "name": "Keychron Q3 QMK",
+    "category": "Keyboards",
+    "brand": "Keychron",
+    "description": "Keychron high-performance mechanical keyboard",
+    "price": 169.99,
+    "image": "https://m.media-amazon.com/images/I/61BUe9PzyLL._AC_SL1500_.jpg",
+    "stock": 14,
+    "rating": 4.8
+  },
+  {
+    "name": "SteelSeries Apex Pro TKL",
+    "category": "Keyboards",
+    "brand": "SteelSeries",
+    "description": "SteelSeries high-performance mechanical keyboard",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/713vLZcw3FL._AC_SL1500_.jpg",
+    "stock": 11,
+    "rating": 4.7
+  },
+  {
+    "name": "Glorious Model O Wireless",
+    "category": "Mice",
+    "brand": "Glorious",
+    "description": "Glorious high-performance gaming mouse",
+    "price": 79.99,
+    "image": "https://m.media-amazon.com/images/I/712sMCm+H7L._AC_SL1500_.jpg",
+    "stock": 16,
+    "rating": 4.7
+  },
+  {
+    "name": "Razer BlackShark V2 Pro",
+    "category": "Headsets",
+    "brand": "Razer",
+    "description": "Razer high-performance wired headset",
+    "price": 179.99,
+    "image": "https://m.media-amazon.com/images/I/71NOztzbq2L._AC_SL1500_.jpg",
+    "stock": 13,
+    "rating": 4.6
+  },
+  {
+    "name": "LG UltraGear 27GP950-B",
+    "category": "Monitors",
+    "brand": "LG",
+    "description": "LG high-performance 27\" gaming monitor",
+    "price": 899.99,
+    "image": "https://m.media-amazon.com/images/I/81El4887iLL._AC_SL1500_.jpg",
+    "stock": 5,
+    "rating": 4.8
+  },
+  {
+    "name": "Corsair iCUE H150i Elite",
+    "category": "Coolers",
+    "brand": "Corsair",
+    "description": "Corsair high-performance liquid cpu cooler",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/71EN9Vc-qsL._SL1500_.jpg",
+    "stock": 10,
+    "rating": 4.7
+  },
+  {
+    "name": "ASUS ROG Crosshair X670E Hero",
+    "category": "Motherboards",
+    "brand": "ASUS",
+    "description": "ASUS high-performance gaming motherboard",
+    "price": 699.99,
+    "image": "https://m.media-amazon.com/images/I/81o1in2ebRL._AC_SL1500_.jpg",
+    "stock": 4,
+    "rating": 4.9
+  },
+  {
+    "name": "Gigabyte X670E AORUS Master",
+    "category": "Motherboards",
+    "brand": "Gigabyte",
+    "description": "Gigabyte high-performance gaming motherboard",
+    "price": 499.99,
+    "image": "https://m.media-amazon.com/images/I/81gJF9ViWiL._AC_SL1500_.jpg",
+    "stock": 6,
+    "rating": 4.8
+  },
+  {
+    "name": "MSI MEG X670E ACE",
+    "category": "Motherboards",
+    "brand": "MSI",
+    "description": "MSI high-performance gaming motherboard",
+    "price": 599.99,
+    "image": "https://m.media-amazon.com/images/I/81AttfJprCL._AC_SL1500_.jpg",
+    "stock": 3,
+    "rating": 4.8
+  },
+  {
+    "name": "AMD Ryzen 5 7600X",
+    "category": "CPUs",
+    "brand": "AMD",
+    "description": "AMD high-performance desktop processor",
+    "price": 299.99,
+    "image": "https://m.media-amazon.com/images/I/51m7L9bQI8L._AC_SL1080_.jpg",
+    "stock": 15,
+    "rating": 4.6
+  },
+  {
+    "name": "Intel Core i5-14600K",
+    "category": "CPUs",
+    "brand": "Intel",
+    "description": "Intel high-performance desktop processor",
+    "price": 329.99,
+    "image": "https://m.media-amazon.com/images/I/61IrFcuSCeL._AC_SL1500_.jpg",
+    "stock": 18,
+    "rating": 4.5
+  },
+  {
+    "name": "MSI RTX 4070 Ti Super",
+    "category": "GPUs",
+    "brand": "MSI",
+    "description": "NVIDIA high-performance graphics card",
+    "price": 799.99,
+    "image": "https://m.media-amazon.com/images/I/51FVsE45qSL._AC_SL1024_.jpg",
+    "stock": 8,
+    "rating": 4.7
+  },
+  {
+    "name": "AMD Radeon RX 5500 XT",
+    "category": "GPUs",
+    "brand": "AMD",
+    "description": "AMD high-performance graphics card",
+    "price": 149.99,
+    "image": "https://m.media-amazon.com/images/I/61JE39svlDL._AC_SL1000_.jpg",
+    "stock": 0,
+    "rating": 4.5
+  },
+  {
+    "name": "TeamGroup T-Force Delta RGB 32GB DDR5",
+    "category": "RAMs",
+    "brand": "TeamGroup",
+    "description": "TeamGroup high-performance ddr5 ram kit",
+    "price": 129.99,
+    "image": "https://m.media-amazon.com/images/I/81ov4cFmdaL._AC_SL1500_.jpg",
+    "stock": 14,
+    "rating": 4.6
+  },
+  {
+    "name": "Patriot Viper Steel 32GB DDR5",
+    "category": "RAMs",
+    "brand": "Patriot",
+    "description": "Patriot high-performance ddr5 ram kit",
+    "price": 119.99,
+    "image": "https://m.media-amazon.com/images/I/917jhv56PSL._AC_SL1500_.jpg",
+    "stock": 17,
+    "rating": 4.5
+  },
+  {
+    "name": "Seagate FireCuda 530 500GB",
+    "category": "Storages",
+    "brand": "Seagate",
+    "description": "Seagate high-performance 500tb ssd",
+    "price": 229.99,
+    "image": "https://m.media-amazon.com/images/I/61kdV+Nig5L._AC_SL1500_.jpg",
+    "stock": 9,
+    "rating": 4.7
+  },
+  {
+    "name": "SK Hynix Platinum P41 2TB",
+    "category": "Storages",
+    "brand": "SK Hynix",
+    "description": "SK Hynix high-performance 1tb ssd",
+    "price": 219.99,
+    "image": "https://m.media-amazon.com/images/I/71RGTZJJuqL._AC_SL1500_.jpg",
+    "stock": 11,
+    "rating": 4.8
+  },
+  {
+    "name": "be quiet! Dark Power 13 1000W",
+    "category": "PSUs",
+    "brand": "be quiet!",
+    "description": "be quiet! high-performance 750w power supply",
+    "price": 249.99,
+    "image": "https://m.media-amazon.com/images/I/71q3hrRf5+L._AC_SX355_.jpg",
+    "stock": 5,
+    "rating": 4.9
+  },
+  {
+    "name": "Phanteks Revolt Pro 1000W",
+    "category": "PSUs",
+    "brand": "Phanteks",
+    "description": "Phanteks high-performance 750w power supply",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/81BBa+bwsJL._AC_SY355_.jpg",
+    "stock": 8,
+    "rating": 4.7
+  },
+  {
+    "name": "Cooler Master HAF 700 Evo",
+    "category": "Cases",
+    "brand": "Cooler Master",
+    "description": "Cooler Master high-performance atx tower case",
+    "price": 299.99,
+    "image": "https://m.media-amazon.com/images/I/61hC6R08S+L._AC_SY355_.jpg",
+    "stock": 5,
+    "rating": 4.7
+  },
+  {
+    "name": "Thermaltake View 71 TG RGB",
+    "category": "Cases",
+    "brand": "Thermaltake",
+    "description": "Thermaltake high-performance atx tower case",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/81+Ifkgxs2L._AC_SY355_.jpg",
+    "stock": 7,
+    "rating": 4.6
+  },
+  {
+    "name": "Ducky One 3 Mini",
+    "category": "Keyboards",
+    "brand": "Ducky",
+    "description": "Ducky high-performance mechanical keyboard",
+    "price": 109.99,
+    "image": "https://m.media-amazon.com/images/I/71MK8XK61-L._AC_SX355_.jpg",
+    "stock": 13,
+    "rating": 4.8
+  },
+  {
+    "name": "Varmilo VA108M Moonlight",
+    "category": "Keyboards",
+    "brand": "Varmilo",
+    "description": "Varmilo high-performance mechanical keyboard",
+    "price": 159.99,
+    "image": "https://m.media-amazon.com/images/I/71mOUwMH8IL._AC_SX355_.jpg",
+    "stock": 9,
+    "rating": 4.7
+  },
+  {
+    "name": "Endgame Gear XM1r",
+    "category": "Mice",
+    "brand": "Endgame Gear",
+    "description": "Endgame Gear high-performance gaming mouse",
+    "price": 59.99,
+    "image": "https://m.media-amazon.com/images/I/51bc6WTIp3L._AC_SL1500_.jpg",
+    "stock": 14,
+    "rating": 4.7
+  },
+  {
+    "name": "Endgame Gear XM1",
+    "category": "Mice",
+    "brand": "Pulsar",
+    "description": "Pulsar high-performance gaming mouse",
+    "price": 99.99,
+    "image": "https://m.media-amazon.com/images/I/71TzmxWVlZL._AC_SY355_.jpg",
+    "stock": 11,
+    "rating": 4.8
+  },
+  {
+    "name": "Beyerdynamic MMX 300",
+    "category": "Headsets",
+    "brand": "Beyerdynamic",
+    "description": "Beyerdynamic high-performance wired headset",
+    "price": 299.99,
+    "image": "https://m.media-amazon.com/images/I/71syvwRIlFL._AC_UY218_.jpg",
+    "stock": 6,
+    "rating": 4.8
+  },
+  {
+    "name": "Sennheiser GSP 670",
+    "category": "Headsets",
+    "brand": "Sennheiser",
+    "description": "Sennheiser high-performance wired headset",
+    "price": 249.99,
+    "image": "https://m.media-amazon.com/images/I/7138PilzM3L._AC_UY218_.jpg",
+    "stock": 8,
+    "rating": 4.7
+  },
+  {
+    "name": "Alienware AW3423DW",
+    "category": "Monitors",
+    "brand": "Alienware",
+    "description": "Alienware high-performance 27\" gaming monitor",
+    "price": 1299.99,
+    "image": "https://m.media-amazon.com/images/I/71ufV5NQ44L._AC_UY218_.jpg",
+    "stock": 4,
+    "rating": 4.9
+  },
+  {
+    "name": "Samsung Odyssey Neo G8",
+    "category": "Monitors",
+    "brand": "Samsung",
+    "description": "Samsung high-performance 27\" gaming monitor",
+    "price": 1499.99,
+    "image": "https://m.media-amazon.com/images/I/81dDR+bGO3L._AC_UY218_.jpg",
+    "stock": 3,
+    "rating": 4.8
+  },
+  {
+    "name": "Noctua NH-D15 chromax.black",
+    "category": "Coolers",
+    "brand": "Noctua",
+    "description": "Noctua high-performance liquid cpu cooler",
+    "price": 109.99,
+    "image": "https://m.media-amazon.com/images/I/91t48GBv8TL._AC_UY218_.jpg",
+    "stock": 12,
+    "rating": 4.9
+  },
+  {
+    "name": "Thermalright Peerless Assassin 120 SE CPU Cooler",
+    "category": "Coolers",
+    "brand": "be quiet!",
+    "description": "be quiet! high-performance liquid cpu cooler",
+    "price": 89.99,
+    "image": "https://m.media-amazon.com/images/I/71j6VKsz-fL._SX342_.jpg",
+    "stock": 15,
+    "rating": 4.8
+  },
+  {
+    "name": "ASUS TUF Gaming B650-PLUS",
+    "category": "Motherboards",
+    "brand": "ASUS",
+    "description": "ASUS high-performance gaming motherboard",
+    "price": 229.99,
+    "image": "https://m.media-amazon.com/images/I/81ogi-krqkL._AC_UY218_.jpg",
+    "stock": 14,
+    "rating": 4.5
+  },
+  {
+    "name": "MSI PRO B650-P WIFI",
+    "category": "Motherboards",
+    "brand": "MSI",
+    "description": "MSI high-performance gaming motherboard",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/81hWGDmMR+L._AC_UY218_.jpg",
+    "stock": 16,
+    "rating": 4.4
+  },
+  {
+    "name": "Gigabyte B650M AORUS Elite AX",
+    "category": "Motherboards",
+    "brand": "Gigabyte",
+    "description": "Gigabyte high-performance gaming motherboard",
+    "price": 189.99,
+    "image": "https://m.media-amazon.com/images/I/81JFKzNyl+L._AC_UY218_.jpg",
+    "stock": 18,
+    "rating": 4.5
+  },
+  {
+    "name": "AMD Ryzen 9 7900X",
+    "category": "CPUs",
+    "brand": "AMD",
+    "description": "AMD high-performance desktop processor",
+    "price": 549.99,
+    "image": "https://m.media-amazon.com/images/I/61dukbEGziL._AC_UY218_.jpg",
+    "stock": 9,
+    "rating": 4.7
+  },
+  {
+    "name": "Intel Core i7-13700K",
+    "category": "CPUs",
+    "brand": "Intel",
+    "description": "Intel high-performance desktop processor",
+    "price": 419.99,
+    "image": "https://m.media-amazon.com/images/I/61m0zH-NiTL._AC_UY218_.jpg",
+    "stock": 11,
+    "rating": 4.6
+  },
+  {
+    "name": "NVIDIA RTX 5070 Ti",
+    "category": "GPUs",
+    "brand": "NVIDIA",
+    "description": "NVIDIA high-performance graphics card",
+    "price": 599.99,
+    "image": "https://m.media-amazon.com/images/I/81POeoI3lSL._AC_UY218_.jpg",
+    "stock": 10,
+    "rating": 4.6
+  },
+  {
+    "name": "AMD Radeon RX 7600",
+    "category": "GPUs",
+    "brand": "AMD",
+    "description": "AMD high-performance graphics card",
+    "price": 329.99,
+    "image": "https://m.media-amazon.com/images/I/71Gv7B+318L._AC_UY218_.jpg",
+    "stock": 14,
+    "rating": 4.4
+  },
+  {
+    "name": "ADATA XPG Lancer RGB 32GB DDR5",
+    "category": "RAMs",
+    "brand": "ADATA",
+    "description": "ADATA high-performance ddr5 ram kit",
+    "price": 129.99,
+    "image": "https://m.media-amazon.com/images/I/510fA0L432L._AC_UY218_.jpg",
+    "stock": 13,
+    "rating": 4.6
+  },
+  {
+    "name": "OLOy Blade RGB 32GB DDR5",
+    "category": "RAMs",
+    "brand": "OLOy",
+    "description": "OLOy high-performance ddr5 ram kit",
+    "price": 119.99,
+    "image": "https://m.media-amazon.com/images/I/71P5eDQ9GxL._AC_UY218_.jpg",
+    "stock": 15,
+    "rating": 4.5
+  },
+  {
+    "name": "Lexar NM790 2TB NVMe SSD",
+    "category": "Storages",
+    "brand": "Lexar",
+    "description": "Lexar high-performance 1tb ssd",
+    "price": 139.99,
+    "image": "https://m.media-amazon.com/images/I/61kxW2eY5qL._AC_UY218_.jpg",
+    "stock": 16,
+    "rating": 4.6
+  },
+  {
+    "name": "PNY XLR8 CS3140 2TB",
+    "category": "Storages",
+    "brand": "PNY",
+    "description": "PNY high-performance 1tb ssd",
+    "price": 149.99,
+    "image": "https://m.media-amazon.com/images/I/51rJ3F7erxL._AC_UY218_.jpg",
+    "stock": 12,
+    "rating": 4.5
+  },
+  {
+    "name": "Cooler Master V850 Gold V2",
+    "category": "PSUs",
+    "brand": "Cooler Master",
+    "description": "Cooler Master high-performance 750w power supply",
+    "price": 149.99,
+    "image": "https://m.media-amazon.com/images/I/81X1hRKY6ML._AC_UY218_.jpg",
+    "stock": 11,
+    "rating": 4.6
+  },
+  {
+    "name": "Thermaltake Toughpower GF3 850W",
+    "category": "PSUs",
+    "brand": "Thermaltake",
+    "description": "Thermaltake high-performance 750w power supply",
+    "price": 159.99,
+    "image": "https://m.media-amazon.com/images/I/81YBlfJYw9L._AC_UY218_.jpg",
+    "stock": 9,
+    "rating": 4.7
+  },
+  {
+    "name": "HYTE Y60 Modern Aesthetic",
+    "category": "Cases",
+    "brand": "HYTE",
+    "description": "HYTE high-performance atx tower case",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/71eWq2GbhhL._AC_UY218_.jpg",
+    "stock": 7,
+    "rating": 4.7
+  },
+  {
+    "name": "Corsair 4000D Airflow",
+    "category": "Cases",
+    "brand": "Corsair",
+    "description": "Corsair high-performance atx tower case",
+    "price": 104.99,
+    "image": "https://m.media-amazon.com/images/I/61tst5iCRHL._AC_UY218_.jpg",
+    "stock": 15,
+    "rating": 4.6
+  },
+  {
+    "name": "Wooting 60HE",
+    "category": "Keyboards",
+    "brand": "Wooting",
+    "description": "Wooting high-performance mechanical keyboard",
+    "price": 175.99,
+    "image": "https://m.media-amazon.com/images/I/61Rv2gCIOyL._AC_UY218_.jpg",
+    "stock": 8,
+    "rating": 4.9
+  },
+  {
+    "name": "NuPhy Air75 V2",
+    "category": "Keyboards",
+    "brand": "NuPhy",
+    "description": "NuPhy high-performance mechanical keyboard",
+    "price": 149.99,
+    "image": "https://m.media-amazon.com/images/I/61YmW8lQRRL._AC_UY218_.jpg",
+    "stock": 12,
+    "rating": 4.7
+  },
+  {
+    "name": "Logitech G PRO X SUPERLIGHT 2 Wireless Gaming Mouse",
+    "category": "Mice",
+    "brand": "Logitech",
+    "description": "Lamzu high-performance gaming mouse",
+    "price": 89.99,
+    "image": "https://m.media-amazon.com/images/I/51VRu0zm1IL._AC_SL1500_.jpg",
+    "stock": 10,
+    "rating": 4.8
+  },
+  {
+    "name": "Vaxee XE Wireless",
+    "category": "Mice",
+    "brand": "Vaxee",
+    "description": "Vaxee high-performance gaming mouse",
+    "price": 119.99,
+    "image": "https://m.media-amazon.com/images/I/71DKTBHeg7L._AC_SY355_.jpg",
+    "stock": 9,
+    "rating": 4.7
+  },
+  {
+    "name": "HyperX Cloud Alpha Wireless",
+    "category": "Headsets",
+    "brand": "HyperX",
+    "description": "HyperX high-performance wired headset",
+    "price": 199.99,
+    "image": "https://m.media-amazon.com/images/I/71A6q5UaPFL._AC_SL1500_.jpg",
+    "stock": 11,
+    "rating": 4.6
+  },
+  {
+    "name": "EPOS H6PRO Closed",
+    "category": "Headsets",
+    "brand": "EPOS",
+    "description": "EPOS high-performance wired headset",
+    "price": 179.99,
+    "image": "https://m.media-amazon.com/images/I/51jZfDAzYRL._AC_SL1200_.jpg",
+    "stock": 9,
+    "rating": 4.7
+  },
+  {
+    "name": "MSI Optix MAG274QRF-QD",
+    "category": "Monitors",
+    "brand": "MSI",
+    "description": "MSI high-performance 27\" gaming monitor",
+    "price": 499.99,
+    "image": "https://m.media-amazon.com/images/I/81mrRGd0ZSL._AC_SL1500_.jpg",
+    "stock": 7,
+    "rating": 4.7
+  },
+  {
+    "name": "Acer Predator XB273U GX",
+    "category": "Monitors",
+    "brand": "Acer",
+    "description": "Acer high-performance 27\" gaming monitor",
+    "price": 699.99,
+    "image": "https://m.media-amazon.com/images/I/810-LrEMy6L._AC_SL1500_.jpg",
+    "stock": 5,
+    "rating": 4.8
+  },
+  {
+    "name": "EK-AIO Basic 360",
+    "category": "Coolers",
+    "brand": "EKWB",
+    "description": "EKWB high-performance liquid cpu cooler",
+    "price": 149.99,
+    "image": "https://m.media-amazon.com/images/I/61QCO20wa2L._SL1500_.jpg",
+    "stock": 8,
+    "rating": 4.7
+  },
+  {
+    "name": "DeepCool LS720",
+    "category": "Coolers",
+    "brand": "DeepCool",
+    "description": "DeepCool high-performance liquid cpu cooler",
+    "price": 139.99,
+    "image": "https://m.media-amazon.com/images/I/41rQZ9hbLDL._SL1000_.jpg",
+    "stock": 11,
+    "rating": 4.6
+  }
+]

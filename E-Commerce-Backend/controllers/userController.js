@@ -5,11 +5,11 @@ exports.getUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ error: 'User not found' });
         }
         res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching user profile', error: error.message });
+        res.status(500).json({ error: 'Error fetching user profile', message: error.message });
     }
 };
 
@@ -20,25 +20,25 @@ exports.updateProfile = async (req, res) => {
 
         const user = await User.findById(loggedInUser._id);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ error: 'User not found' });
         }
 
         // check name is correct (no numbers or special characters)
         const nameRegex = /^[a-zA-Z\s]+$/;
         if (name && !nameRegex.test(name)) {
-            return res.status(400).json({ message: 'Name can only contain letters and spaces' });
+            return res.status(400).json({ error: 'Name can only contain letters and spaces' });
         }
 
         // check email is correct (valid email format)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (email && !emailRegex.test(email)) {
-            return res.status(400).json({ message: 'Invalid email format' });
+            return res.status(400).json({ error: 'Invalid email format' });
         }
 
         // check gender is correct (male, female)
         const genderRegex = /^(Male|Female)$/;
         if (gender && !genderRegex ) {
-            return res.status(400).json({ message: 'Invalid Gender format' });
+            return res.status(400).json({ error: 'Invalid Gender format' });
         }
 
 
@@ -62,41 +62,44 @@ exports.updateProfile = async (req, res) => {
             },
         });
     } catch (error) {
-        res.status(500).json({ message: 'Error updating profile', error: error.message });
+        res.status(500).json({ error: 'Error updating profile', message: error.message });
     }
 };
 
 exports.updateUser = async (req, res) => {
     try {
-        const { name, email, gender, password } = req.body;
+        const { name, email, gender, password, isAdmin } = req.body;
 
-        
         const userID = req.params.id;
         if (!userID  || !mongoose.Types.ObjectId.isValid(userID)) {
-            return res.status(400).json({ message: 'User ID is required' });
+            return res.status(400).json({ error: 'User ID is required' });
         }
 
         const user = await User.findById(userID);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ error: 'User not found' });
         }
 
         // check name is correct (no numbers or special characters)
         const nameRegex = /^[a-zA-Z\s]+$/;
         if (name && !nameRegex.test(name)) {
-            return res.status(400).json({ message: 'Name can only contain letters and spaces' });
+            return res.status(400).json({ error: 'Name can only contain letters and spaces' });
         }
 
         // check email is correct (valid email format)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (email && !emailRegex.test(email)) {
-            return res.status(400).json({ message: 'Invalid email format' });
+            return res.status(400).json({ error: 'Invalid email format' });
         }
 
         // check gender is correct (male, female)
         const genderRegex = /^(Male|Female)$/;
         if (gender && !genderRegex ) {
-            return res.status(400).json({ message: 'Invalid Gender format' });
+            return res.status(400).json({ error: 'Invalid Gender format' });
+        }
+
+        if (typeof isAdmin !== 'boolean') {
+            return  res.status(400).json({ error: 'Invalid Admin' });
         }
 
 
@@ -105,6 +108,7 @@ exports.updateUser = async (req, res) => {
         if (email) user.email = email;
         if (gender) user.gender = gender;
         if (password) user.password = password; // Will be hashed in the pre-save hook
+        if (isAdmin || isAdmin === false) user.isAdmin = isAdmin;
 
         await user.save();
 
@@ -116,10 +120,11 @@ exports.updateUser = async (req, res) => {
                 email: user.email,
                 gender: user.gender,
                 profilePic: user.profilePic,
+                isAdmin: user.isAdmin,
             },
         });
     } catch (error) {
-        res.status(500).json({ message: 'Error updating user', error: error.message });
+        res.status(500).json({ error: 'Error updating user', message: error.message });
     }
 };
 
@@ -165,7 +170,7 @@ exports.deleteUser = async (req, res) => {
 
     res.status(204).json({ data: user });
   } catch (err) {
-    res.status(500).json({ error:'Error deleting user', message: err.message });
+    res.status(500).json({ message:'Error deleting user', error: err.message });
   }
 };
 

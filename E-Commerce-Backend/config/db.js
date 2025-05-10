@@ -8,11 +8,11 @@ const clientOptions = { serverApi: { version: '1', strict: false, deprecationErr
 
 async function connectDB() {
     try {
-        if (!process.env.MONGO_URI_Local) {
-            throw new Error('MONGO_URI_Local is not defined!');
+        if (!process.env.MONGO_URI) {
+            throw new Error('MONGO_URI is not defined!');
         }
         // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
-        await mongoose.connect(process.env.MONGO_URI_Local, clientOptions);
+        await mongoose.connect(process.env.MONGO_URI, clientOptions);
         await mongoose.connection.db.admin().command({ ping: 1 });
         console.log("Connected to MongoDB (Online - Cloud)");
     } catch (e) {
